@@ -1,0 +1,61 @@
+{
+  "Please note: if you are in Europe, you may need to change the value in 'baseUrl' below to": "https://sdk6.ibm.xtify.com",
+  "baseUrl": "https://sdk.ibm.xtify.com",
+
+  "appKey": {
+    "prod":"INSERT APP KEY HERE"
+  },
+  "Set this to the google project number if you are using GCM or to an empty string if you are using FCM": "",
+  "senderId": "",
+
+  "Use 'gcm' for GCM or 'fcm' for FCM": "",
+  "messagingService": "fcm",
+
+  "Will invalidate the existing user/channel ID if they exist when set to true": "This is for testing only. Do not ship with this set to true unless you understand what you are doing",
+  "invalidateExistingUser": false,
+
+  "Set this to false if you want MceApplication.init call to initiate the sdk only if the sdk was initiated before. This should be used by those who want to control the timing the first sdk initiation and not to let it happen automatically on application onCreate. For sdk initiation for the first time, use MceApplication.firstInit": "true for automatic init, false for first init on firstInit call",
+  "autoInitialize": true,
+
+  "Will automatically reinitialize sdk after user deletion": "true for auto reinitialize, false for manual reinitialize",
+  "autoReinitialize": true,
+
+  "Setting sessionEnabled to true will trigger session start and session end events": "",
+  "sessionsEnabled": true,
+
+  "sessionTimeout is the number of minutes the SDK waits while the application is in the background before sending session end event": "",
+  "sessionTimeout": 20,
+
+  "metricTimeInterval defines the interval (in minutes) that SDK events sync with the server.": "",
+  "metricTimeInterval": 3,
+
+  "Set groupNotificationsByAttribution to true to bundle together notifications with the same attribution": "This will work on Android N and above",
+  "groupNotificationsByAttribution": false,
+
+  "Choose one of the following values for loglevel: ": ["none", "error", "warn", "info", "debug", "verbose"],
+  "loglevel": "error",
+
+  "Please note, the log iteration files will be stored under": "<application cache folder on sdcard>/ibm-mce-android-sdk/logs/<installation time folder, format: yyyy-MM-dd-HH-mm-ss>",
+  "logfile": false,
+
+  "The number of log iteration files": "After reaching this number, the log files will be overwritten in order",
+  "logIterations": 1,
+
+  "The number of hours each log iteration will hold": "0 is for infinite time",
+  "logIterationDurationInHours": 0,
+
+  "The number of log lines that will be stored in a RAM buffer before writing to the log file": "The higher this number is, more log lines will be lost in case of a crash.",
+  "logBufferSize": 10,
+
+  "Set useInMemoryImageCache to true to use RAM cache for inbox images": "",
+  "useInMemoryImageCache": true,
+
+  "Set useFileImageCache to true to use file based cache for inbox images": "Uses the sdcard application cache folder",
+  "useFileImageCache": true,
+
+  "The size of the inbox images RAM cache in MB": "",
+  "inMemoryImageCacheCapacityInMB": 20,
+
+  "The size of the inbox images file based cache in MB": "",
+  "fileImageCacheCapacityInMB": 100
+}

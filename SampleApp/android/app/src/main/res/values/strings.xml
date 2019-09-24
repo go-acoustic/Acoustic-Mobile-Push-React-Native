@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<resources>
+  <string name="app_name">SampleApp</string>
+  <string name="google_api_key">REPLACE THIS PLACEHOLDER</string>
+  <string name="google_app_id">REPLACE THIS PLACEHOLDER</string>
+</resources>

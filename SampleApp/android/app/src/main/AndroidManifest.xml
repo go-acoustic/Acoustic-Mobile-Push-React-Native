@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools" package="co.acoustic.mobile.push.sample">
+  <application android:name=".MainApplication" android:label="@string/app_name" android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round" android:allowBackup="false" android:theme="@style/AppTheme" tools:ignore="GoogleAppIndexingWarning">
+    <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyCCySNsF8-0MEXC6ojYX2UitWU9BYc9_eE"/>
+    <activity android:name=".MainActivity" android:label="@string/app_name" android:configChanges="keyboard|keyboardHidden|orientation|screenSize" android:windowSoftInputMode="adjustResize">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+    </activity>
+    <activity android:name="com.facebook.react.devsupport.DevSettingsActivity"/>
+    <activity android:name="co.acoustic.mobile.push.plugin.displayweb.DisplayWebViewActivity"/>
+    <receiver android:name="com.ibm.mce.sdk.wi.AlarmReceiver">
+      <intent-filter>
+        <action android:name="android.intent.action.BOOT_COMPLETED"/>
+      </intent-filter>
+      <intent-filter>
+        <action android:name="android.intent.action.TIMEZONE_CHANGED"/>
+      </intent-filter>
+      <intent-filter>
+        <action android:name="android.intent.action.PACKAGE_REPLACED"/>
+        <data android:scheme="package"/>
+      </intent-filter>
+      <intent-filter>
+        <action android:name="android.intent.action.LOCALE_CHANGED"/>
+      </intent-filter>
+    </receiver>
+    <receiver android:name="co.acoustic.mobile.push.RNAcousticMobilePushBroadcastReceiver">
+      <intent-filter>
+        <action android:name="com.ibm.mce.sdk.NOTIFIER"/>
+      </intent-filter>
+    </receiver>
+    <receiver android:name="com.ibm.mce.sdk.notification.NotifActionReceiver"/>
+    <receiver android:name="com.ibm.mce.sdk.location.LocationUpdateCaller"/>
+    <receiver android:name="co.acoustic.mobile.push.plugin.location.RNAcousticMobilePushBroadcastReceiver">
+      <intent-filter>
+        <action android:name="com.ibm.mce.sdk.NOTIFIER"/>
+      </intent-filter>
+    </receiver>
+    <provider android:name="com.ibm.mce.sdk.db.Provider" android:authorities="${applicationId}.MCE_PROVIDER" android:exported="false"/>
+    <service android:name="com.ibm.mce.sdk.session.SessionTrackingIntentService"/>
+    <service android:name="com.ibm.mce.sdk.events.EventsAlarmListener"/>
+    <service android:name="com.ibm.mce.sdk.registration.PhoneHomeIntentService"/>
+    <service android:name="com.ibm.mce.sdk.registration.RegistrationIntentService"/>
+    <service android:name="com.ibm.mce.sdk.attributes.AttributesQueueConsumer"/>
+    <service android:name="com.ibm.mce.sdk.job.MceJobService" android:permission="android.permission.BIND_JOB_SERVICE"/>
+    <service android:name="com.ibm.mce.sdk.fcm.FcmInstanceIdService">
+      <intent-filter>
+        <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+      </intent-filter>
+    </service>
+    <service android:name="com.ibm.mce.sdk.fcm.FcmMessagingService">
+      <intent-filter>
+        <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+      </intent-filter>
+    </service>
+    <service android:name="com.ibm.mce.sdk.beacons.MceBluetoothScanner"/>
+    <service android:name="com.ibm.mce.sdk.beacons.BeaconsVerifier"/>
+    <service android:name="com.ibm.mce.sdk.location.GeofenceIntentService"/>
+    <service android:name="com.ibm.mce.sdk.plugin.inbox.InboxUpdateService"/>
+    <service android:name="com.ibm.mce.sdk.location.LocationEventsIntentService"/>
+    <service android:name="com.ibm.mce.sdk.location.LocationSyncAlarmListener"/>
+    <service android:name="com.ibm.mce.sdk.location.LocationRetrieveService"/>
+    <service android:name="co.acoustic.mobile.push.plugin.snooze.SnoozeIntentService"/>
+  </application>
+  <uses-permission android:name="android.permission.INTERNET"/>
+  <uses-permission android:name="android.permission.WAKE_LOCK"/>
+  <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+  <uses-permission android:name="android.permission.VIBRATE"/>
+  <uses-permission android:name="android.permission.CALL_PHONE"/>
+  <uses-permission android:name="android.permission.BLUETOOTH"/>
+  <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+</manifest>

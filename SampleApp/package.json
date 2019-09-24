@@ -1,0 +1,54 @@
+{
+  "name": "SampleApp",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest"
+  },
+  "dependencies": {
+    "ncp": "^2.0.0",
+    "plist": "^3.0.1",
+    "react": "16.8.3",
+    "react-native": "0.59.9",
+    "react-native-acoustic-mobile-push": "file:../plugins/react-native-acoustic-mobile-push",
+    "react-native-acoustic-mobile-push-beacon": "file:../plugins/react-native-acoustic-mobile-push-beacon",
+    "react-native-acoustic-mobile-push-calendar": "file:../plugins/react-native-acoustic-mobile-push-calendar",
+    "react-native-acoustic-mobile-push-displayweb": "file:../plugins/react-native-acoustic-mobile-push-displayweb",
+    "react-native-acoustic-mobile-push-geofence": "file:../plugins/react-native-acoustic-mobile-push-geofence",
+    "react-native-acoustic-mobile-push-inapp": "file:../plugins/react-native-acoustic-mobile-push-inapp",
+    "react-native-acoustic-mobile-push-inbox": "file:../plugins/react-native-acoustic-mobile-push-inbox",
+    "react-native-acoustic-mobile-push-location": "file:../plugins/react-native-acoustic-mobile-push-location",
+    "react-native-acoustic-mobile-push-snooze": "file:../plugins/react-native-acoustic-mobile-push-snooze",
+    "react-native-animatable": "^1.3.2",
+    "react-native-elements": "^1.1.0",
+    "react-native-gesture-handler": "^1.2.2",
+    "react-native-ionicons": "^4.5.6",
+    "react-native-iphone-x-helper": "^1.2.1",
+    "react-native-keyboard-aware-scroll-view": "^0.8.0",
+    "react-native-mail": "^3.0.7",
+    "react-native-maps": "^0.24.2",
+    "react-native-modal-datetime-picker": "^7.4.2",
+    "react-native-safe-area-view": "^0.14.4",
+    "react-native-screens": "^1.0.0-alpha.22",
+    "react-native-segmented-control-tab": "^3.4.0",
+    "react-native-tab-view": "^2.5.0",
+    "react-native-vector-icons": "^6.4.2",
+    "react-native-video": "^4.4.1",
+    "react-native-web": "^0.11.4",
+    "react-native-webview": "^5.10.0",
+    "react-navigation": "^3.11.0",
+    "xml2js": "^0.4.19"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/runtime": "^7.4.5",
+    "babel-jest": "^24.8.0",
+    "jest": "^24.8.0",
+    "metro-react-native-babel-preset": "^0.54.1",
+    "react-test-renderer": "16.8.3"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}

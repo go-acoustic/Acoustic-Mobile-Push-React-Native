@@ -1,0 +1,41 @@
+apply plugin: 'com.android.library'
+if (project.hasProperty('POM_ARTIFACT_ID')) {
+  apply from: 'gradle-maven-push.gradle'
+}
+
+def safeExtGet(prop, fallback) {
+  rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
+}
+
+android {
+  compileSdkVersion safeExtGet('compileSdkVersion', 28)
+
+  defaultConfig {
+    minSdkVersion safeExtGet('minSdkVersion', 16)
+    targetSdkVersion safeExtGet('targetSdkVersion', 27)
+  }
+}
+
+dependencies {
+  compileOnly('com.facebook.react:react-native:+') {
+    exclude group: 'com.android.support'
+  }
+  implementation fileTree(dir: 'libs', include: ['*.jar'])
+  implementation 'com.google.android.gms:play-services-base:16.0.1'
+  implementation 'com.google.firebase:firebase-messaging:17.1.0'
+
+  // Use environment variable ANDROID_X if you're using React Native 0.60 or later
+  // If running from Android Studio and React Native 0.60, comment out the `if`
+  if(System.getenv("ANDROID_X")) {
+    println "Using Android X Libraries"
+    implementation "androidx.core:core:1+"
+  } else {
+    println "Using Android Support Libraries"
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+  }
+
+}
+
+repositories {
+  google()
+}

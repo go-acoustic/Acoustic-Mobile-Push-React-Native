@@ -1,0 +1,35 @@
+rootProject.name = 'SampleApp'
+include ':react-native-acoustic-mobile-push-inapp'
+project(':react-native-acoustic-mobile-push-inapp').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-acoustic-mobile-push-inapp/android')
+include ':react-native-acoustic-mobile-push-inbox'
+project(':react-native-acoustic-mobile-push-inbox').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-acoustic-mobile-push-inbox/android')
+include ':react-native-acoustic-mobile-push-beacon'
+project(':react-native-acoustic-mobile-push-beacon').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-acoustic-mobile-push-beacon/android')
+include ':react-native-acoustic-mobile-push-geofence'
+project(':react-native-acoustic-mobile-push-geofence').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-acoustic-mobile-push-geofence/android')
+include ':react-native-acoustic-mobile-push-location'
+project(':react-native-acoustic-mobile-push-location').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-acoustic-mobile-push-location/android')
+include ':react-native-acoustic-mobile-push-calendar'
+project(':react-native-acoustic-mobile-push-calendar').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-acoustic-mobile-push-calendar/android')
+include ':react-native-acoustic-mobile-push-snooze'
+project(':react-native-acoustic-mobile-push-snooze').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-acoustic-mobile-push-snooze/android')
+include ':react-native-acoustic-mobile-push-displayweb'
+project(':react-native-acoustic-mobile-push-displayweb').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-acoustic-mobile-push-displayweb/android')
+include ':react-native-acoustic-mobile-push'
+project(':react-native-acoustic-mobile-push').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-acoustic-mobile-push/android')
+include ':react-native-maps'
+project(':react-native-maps').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-maps/lib/android')
+include ':react-native-webview'
+project(':react-native-webview').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-webview/android')
+include ':react-native-video'
+project(':react-native-video').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-video/android-exoplayer')
+include ':react-native-vector-icons'
+project(':react-native-vector-icons').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-vector-icons/android')
+include ':react-native-screens'
+project(':react-native-screens').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-screens/android')
+include ':react-native-mail'
+project(':react-native-mail').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-mail/android')
+include ':react-native-gesture-handler'
+project(':react-native-gesture-handler').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-gesture-handler/android')
+
+include ':app'

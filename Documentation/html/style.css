@@ -1,0 +1,37 @@
+ul#user-content-nav {
+    position: fixed;
+    left: 0;
+    top: 25px;
+    width: 300px;
+    padding-left: 0;
+    bottom: 25px;
+    overflow: scroll;
+}
+
+ul#user-content-nav li {
+    margin-left: 0;
+    margin-bottom: 10px;
+}
+
+ul#user-content-nav, ul#user-content-nav ul {
+    list-style: none;
+    padding-left: 20px;
+}
+
+#readme > h3 {
+    display: none;
+}
+
+.container {
+	margin-left: 300px;
+	margin-right: 20px;
+    width: auto;
+}
+
+.preview-page {
+    margin-top: 0;
+}
+
+ul#user-content-nav li.current {
+    font-weight: bold;
+}

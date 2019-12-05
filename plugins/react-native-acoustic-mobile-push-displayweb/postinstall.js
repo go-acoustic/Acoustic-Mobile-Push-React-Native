@@ -16,7 +16,7 @@ const xml2js = require('xml2js');
 function findInstallDirectory() {
 	// Mac
 	var currentDirectory = process.argv[ process.argv.length-1 ];
-	if(typeof(currentDirectory) != "undefined") {
+	if(currentDirectory != "$INIT_CWD") {
 		return currentDirectory;
 	}
 

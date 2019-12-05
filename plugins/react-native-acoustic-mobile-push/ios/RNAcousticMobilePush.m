@@ -114,7 +114,7 @@ RCT_EXPORT_MODULE();
 
 - (NSDictionary *)constantsToExport {
     MCEConfig * config = MCESdk.sharedInstance.config;
-    return @{@"pluginVersion": @"3.0.0", @"sdkVersion": MCESdk.sharedInstance.sdkVersion, @"appKey": config.appKey ? config.appKey : [NSNull null]};
+    return @{@"pluginVersion": @"3.0.1", @"sdkVersion": MCESdk.sharedInstance.sdkVersion, @"appKey": config.appKey ? config.appKey : [NSNull null]};
 }
 
 #pragma mark SDK - Events

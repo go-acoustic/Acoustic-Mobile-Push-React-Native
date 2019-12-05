@@ -420,7 +420,7 @@ public class RNAcousticMobilePushModule extends ReactContextBaseJavaModule imple
 
 		final Map<String, Object> constants = new HashMap<>();
 		constants.put("sdkVersion", MceSdk.getSdkVerNumber());
-        constants.put("pluginVersion", "3.0.0");
+        constants.put("pluginVersion", "3.0.1");
 		constants.put("appKey", appKey );
 		return constants;
 	}

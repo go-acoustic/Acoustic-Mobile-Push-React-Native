@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
   s.name         = "RNAcousticMobilePush"
-  s.version      = "3.0.0"
+  s.version      = "3.0.1"
   s.summary      = "Acoustic Mobile Push Plugin"
   s.description  = <<-DESC
                   Acoustic Mobile Push Plugin

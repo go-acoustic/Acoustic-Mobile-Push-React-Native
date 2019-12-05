@@ -15,6 +15,22 @@ const ncp = require('ncp');
 const xml2js = require('xml2js');
 const chalk = require('chalk');
 
+function findInstallDirectory() {
+	var currentDirectory = process.cwd();
+	while(!fs.existsSync(path.join(currentDirectory, "App.js"))) {		
+		var parentDirectory = path.dirname(currentDirectory);
+		console.log("cwd: ", currentDirectory, ", parent: ", parentDirectory);
+		if(parentDirectory == currentDirectory) {
+			console.error(chalk.red("Could not find installation directory!"));
+			return;
+		}
+		currentDirectory = parentDirectory;
+	}
+	console.log("Install Directory Found:", currentDirectory);
+	
+	return currentDirectory;
+}
+
 function containsStanza(array, stanza, type) {
 	for(var i = 0; i < array.length; i++) {
 		if(array[i]['$']['android:name'] == stanza[type]['$']['android:name']) {
@@ -120,7 +136,7 @@ function modifyInfoPlist(mainAppPath) {
 }
 
 function findMainPath(installDirectory) {
-	if(!fs.existsSync(installDirectory) || !fs.lstatSync(installDirectory).isDirectory()) {
+	if(!fs.existsSync(installDirectory)) {
 		console.error("Couldn't locate install directory.");
 		return;
 	}
@@ -220,7 +236,7 @@ function addiOSConfigFile(mainAppPath) {
 }
 
 console.log(chalk.green.bold("Setting up Acoustic Mobile Push SDK"));
-const installDirectory = process.argv[ process.argv.length-1 ];
+const installDirectory = findInstallDirectory();
 const mainAppPath = findMainPath(installDirectory);
 replaceMain(mainAppPath);
 modifyInfoPlist(mainAppPath);

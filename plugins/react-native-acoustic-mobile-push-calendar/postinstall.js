@@ -13,6 +13,22 @@ const plist = require('plist');
 const path = require('path');
 const chalk = require('chalk');
 
+function findInstallDirectory() {
+	var currentDirectory = process.cwd();
+	while(!fs.existsSync(path.join(currentDirectory, "App.js"))) {		
+		var parentDirectory = path.dirname(currentDirectory);
+		console.log("cwd: ", currentDirectory, ", parent: ", parentDirectory);
+		if(parentDirectory == currentDirectory) {
+			console.error(chalk.red("Could not find installation directory!"));
+			return;
+		}
+		currentDirectory = parentDirectory;
+	}
+	console.log("Install Directory Found:", currentDirectory);
+	
+	return currentDirectory;
+}
+
 function findMainPath(installDirectory) {
 	if(!fs.existsSync(installDirectory) || !fs.lstatSync(installDirectory).isDirectory()) {
 		console.error("Couldn't locate install directory.");
@@ -57,7 +73,7 @@ function modifyInfoPlist(mainAppPath) {
 }
 
 console.log(chalk.green.bold("Setting up Acoustic Mobile Push Calendar Plugin"));
-const installDirectory = process.argv[ process.argv.length-1 ];
+const installDirectory = findInstallDirectory();
 const mainAppPath = findMainPath(installDirectory);
 modifyInfoPlist(mainAppPath);
 

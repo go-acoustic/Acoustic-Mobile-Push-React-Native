@@ -14,7 +14,14 @@ const path = require('path');
 const xml2js = require('xml2js');
 
 function findInstallDirectory() {
-	var currentDirectory = process.cwd();
+	// Mac
+	var currentDirectory = process.env.INIT_CWD;
+	if(typeof(currentDirectory) != "undefined") {
+		return currentDirectory;
+	}
+
+	// Windows
+	currentDirectory = process.cwd();
 	while(!fs.existsSync(path.join(currentDirectory, "App.js"))) {		
 		var parentDirectory = path.dirname(currentDirectory);
 		console.log("cwd: ", currentDirectory, ", parent: ", parentDirectory);

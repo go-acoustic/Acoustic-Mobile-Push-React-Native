@@ -17,7 +17,7 @@ const chalk = require('chalk');
 
 function findInstallDirectory() {
 	// Mac
-	var currentDirectory = process.env.INIT_CWD;
+	var currentDirectory = process.argv[ process.argv.length-1 ];
 	if(typeof(currentDirectory) != "undefined") {
 		return currentDirectory;
 	}

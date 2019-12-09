@@ -220,19 +220,29 @@ RCT_EXPORT_METHOD(syncInboxMessages)
 }
 
 -(NSDictionary*)inboxMessageToJson:(MCEInboxMessage*)inboxMessage {
-    return @{
-      @"inboxMessageId": inboxMessage.inboxMessageId,
-      @"content": inboxMessage.content,
-      @"richContentId": inboxMessage.richContentId,
-      @"expirationDate": @([inboxMessage.expirationDate timeIntervalSince1970] * 1000),
-      @"sendDate": @([inboxMessage.sendDate timeIntervalSince1970] * 1000),
-      @"templateName": inboxMessage.templateName,
-      @"attribution": inboxMessage.attribution,
-      @"mailingId": inboxMessage.mailingId,
-      @"isRead": @(inboxMessage.isRead),
-      @"isDeleted": @(inboxMessage.isDeleted),
-      @"isExpired": @(inboxMessage.isExpired)
-      };
+  NSMutableDictionary * dictionary = [@{
+    @"content": inboxMessage.content,
+    @"expirationDate": @([inboxMessage.expirationDate timeIntervalSince1970] * 1000),
+    @"sendDate": @([inboxMessage.sendDate timeIntervalSince1970] * 1000),
+    @"templateName": inboxMessage.templateName,
+    @"isRead": @(inboxMessage.isRead),
+    @"isDeleted": @(inboxMessage.isDeleted),
+    @"isExpired": @(inboxMessage.isExpired)
+  } mutableCopy];
+  if(inboxMessage.inboxMessageId) {
+    dictionary[@"inboxMessageId"] = inboxMessage.inboxMessageId;
+  }
+  if(inboxMessage.richContentId) {
+    dictionary[@"richContentId"] = inboxMessage.richContentId;
+  }
+  if(inboxMessage.attribution) {
+    dictionary[@"attribution"] = inboxMessage.attribution;
+  }
+  if(inboxMessage.mailingId) {
+    dictionary[@"mailingId"] = inboxMessage.mailingId;
+  }
+  
+  return dictionary;
 }
 
 RCT_EXPORT_METHOD(listInboxMessages: (BOOL) direction callback:(RCTResponseSenderBlock)callback)

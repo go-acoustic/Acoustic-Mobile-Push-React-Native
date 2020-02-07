@@ -1,0 +1,6 @@
+framework module AcousticMobilePush {
+  umbrella header "AcousticMobilePush.h"
+
+  export *
+  module * { export * }
+}

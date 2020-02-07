@@ -19,12 +19,6 @@
 					<li><a href="#description">Description</a></li>
 					<li><a href="#installation">Installation</a></li>
 					<li>
-						<a href="#user-content-constants-exported">Constants</a>
-						<ul>
-							<li><a href="#geofenceenabled">geofenceEnabled</a></li>
-						</ul>
-					</li>
-					<li>
 						<a href="#user-content-module-api">API</a>
 						<ul>
 							<li><a href="#user-content-geofencesnearcoordinatelatitude-longitude-radius">geofencesNearCoordinate</a></li>
@@ -71,22 +65,6 @@ npm install --save <sdk folder>/plugins/react-native-acoustic-mobile-push-geofen
 > Link the plugin with
 ```sh
 react-native link react-native-acoustic-mobile-push-geofence
-```
-
-## Constants Exported
-### geofenceEnabled
-#### Description
-This constant reflects the geofence MceConfig.json configuration setting and can be used to verify that the geofence subsystem has been enabled. It will either have the value of `true` if the configuration has been setup for geofences or `false` otherwise.
-
-#### Example
-```js
-import {RNAcousticMobilePushGeofence} from 'NativeModules';
-
-if(RNAcousticMobilePushGeofence.geofenceEnabled) {
-    console.log("Geofences are enabled in MceConfig.json");
-} else {
-    console.log("Geofences are disabled in MceConfig.json");
-}
 ```
 
 ## Module API

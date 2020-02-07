@@ -16,9 +16,9 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.ibm.mce.sdk.api.Constants;
-import com.ibm.mce.sdk.notification.NotificationsUtility;
-import com.ibm.mce.sdk.util.Logger;
+import co.acoustic.mobile.push.sdk.api.Constants;
+import co.acoustic.mobile.push.sdk.notification.NotificationsUtility;
+import co.acoustic.mobile.push.sdk.util.Logger;
 
 import org.json.JSONException;
 

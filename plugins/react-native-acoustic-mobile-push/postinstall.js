@@ -24,7 +24,7 @@ function findInstallDirectory() {
 
 	// Windows
 	currentDirectory = process.cwd();
-	while(!fs.existsSync(path.join(currentDirectory, "App.js"))) {		
+	while(!fs.existsSync(path.join(currentDirectory, "index.js"))) {
 		var parentDirectory = path.dirname(currentDirectory);
 		console.log("cwd: ", currentDirectory, ", parent: ", parentDirectory);
 		if(parentDirectory == currentDirectory) {
@@ -69,9 +69,9 @@ function modifyManifest(installDirectory) {
 		console.log("Adding required receivers to AndroidManifest.xml");
 		var receivers = document.manifest.application[0].receiver;
 		[
-			'<receiver android:name="com.ibm.mce.sdk.wi.AlarmReceiver" ><intent-filter><action android:name="android.intent.action.BOOT_COMPLETED" /></intent-filter><intent-filter><action android:name="android.intent.action.TIMEZONE_CHANGED" /></intent-filter><intent-filter><action android:name="android.intent.action.PACKAGE_REPLACED" /><data android:scheme="package" /></intent-filter><intent-filter><action android:name="android.intent.action.LOCALE_CHANGED" /></intent-filter></receiver>',
-			'<receiver android:name="co.acoustic.mobile.push.RNAcousticMobilePushBroadcastReceiver"><intent-filter><action android:name="com.ibm.mce.sdk.NOTIFIER" /></intent-filter></receiver>',
-			'<receiver android:name="com.ibm.mce.sdk.notification.NotifActionReceiver" />'
+			'<receiver android:name="co.acoustic.mobile.push.sdk.wi.AlarmReceiver" ><intent-filter><action android:name="android.intent.action.BOOT_COMPLETED" /></intent-filter><intent-filter><action android:name="android.intent.action.TIMEZONE_CHANGED" /></intent-filter><intent-filter><action android:name="android.intent.action.PACKAGE_REPLACED" /><data android:scheme="package" /></intent-filter><intent-filter><action android:name="android.intent.action.LOCALE_CHANGED" /></intent-filter></receiver>',
+			'<receiver android:name="co.acoustic.mobile.push.RNAcousticMobilePushBroadcastReceiver"><intent-filter><action android:name="co.acoustic.mobile.push.sdk.NOTIFIER" /></intent-filter></receiver>',
+			'<receiver android:name="co.acoustic.mobile.push.sdk.notification.NotifActionReceiver" />'
 		].forEach((receiver) => {
 			receivers = verifyStanza(receivers, receiver);
 		});
@@ -79,20 +79,19 @@ function modifyManifest(installDirectory) {
 
 		console.log("Adding required providers to AndroidManifest.xml");
 		var providers = document.manifest.application[0].provider;
-		var provider = '<provider android:name="com.ibm.mce.sdk.db.Provider" android:authorities="${applicationId}.MCE_PROVIDER" android:exported="false" />';
+		var provider = '<provider android:name="co.acoustic.mobile.push.sdk.db.Provider" android:authorities="${applicationId}.MCE_PROVIDER" android:exported="false" />';
 		document.manifest.application[0].provider = verifyStanza(providers, provider);
 
 		console.log("Adding required services to AndroidManifest.xml");
 		var services = document.manifest.application[0].service;
 		[
-			'<service android:name="com.ibm.mce.sdk.session.SessionTrackingIntentService"/>',
-			'<service android:name="com.ibm.mce.sdk.events.EventsAlarmListener" />',
-			'<service android:name="com.ibm.mce.sdk.registration.PhoneHomeIntentService" />',
-			'<service android:name="com.ibm.mce.sdk.registration.RegistrationIntentService" />',
-			'<service android:name="com.ibm.mce.sdk.attributes.AttributesQueueConsumer" />',
-			'<service android:name="com.ibm.mce.sdk.job.MceJobService" android:permission="android.permission.BIND_JOB_SERVICE"/>',
-			'<service android:name="com.ibm.mce.sdk.fcm.FcmInstanceIdService"><intent-filter><action android:name="com.google.firebase.INSTANCE_ID_EVENT"/></intent-filter></service>',
-			'<service android:name="com.ibm.mce.sdk.fcm.FcmMessagingService"><intent-filter><action android:name="com.google.firebase.MESSAGING_EVENT"/></intent-filter></service>'
+			'<service android:name="co.acoustic.mobile.push.sdk.session.SessionTrackingIntentService"/>',
+			'<service android:name="co.acoustic.mobile.push.sdk.events.EventsAlarmListener" />',
+			'<service android:name="co.acoustic.mobile.push.sdk.registration.PhoneHomeIntentService" />',
+			'<service android:name="co.acoustic.mobile.push.sdk.registration.RegistrationIntentService" />',
+			'<service android:name="co.acoustic.mobile.push.sdk.attributes.AttributesQueueConsumer" />',
+			'<service android:name="co.acoustic.mobile.push.sdk.job.MceJobService" android:permission="android.permission.BIND_JOB_SERVICE"/>',
+			'<service android:name="co.acoustic.mobile.push.sdk.messaging.fcm.FcmMessagingService"><intent-filter><action android:name="com.google.firebase.MESSAGING_EVENT"/></intent-filter></service>'
 		].forEach((service) => {
 			services = verifyStanza(services, service);
 		});
@@ -261,12 +260,14 @@ console.log('react-native link react-native-acoustic-mobile-push\n');
 console.log(chalk.blue('iOS Support:'));
 console.log("1. Open the iOS project in Xcode.");
 console.log("2. In the `Capabilities` tab of the main app target, enable push notifications by turning the switch to the on position");
-console.log("3. Then add a new `Notification Service Extension` target");
-console.log("4. Drag and drop `react-native-acoustic-mobile-push/NotificationService.framework` from the Finder into the new target's `General` tab, under `Linked Frameworks and Libraries`.");
-console.log("5. Drag and drop `react-native-acoustic-mobile-push` folder from the Finder into the `Framework Search Paths` setting in the `Build Setting` tab of the new target.");
-console.log("6. Replace the contents of `NotificationService.m` and `NotificationService.h` with the ones provided in the `react-native-acoustic-mobile-push Notification Service` folder");
-console.log("7. Add the `MceConfig.json` file in the project directory to the xcode project to **Application** AND **Notification Service** targets");
-console.log("8. Adjust the `baseUrl` and `appKey`s provided by your account team\n");
+console.log("3. Drag and drop `react-native-acoustic-mobile-push/AcousticMobilePush.framework` from the Finder into the target's `General` tab, under `Linked Frameworks and Libraries`. Verify that 'embed and sign' is selected.");
+console.log("4. Drag and drop `react-native-acoustic-mobile-push` folder from the Finder into the `Framework Search Paths` setting in the `Build Setting` tab of the new target.");
+console.log("5. Then add a new `Notification Service Extension` target");
+console.log("6. Drag and drop `react-native-acoustic-mobile-push/Notification Service/AcousticMobilePushNotification.framework` from the Finder into the new target's `General` tab, under `Linked Frameworks and Libraries`.");
+console.log("7. Drag and drop `react-native-acoustic-mobile-push/Notification Service` folder from the Finder into the `Framework Search Paths` setting in the `Build Setting` tab of the new target.");
+console.log("8. Replace the contents of `NotificationService.m` and `NotificationService.h` with the ones provided in the `react-native-acoustic-mobile-push Notification Service` folder");
+console.log("9. Add the `MceConfig.json` file in the project directory to the xcode project to **Application** AND **Notification Service** targets");
+console.log("10. Adjust the `baseUrl` and `appKey`s provided by your account team");
 
 console.log(chalk.blue('Android Support:'));
 console.log("1. Open the Android project in Android Studio.");

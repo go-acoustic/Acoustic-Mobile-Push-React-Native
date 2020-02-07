@@ -22,10 +22,10 @@ import org.json.JSONObject;
 import org.json.JSONException;
 import org.json.JSONArray;
 
-import com.ibm.mce.sdk.api.notification.DelayedNotificationAction;
-import com.ibm.mce.sdk.api.notification.MceNotificationAction;
-import com.ibm.mce.sdk.api.notification.MceNotificationActionRegistry;
-import com.ibm.mce.sdk.api.notification.NotificationDetails;
+import co.acoustic.mobile.push.sdk.api.notification.DelayedNotificationAction;
+import co.acoustic.mobile.push.sdk.api.notification.MceNotificationAction;
+import co.acoustic.mobile.push.sdk.api.notification.MceNotificationActionRegistry;
+import co.acoustic.mobile.push.sdk.api.notification.NotificationDetails;
 
 import android.os.Bundle;
 import android.content.Context;
@@ -64,7 +64,7 @@ public class RNAcousticMobilePushActionHandler extends ReactContextBaseJavaModul
         Iterator<String> payloadIterator = payload.keySet().iterator();
         while(payloadIterator.hasNext()) {
             String key = payloadIterator.next();
-            if(key.startsWith("com.ibm.mce.sdk")) {
+            if(key.startsWith("co.acoustic.mobile.push.sdk")) {
                 continue;
             }
             Object value = payload.get(key);
@@ -112,7 +112,7 @@ public class RNAcousticMobilePushActionHandler extends ReactContextBaseJavaModul
                         mce.putString("mailingId", mailingId);
                     }
 
-                    String sourceValue = payload.get("com.ibm.mce.sdk.NOTIF_SOURCE");
+                    String sourceValue = payload.get("co.acoustic.mobile.push.sdk.NOTIF_SOURCE");
                     WritableNativeMap payloadMap = null;
                     try {
                         payloadMap = RNAcousticMobilePushModule.convertJsonObject(new JSONObject(sourceValue));

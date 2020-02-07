@@ -100,8 +100,7 @@ RCT_EXPORT_MODULE();
 }
 
 - (NSDictionary *)constantsToExport {
-    MCEConfig * config = MCESdk.sharedInstance.config;
-    return @{ @"geofenceEnabled": @(config.geofenceEnabled) };
+    return @{ };
 }
 
 RCT_REMAP_METHOD(geofencesNearCoordinate, lattitude:(double) latitude longitude: (double) longitude radius:(int)radius geofencesNearCoordinateWithResolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)

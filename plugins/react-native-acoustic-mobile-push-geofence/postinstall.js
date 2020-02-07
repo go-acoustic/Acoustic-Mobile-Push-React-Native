@@ -84,10 +84,11 @@ function modifyManifest(installDirectory) {
 	let manifestPath = path.join(installDirectory, "android", "app", "src", "main", "AndroidManifest.xml");
 	new xml2js.Parser().parseString(fs.readFileSync(manifestPath), function (err, document) {
 
-		console.log("Adding required service to Android Manifest");
-		var services = document.manifest.application[0].service;				
-		var service = '<service android:name="com.ibm.mce.sdk.location.GeofenceIntentService" />';
-		document.manifest.application[0].service = verifyStanza(services, service);
+		console.log("Adding required receiver to Android Manifest");
+		var receivers = document.manifest.application[0].receiver;				
+		var receiver = '<receiver android:name="co.acoustic.mobile.push.sdk.location.GeofenceBroadcastReceiver" android:enabled="true" android:exported="true" />';
+		
+		document.manifest.application[0].receiver = verifyStanza(receivers, receiver);
 
 		var output = new xml2js.Builder().buildObject(document);
 		fs.writeFileSync(manifestPath, output);

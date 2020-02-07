@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
   s.name         = "RNAcousticMobilePushBeacon"
-  s.version      = "3.0.1"
+  s.version      = "3.8.0"
   s.summary      = "Acoustic Mobile Push Beacon Location Plugin"
   s.description  = <<-DESC
                   Acoustic Mobile Push Beacon Location Plugin

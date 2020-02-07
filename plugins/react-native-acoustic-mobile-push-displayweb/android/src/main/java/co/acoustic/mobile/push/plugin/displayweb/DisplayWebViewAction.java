@@ -14,8 +14,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.ibm.mce.sdk.api.notification.MceNotificationAction;
-import com.ibm.mce.sdk.api.notification.NotificationDetails;
+import co.acoustic.mobile.push.sdk.api.notification.MceNotificationAction;
+import co.acoustic.mobile.push.sdk.api.notification.NotificationDetails;
 
 import org.json.JSONObject;
 

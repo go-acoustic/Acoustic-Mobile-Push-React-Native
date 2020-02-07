@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
   s.name         = "RNAcousticMobilePushCalendar"
-  s.version      = "3.0.1"
+  s.version      = "3.8.0"
   s.summary      = "Acoustic Mobile Push Calendar Action Plugin"
   s.description  = <<-DESC
                   Acoustic Mobile Push Calendar Action Plugin

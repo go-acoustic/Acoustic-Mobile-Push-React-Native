@@ -65,7 +65,7 @@ function modifyManifest(installDirectory) {
 	new xml2js.Parser().parseString(fs.readFileSync(manifestPath), function (err, document) {
 
 		var services = document.manifest.application[0].service;
-		var service = '<service android:name="com.ibm.mce.sdk.plugin.inbox.InboxUpdateService" />';
+		var service = '<service android:name="co.acoustic.mobile.push.sdk.plugin.inbox.InboxUpdateService" />';
 		document.manifest.application[0].service = verifyStanza(services, service);
 
 		var output = new xml2js.Builder().buildObject(document);

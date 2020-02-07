@@ -93,12 +93,14 @@ react-native link react-native-acoustic-mobile-push
 **iOS Support:**
 1. Open the iOS project in Xcode.
 2. In the `Capabilities` tab of the main app target, enable push notifications by turning the switch to the on position
-3. Then add a new `Notification Service Extension` target
-4. Drag and drop `react-native-acoustic-mobile-push/NotificationService.framework` from the Finder into the new target's `General` tab, under `Linked Frameworks and Libraries`.
-5. Drag and drop `react-native-acoustic-mobile-push` folder from the Finder into the `Framework Search Paths` setting in the `Build Setting` tab of the new target.
-6. Replace the contents of `NotificationService.m` and `NotificationService.h` with the ones provided in the `react-native-acoustic-mobile-push Notification Service` folder
-7. Add the `MceConfig.json` file in the project directory to the xcode project to **Application** AND **Notification Service** targets
-8. Adjust the `baseUrl` and `appKey`s provided by your account team
+3. Drag and drop `react-native-acoustic-mobile-push/AcousticMobilePush.framework` from the Finder into the target's `General` tab, under `Linked Frameworks and Libraries`. Verify that "embed and sign" is selected.
+4. Drag and drop `react-native-acoustic-mobile-push` folder from the Finder into the `Framework Search Paths` setting in the `Build Setting` tab of the new target.
+5. Then add a new `Notification Service Extension` target
+6. Drag and drop `react-native-acoustic-mobile-push/Notification Service/AcousticMobilePushNotification.framework` from the Finder into the new target's `General` tab, under `Linked Frameworks and Libraries`.
+7. Drag and drop `react-native-acoustic-mobile-push/Notification Service` folder from the Finder into the `Framework Search Paths` setting in the `Build Setting` tab of the new target.
+8. Replace the contents of `NotificationService.m` and `NotificationService.h` with the ones provided in the `react-native-acoustic-mobile-push Notification Service` folder
+9. Add the `MceConfig.json` file in the project directory to the xcode project to **Application** AND **Notification Service** targets
+10. Adjust the `baseUrl` and `appKey`s provided by your account team
 
 **Android Support:**
 1. Open the Android project in Android Studio

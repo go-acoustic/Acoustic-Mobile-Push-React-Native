@@ -38,44 +38,46 @@ import com.facebook.react.bridge.WritableNativeArray;
 import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.google.android.gms.security.ProviderInstaller;
-import com.ibm.mce.sdk.Preferences;
-import com.ibm.mce.sdk.SdkPreferences;
-import com.ibm.mce.sdk.api.Endpoint;
-import com.ibm.mce.sdk.api.MceSdk;
-import com.ibm.mce.sdk.api.MceSdkConfiguration;
-import com.ibm.mce.sdk.api.MediaManager;
-import com.ibm.mce.sdk.api.attribute.Attribute;
-import com.ibm.mce.sdk.api.attribute.BooleanAttribute;
-import com.ibm.mce.sdk.api.attribute.DateAttribute;
-import com.ibm.mce.sdk.api.attribute.NumberAttribute;
-import com.ibm.mce.sdk.api.attribute.StringAttribute;
-import com.ibm.mce.sdk.api.event.Event;
-import com.ibm.mce.sdk.api.notification.NotificationsPreference;
-import com.ibm.mce.sdk.api.registration.RegistrationClient;
-import com.ibm.mce.sdk.api.registration.RegistrationDetails;
-import com.ibm.mce.sdk.apiinternal.MceSdkInternal;
-import com.ibm.mce.sdk.beacons.IBeaconsPreferences;
-import com.ibm.mce.sdk.beacons.MceBluetoothScanner;
-import com.ibm.mce.sdk.db.DbAdapter;
-import com.ibm.mce.sdk.encryption.EncryptionPreferences;
-import com.ibm.mce.sdk.job.MceJobManager;
-import com.ibm.mce.sdk.location.LocationManager;
-import com.ibm.mce.sdk.location.LocationPreferences;
-import com.ibm.mce.sdk.location.LocationRetrieveService;
-import com.ibm.mce.sdk.notification.NotificationsUtility;
-import com.ibm.mce.sdk.plugin.Plugin;
-import com.ibm.mce.sdk.plugin.PluginRegistry;
-import com.ibm.mce.sdk.registration.DeliveryChannel;
-import com.ibm.mce.sdk.registration.PhoneHomeManager;
-import com.ibm.mce.sdk.registration.RegistrationClientImpl;
-import com.ibm.mce.sdk.registration.RegistrationIntentService;
-import com.ibm.mce.sdk.session.SessionManager;
-import com.ibm.mce.sdk.session.SessionTrackingTask;
-import com.ibm.mce.sdk.task.MceSdkTaskScheduler;
-import com.ibm.mce.sdk.util.AssetsUtil;
-import com.ibm.mce.sdk.util.Iso8601;
-import com.ibm.mce.sdk.util.Logger;
-import com.ibm.mce.sdk.wi.MceSdkWakeLock;
+import co.acoustic.mobile.push.sdk.Preferences;
+import co.acoustic.mobile.push.sdk.SdkPreferences;
+import co.acoustic.mobile.push.sdk.api.Endpoint;
+import co.acoustic.mobile.push.sdk.api.MceSdk;
+import co.acoustic.mobile.push.sdk.api.MceSdkConfiguration;
+import co.acoustic.mobile.push.sdk.api.MediaManager;
+import co.acoustic.mobile.push.sdk.api.SdkState;
+import co.acoustic.mobile.push.sdk.api.attribute.Attribute;
+import co.acoustic.mobile.push.sdk.api.attribute.BooleanAttribute;
+import co.acoustic.mobile.push.sdk.api.attribute.DateAttribute;
+import co.acoustic.mobile.push.sdk.api.attribute.NumberAttribute;
+import co.acoustic.mobile.push.sdk.api.attribute.StringAttribute;
+import co.acoustic.mobile.push.sdk.api.event.Event;
+import co.acoustic.mobile.push.sdk.api.notification.NotificationsPreference;
+import co.acoustic.mobile.push.sdk.api.registration.RegistrationClient;
+import co.acoustic.mobile.push.sdk.api.registration.RegistrationDetails;
+import co.acoustic.mobile.push.sdk.apiinternal.MceSdkInternal;
+import co.acoustic.mobile.push.sdk.beacons.IBeaconsPreferences;
+import co.acoustic.mobile.push.sdk.beacons.MceBluetoothScanner;
+import co.acoustic.mobile.push.sdk.db.DbAdapter;
+import co.acoustic.mobile.push.sdk.encryption.EncryptionPreferences;
+import co.acoustic.mobile.push.sdk.job.MceJobManager;
+import co.acoustic.mobile.push.sdk.location.LocationManager;
+import co.acoustic.mobile.push.sdk.location.LocationPreferences;
+import co.acoustic.mobile.push.sdk.location.LocationRetrieveService;
+import co.acoustic.mobile.push.sdk.messaging.MessagingManager;
+import co.acoustic.mobile.push.sdk.notification.NotificationsUtility;
+import co.acoustic.mobile.push.sdk.plugin.Plugin;
+import co.acoustic.mobile.push.sdk.plugin.PluginRegistry;
+import co.acoustic.mobile.push.sdk.registration.PhoneHomeManager;
+import co.acoustic.mobile.push.sdk.registration.RegistrationClientImpl;
+import co.acoustic.mobile.push.sdk.registration.RegistrationIntentService;
+import co.acoustic.mobile.push.sdk.session.SessionManager;
+import co.acoustic.mobile.push.sdk.session.SessionTrackingTask;
+import co.acoustic.mobile.push.sdk.task.MceSdkTaskScheduler;
+import co.acoustic.mobile.push.sdk.util.AssetsUtil;
+import co.acoustic.mobile.push.sdk.util.Iso8601;
+import co.acoustic.mobile.push.sdk.util.Logger;
+import co.acoustic.mobile.push.sdk.wi.MceSdkWakeLock;
+import co.acoustic.mobile.push.sdk.location.LocationBroadcastReceiver;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -89,6 +91,11 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import static co.acoustic.mobile.push.sdk.SdkTags.TAG_BEACON;
+import static co.acoustic.mobile.push.sdk.SdkTags.TAG_LOCATION;
+import static co.acoustic.mobile.push.sdk.SdkTags.TAG_SDK_LIFECYCLE;
+import static co.acoustic.mobile.push.sdk.SdkTags.TAG_SDK_LIFECYCLE_INIT;
 
 public class RNAcousticMobilePushModule extends ReactContextBaseJavaModule implements LifecycleEventListener {
 
@@ -147,13 +154,18 @@ public class RNAcousticMobilePushModule extends ReactContextBaseJavaModule imple
             Logger.e(TAG, "Database not available. Aborting init");
             return;
         }
-
+        verifySdkState();
         if(restart || !sdkStopped || mceSdkConfiguration.isAutoReinitialize()) {
             Logger.d(TAG, "SDK configuration: " + mceSdkConfiguration);
             Logger.d(TAG, "SDK initialize: restart = "+restart+", sdkStopped = "+sdkStopped+", auto reinitialize: "+mceSdkConfiguration.isAutoReinitialize());
             startMceSdk();
         } else {
             Logger.d(TAG,"GDPR State detected. SDK start disabled");
+        }
+
+        SdkPreferences.setMceConfiguration(reactContext, mceSdkConfiguration);
+        if(LocationPreferences.isEnableLocations(reactContext)) {
+            LocationBroadcastReceiver.startLocationUpdates(reactContext);
         }
     }
 
@@ -173,7 +185,7 @@ public class RNAcousticMobilePushModule extends ReactContextBaseJavaModule imple
         applyMceSdkConfiguration();
         Logger.d(TAG, "SDK configuration was applied");
         try {
-            Class inAppPluginClass = Class.forName("com.ibm.mce.sdk.plugin.inapp.InAppPlugin");
+            Class inAppPluginClass = Class.forName("co.acoustic.mobile.push.sdk.plugin.inapp.InAppPlugin");
             Plugin inAppPlugin = (Plugin)inAppPluginClass.newInstance();
             PluginRegistry.registerPlugin("inApp", inAppPlugin);
             Logger.d(TAG, "Registered inApp plugin");
@@ -188,6 +200,21 @@ public class RNAcousticMobilePushModule extends ReactContextBaseJavaModule imple
 
         if(MceSdk.getRegistrationClient().getRegistrationDetails(reactContext).getUserId() != null) {
             sendReactNativeChannelAttribute();
+        }
+    }
+
+    private static void verifySdkState() {
+        SdkState sdkState = MceSdk.getRegistrationClient().getSdkState(reactContext);
+        if(sdkState == null) {
+            if(RegistrationClientImpl.isSdkUpdating(reactContext)) {
+                RegistrationClientImpl.setSdkState(reactContext, SdkState.UPDATING);
+            } else if(RegistrationClientImpl.isSdkStopped(reactContext)) {
+                RegistrationClientImpl.setSdkState(reactContext, SdkState.STOPPED);
+            } else if(MceSdk.getRegistrationClient().getRegistrationDetails(reactContext).getChannelId() != null) {
+                RegistrationClientImpl.setSdkState(reactContext, SdkState.REGISTERED);
+            } else {
+                RegistrationClientImpl.setSdkState(reactContext, SdkState.UNREGISTERED);
+            }
         }
     }
 
@@ -228,15 +255,18 @@ public class RNAcousticMobilePushModule extends ReactContextBaseJavaModule imple
                 return;
             }
 
+            SdkState sdkState = MceSdk.getRegistrationClient().getSdkState(reactContext);
             if (!mceSdkConfiguration.isAutoInitialize()) {
-                if (!MceSdk.getRegistrationClient().isSdkInitiated(reactContext)) {
-                    Logger.d(TAG, "Tentative initialize. Waiting for internal initialize call");
+                if (!SdkState.STOPPED.equals(sdkState)) {
+                    Logger.d(TAG, "Tentative init. Waiting for internal init call");
                     return;
                 } else {
-                    Logger.d(TAG, "SDK was initialized before. Tentative initialize is executed");
+                    Logger.d(TAG, "SDK was initiated before. Tentative init is executed");
                 }
             }
-
+            if(SdkState.STOPPED.equals(sdkState)) {
+                RegistrationClientImpl.setSdkState(reactContext, SdkState.UNREGISTERED);
+            }
             initSdk();
 		} catch(Exception ex) {
 			Logger.e(TAG, "Couldn't initialize MCE SDK", ex);
@@ -295,11 +325,31 @@ public class RNAcousticMobilePushModule extends ReactContextBaseJavaModule imple
         mceSdkConfiguration.setMaxWakeLocksPerHour(mceJSONConfiguration.optLong("maxWakeLocksPerHour", mceSdkConfiguration.getMaxWakeLocksPerHour()));
         mceSdkConfiguration.setAutoInitialize(mceJSONConfiguration.optBoolean("autoInitialize", mceSdkConfiguration.isAutoInitialize()));
 
+        JSONObject databaseConfigurationJSON = mceJSONConfiguration.optJSONObject("database");
+        parseJsonDatabaseConfiguration(databaseConfigurationJSON);
+
         JSONObject locationConfigJSON = mceJSONConfiguration.optJSONObject("location");
         parseJsonLocationConfiguration(locationConfigJSON);
 
         RNAcousticMobilePushModule.mceSdkConfiguration = mceSdkConfiguration;
     }
+
+    public static void parseJsonDatabaseConfiguration(JSONObject databaseConfigurationJSON) throws JSONException {
+        if(databaseConfigurationJSON != null) {
+            MceSdkConfiguration.DatabaseConfiguration databaseConfiguration = mceSdkConfiguration.getDatabaseConfiguration();
+            String databaseImpl = databaseConfigurationJSON.optString("impl", databaseConfiguration.getDatabaseImplClassName());
+            databaseConfiguration.setDatabaseImplClassName(databaseImpl);
+            String encryptionProviderImpl = databaseConfigurationJSON.optString("encryptionProvider", databaseConfiguration.getEncryptionProviderClassName());
+            databaseConfiguration.setEncryptionProviderClassName(encryptionProviderImpl);
+            String keyGeneratorIMpl = databaseConfigurationJSON.optString("keyGenerator", databaseConfiguration.getKeyGeneratorClassName());
+            databaseConfiguration.setKeyGeneratorClassName(keyGeneratorIMpl);
+            int keyRotationIntervalInDays = databaseConfigurationJSON.optInt("keyRotationIntervalInDays", databaseConfiguration.getKeyRotationIntervalInDays());
+            databaseConfiguration.setKeyRotationIntervalInDays(keyRotationIntervalInDays);
+            boolean encrypted = databaseConfigurationJSON.optBoolean("encrypted", databaseConfiguration.isEncrypted());
+            databaseConfiguration.setEncrypted(encrypted);
+        }
+    }
+
 
     public static void parseJsonLocationConfiguration(JSONObject locationConfigJSON) throws JSONException{
         if (locationConfigJSON != null) {
@@ -310,6 +360,7 @@ public class RNAcousticMobilePushModule extends ReactContextBaseJavaModule imple
                 SharedPreferences.Editor prefEditor = prefs.edit();
                 prefEditor.putBoolean("locationInitialized", true);
                 prefEditor.commit();
+                LocationManager.enableLocationSupport(reactContext);
             } else {
                 Log.v(TAG, "!Location Auto Initialize");
             }
@@ -323,14 +374,6 @@ public class RNAcousticMobilePushModule extends ReactContextBaseJavaModule imple
                 syncConfiguration.setLocationResponsiveness(syncConfigJSON.optInt("locationResponsiveness", syncConfiguration.getLocationResponsiveness()));
                 syncConfiguration.setMinLocationsForSearch(syncConfigJSON.optInt("minLocationsForSearch", LocationPreferences.DEFAULT_MIN_LOCATIONS_PER_SEARCH));
                 syncConfiguration.setMaxLocationsForSearch(syncConfigJSON.optInt("maxLocationsForSearch", syncConfiguration.getMaxLocationsForSearch()));
-                if (syncConfigJSON.has("providerPreferences")) {
-                    try {
-                        JSONArray providerPreferencesJsonArray = syncConfigJSON.getJSONArray("providerPreferences");
-                        syncConfiguration.setProviderPreferences(providerPreferencesJsonArray);
-                    } catch (JSONException jsone) {
-                        Logger.w(TAG, "Bad location provider preferences array: " + syncConfigJSON.optString("providerPreferences", syncConfiguration.getProviderPreferences().toString()), jsone);
-                    }
-                }
             }
             JSONObject beaconConfigJSON = locationConfigJSON.optJSONObject("ibeacon");
             if (beaconConfigJSON != null) {
@@ -356,7 +399,6 @@ public class RNAcousticMobilePushModule extends ReactContextBaseJavaModule imple
         LocationPreferences.setRefAreaRadius(reactContext, syncConfiguration.getSyncRadius());
         LocationPreferences.setSyncInterval(reactContext, syncConfiguration.getSyncIntervalInMillis());
         LocationPreferences.setLocationResponsiveness(reactContext, syncConfiguration.getLocationResponsivenessInMillis());
-        LocationPreferences.setProviderPreferences(reactContext, syncConfiguration.getProviderPreferences());
 
         MceSdkConfiguration.LocationConfiguration.IBeaconConfiguration iBeaconConfiguration = mceSdkConfiguration.getLocationConfiguration().getiBeaconConfiguration();
 
@@ -370,22 +412,14 @@ public class RNAcousticMobilePushModule extends ReactContextBaseJavaModule imple
             Logger.w(TAG,"Beacon UUID is null");
         }
 
-        SharedPreferences prefs = reactContext.getSharedPreferences("MCE", Context.MODE_PRIVATE);
-        boolean locationInitialized = prefs.getBoolean("locationInitialized", false);
-        if(locationInitialized) {
-            Logger.d(TAG,"Location was previously initialized, re-initializing now.");
-            LocationManager.enableLocationSupport(reactContext);    
-        }
-
         if(LocationPreferences.isEnableLocations(reactContext)) {
-            LocationRetrieveService.startLocationUpdates(reactContext);
             LocationPreferences.LocationsState locationsState = LocationPreferences.getCurrentLocationsState(reactContext);
-            Logger.d(TAG,"@Location tracked beacons on start are: "+locationsState.getTrackedBeaconsIds());
+            Logger.d(TAG,"@Location tracked beacons on start are: "+locationsState.getTrackedBeaconsIds(), TAG_SDK_LIFECYCLE, TAG_SDK_LIFECYCLE_INIT,TAG_LOCATION, TAG_BEACON);
             if(!locationsState.getTrackedBeaconsIds().isEmpty()) {
-                Logger.v(TAG,"iBeacons found. Initializing bluetooth scanner");
+                Logger.v(TAG,"iBeacons found. Initializing bluetooth scanner", TAG_SDK_LIFECYCLE, TAG_SDK_LIFECYCLE_INIT,TAG_LOCATION, TAG_BEACON);
                 MceBluetoothScanner.startBluetoothScanner(reactContext);
             } else {
-                Logger.v(TAG,"iBeacons not found.");
+                Logger.v(TAG,"iBeacons not found.", TAG_SDK_LIFECYCLE, TAG_SDK_LIFECYCLE_INIT,TAG_LOCATION, TAG_BEACON);
             }
             LocationManager.enableLocationSupport(reactContext);
         }
@@ -399,7 +433,7 @@ public class RNAcousticMobilePushModule extends ReactContextBaseJavaModule imple
         RegistrationClientImpl.setInvalidateExistingUser(reactContext, mceSdkConfiguration.isInvalidateExistingUser());
         RegistrationClientImpl.setAutoReinitialize(reactContext, mceSdkConfiguration.isAutoReinitialize());
         RegistrationDetails registrationDetails = MceSdk.getRegistrationClient().getRegistrationDetails(reactContext);
-        DeliveryChannel.setDeliveryChannel(reactContext, mceSdkConfiguration.getMessagingService());
+        MessagingManager.setMessagingServiceImpl(reactContext, mceSdkConfiguration.getMessagingService());
         if(registrationDetails.getChannelId() != null) {
             Logger.d(TAG,"SDK is registered. Verifying Zebra...");
             if(RegistrationIntentService.shouldUpdateZebraClientId(reactContext)) {
@@ -420,7 +454,7 @@ public class RNAcousticMobilePushModule extends ReactContextBaseJavaModule imple
 
 		final Map<String, Object> constants = new HashMap<>();
 		constants.put("sdkVersion", MceSdk.getSdkVerNumber());
-        constants.put("pluginVersion", "3.0.1");
+        constants.put("pluginVersion", "3.8.0");
 		constants.put("appKey", appKey );
 		return constants;
 	}

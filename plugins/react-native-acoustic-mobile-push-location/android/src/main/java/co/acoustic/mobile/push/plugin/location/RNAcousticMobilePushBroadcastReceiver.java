@@ -15,11 +15,11 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 
-import com.ibm.mce.sdk.api.MceBroadcastReceiver;
-import com.ibm.mce.sdk.api.attribute.AttributesOperation;
-import com.ibm.mce.sdk.api.event.Event;
-import com.ibm.mce.sdk.api.notification.NotificationDetails;
-import com.ibm.mce.sdk.location.MceLocation;
+import co.acoustic.mobile.push.sdk.api.MceBroadcastReceiver;
+import co.acoustic.mobile.push.sdk.api.attribute.AttributesOperation;
+import co.acoustic.mobile.push.sdk.api.event.Event;
+import co.acoustic.mobile.push.sdk.api.notification.NotificationDetails;
+import co.acoustic.mobile.push.sdk.location.MceLocation;
 
 import java.util.Date;
 import java.util.List;
@@ -58,7 +58,7 @@ public class RNAcousticMobilePushBroadcastReceiver extends MceBroadcastReceiver 
     }
 
     @Override
-    public void onDeliveryChannelRegistered(Context context) {
+    public void onMessagingServiceRegistered(Context context) {
     }
 
     @Override

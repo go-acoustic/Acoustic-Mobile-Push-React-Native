@@ -87,8 +87,8 @@ function modifyManifest(installDirectory) {
 		console.log("Adding required services to Android Manifest");
 		var services = document.manifest.application[0].service;
 		[
-			'<service android:name="com.ibm.mce.sdk.beacons.MceBluetoothScanner" />',
-            '<service android:name="com.ibm.mce.sdk.beacons.BeaconsVerifier" />'
+			'<service android:name="co.acoustic.mobile.push.sdk.beacons.MceBluetoothScanner" />',
+            '<service android:name="co.acoustic.mobile.push.sdk.beacons.BeaconsVerifier" />'
 		].forEach((service) => {
 			services = verifyStanza(services, service);
 		});

@@ -30,8 +30,8 @@ import android.content.pm.PackageManager;
 
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
-import com.ibm.mce.sdk.location.LocationManager;
-import com.ibm.mce.sdk.location.LocationRetrieveService;
+import co.acoustic.mobile.push.sdk.location.LocationManager;
+import co.acoustic.mobile.push.sdk.location.LocationRetrieveService;
 
 public class RNAcousticMobilePushLocationModule extends ReactContextBaseJavaModule {
 	private static String TAG = "RNAcousticMobilePushLocationModule";
@@ -74,7 +74,7 @@ public class RNAcousticMobilePushLocationModule extends ReactContextBaseJavaModu
 
 	@ReactMethod
 	public void syncLocations() {
-		LocationRetrieveService.startLocationUpdates(reactContext);
+		LocationRetrieveService.startLocationUpdates(reactContext, false);
 	}
 
 	@ReactMethod

@@ -19,11 +19,11 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeArray;
 import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
-import com.ibm.mce.sdk.beacons.IBeacon;
-import com.ibm.mce.sdk.beacons.IBeaconsPreferences;
-import com.ibm.mce.sdk.location.LocationApi;
-import com.ibm.mce.sdk.location.LocationPreferences;
-import com.ibm.mce.sdk.util.Logger;
+import co.acoustic.mobile.push.sdk.beacons.IBeacon;
+import co.acoustic.mobile.push.sdk.beacons.IBeaconsPreferences;
+import co.acoustic.mobile.push.sdk.location.LocationApi;
+import co.acoustic.mobile.push.sdk.location.LocationPreferences;
+import co.acoustic.mobile.push.sdk.util.Logger;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -48,7 +48,6 @@ public class RNAcousticMobilePushBeaconModule extends ReactContextBaseJavaModule
 	@Override
 	public Map<String, Object> getConstants() {
 		final Map<String, Object> constants = new HashMap<>();
-		constants.put("beaconEnabled", LocationPreferences.isEnableLocations(reactContext));
 		constants.put("uuid", IBeaconsPreferences.getBeaconsUUID(reactContext) );
 		return constants;
 	}
@@ -64,7 +63,7 @@ public class RNAcousticMobilePushBeaconModule extends ReactContextBaseJavaModule
 
 		List<LocationApi> trackedIBeacons = new LinkedList<LocationApi>();
 		try {
-			trackedIBeacons = com.ibm.mce.sdk.location.LocationManager.getLocations(reactContext, LocationPreferences.getCurrentLocationsState(reactContext).getTrackedBeaconsIds());
+			trackedIBeacons = co.acoustic.mobile.push.sdk.location.LocationManager.getLocations(reactContext, LocationPreferences.getCurrentLocationsState(reactContext).getTrackedBeaconsIds());
 			Logger.d(TAG,"Tracked iBeacons: "+trackedIBeacons);
 		} catch (Exception e) {
 			Logger.e(TAG, "Failed to get tracked beacons");

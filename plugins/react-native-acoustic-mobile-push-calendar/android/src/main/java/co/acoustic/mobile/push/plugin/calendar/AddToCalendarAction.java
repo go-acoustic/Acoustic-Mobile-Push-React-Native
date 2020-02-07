@@ -15,9 +15,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 
-import com.ibm.mce.sdk.api.notification.MceNotificationAction;
-import com.ibm.mce.sdk.api.notification.NotificationDetails;
-import com.ibm.mce.sdk.util.Logger;
+import co.acoustic.mobile.push.sdk.api.notification.MceNotificationAction;
+import co.acoustic.mobile.push.sdk.api.notification.NotificationDetails;
+import co.acoustic.mobile.push.sdk.util.Logger;
 
 import org.json.JSONException;
 import org.json.JSONObject;

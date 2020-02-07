@@ -9,7 +9,7 @@
  */
 
 #import <UserNotifications/UserNotifications.h>
-#import <IBMMobilePushNotificationService/IBMMobilePushNotificationService.h>
+@import AcousticMobilePushNotification;
 
 @interface NotificationService : MCENotificationService
 

@@ -14,7 +14,7 @@ import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 
-import com.ibm.mce.sdk.api.notification.MceNotificationActionRegistry;
+import co.acoustic.mobile.push.sdk.api.notification.MceNotificationActionRegistry;
 
 public class RNAcousticMobilePushSnoozeModule extends ReactContextBaseJavaModule implements LifecycleEventListener {
 	private static String TAG = "RNAcousticMobilePushSnoozeModule";

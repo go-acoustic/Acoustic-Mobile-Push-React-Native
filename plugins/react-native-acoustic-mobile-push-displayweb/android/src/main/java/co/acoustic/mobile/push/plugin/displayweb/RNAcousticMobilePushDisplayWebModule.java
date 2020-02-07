@@ -14,8 +14,8 @@ import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 
-import com.ibm.mce.sdk.api.notification.DelayedNotificationAction;
-import com.ibm.mce.sdk.api.notification.MceNotificationActionRegistry;
+import co.acoustic.mobile.push.sdk.api.notification.DelayedNotificationAction;
+import co.acoustic.mobile.push.sdk.api.notification.MceNotificationActionRegistry;
 
 public class RNAcousticMobilePushDisplayWebModule extends ReactContextBaseJavaModule implements LifecycleEventListener {
 	private static String TAG = "RNAcousticMobilePushDisplayWebModule";

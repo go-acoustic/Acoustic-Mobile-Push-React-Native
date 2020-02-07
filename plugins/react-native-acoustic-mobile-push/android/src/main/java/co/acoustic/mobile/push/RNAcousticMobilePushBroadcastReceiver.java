@@ -15,19 +15,19 @@ import android.content.Context;
 import android.os.Bundle;
 import android.location.Location;
 
-import com.ibm.mce.sdk.api.MceBroadcastReceiver;
-import com.ibm.mce.sdk.api.MceSdk;
-import com.ibm.mce.sdk.apiinternal.MceSdkInternal;
-import com.ibm.mce.sdk.location.MceLocation;
-import com.ibm.mce.sdk.api.notification.NotificationDetails;
-import com.ibm.mce.sdk.api.attribute.AttributesOperation;
-import com.ibm.mce.sdk.api.event.Event;
-import com.ibm.mce.sdk.util.Logger;
-import com.ibm.mce.sdk.api.attribute.DateAttribute;
-import com.ibm.mce.sdk.api.attribute.Attribute;
-import com.ibm.mce.sdk.api.attribute.StringAttribute;
-import com.ibm.mce.sdk.api.attribute.BooleanAttribute;
-import com.ibm.mce.sdk.api.attribute.NumberAttribute;
+import co.acoustic.mobile.push.sdk.api.MceBroadcastReceiver;
+import co.acoustic.mobile.push.sdk.api.MceSdk;
+import co.acoustic.mobile.push.sdk.apiinternal.MceSdkInternal;
+import co.acoustic.mobile.push.sdk.location.MceLocation;
+import co.acoustic.mobile.push.sdk.api.notification.NotificationDetails;
+import co.acoustic.mobile.push.sdk.api.attribute.AttributesOperation;
+import co.acoustic.mobile.push.sdk.api.event.Event;
+import co.acoustic.mobile.push.sdk.util.Logger;
+import co.acoustic.mobile.push.sdk.api.attribute.DateAttribute;
+import co.acoustic.mobile.push.sdk.api.attribute.Attribute;
+import co.acoustic.mobile.push.sdk.api.attribute.StringAttribute;
+import co.acoustic.mobile.push.sdk.api.attribute.BooleanAttribute;
+import co.acoustic.mobile.push.sdk.api.attribute.NumberAttribute;
 
 import com.facebook.react.bridge.WritableNativeArray;
 import com.facebook.react.bridge.WritableNativeMap;
@@ -84,13 +84,11 @@ public class RNAcousticMobilePushBroadcastReceiver extends MceBroadcastReceiver 
     }
 
     @Override
-    public void onDeliveryChannelRegistered(Context context) {
-        RNAcousticMobilePushModule.sendEvent("RegistrationChanged", null);
-        RNAcousticMobilePushModule.sendReactNativeChannelAttribute();
+    public void onMessage(Context context, NotificationDetails notificationDetails, Bundle bundle) {
     }
 
     @Override
-    public void onMessage(Context context, NotificationDetails notificationDetails, Bundle bundle) {
+    public void onMessagingServiceRegistered(Context context) {
     }
 
     @Override

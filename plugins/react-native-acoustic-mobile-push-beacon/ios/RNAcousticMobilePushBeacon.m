@@ -94,7 +94,7 @@ RCT_EXPORT_MODULE();
 
 - (NSDictionary *)constantsToExport {
     MCEConfig * config = MCESdk.sharedInstance.config;
-    return @{ @"beaconEnabled": @(config.beaconEnabled), @"uuid": config.beaconUUID ? [config.beaconUUID UUIDString] : [NSNull null] };
+    return @{ @"uuid": config.beaconUUID ? [config.beaconUUID UUIDString] : [NSNull null] };
 }
 
 RCT_REMAP_METHOD(beaconRegions, beaconRegionsWithResolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)

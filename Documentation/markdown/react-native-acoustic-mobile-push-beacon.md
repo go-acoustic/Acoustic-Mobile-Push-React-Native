@@ -22,7 +22,7 @@
 					<li>
 						<a href="#user-content-constants-exported">Constants</a>
 						<ul>
-							<li><a href="#beaconenabled">beaconEnabled</a></li>
+							<li><a href="#uuid">uuid</a></li>
 						</ul>
 					</li>
 					<li>
@@ -76,19 +76,15 @@ react-native link react-native-acoustic-mobile-push-beacon
 > Please set the UUID used by your beacons in the MceConfig.json file for both Android and iOS. Without this information the devices will not be able to locate the beacons.
 
 ### Constants Exported
-#### beaconEnabled
+#### uuid
 ##### Description
-This constant reflects the beacon MceConfig.json configuration setting and can be used to verify that the beacon subsystem has been enabled. It will either have the value of `true` if the configuration has been setup for beacons or `false` otherwise.
+This constant provides access to the beacon UUID value in the MceConfig.json file.
 
 ##### Example
 ```js
 import {RNAcousticMobilePushBeacon} from 'NativeModules';
 
-if(RNAcousticMobilePushBeacon.beaconEnabled) {
-    console.log("Beacons are enabled in MceConfig.json");
-} else {
-    console.log("Beacons are disabled in MceConfig.json");
-}
+console.log("iBeacon UUID: " + RNAcousticMobilePushBeacon.uuid);
 ```
 
 ## Module API

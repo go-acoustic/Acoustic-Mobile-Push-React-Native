@@ -88,8 +88,9 @@ function modifyManifest(installDirectory) {
 		console.log("Adding required receivers to AndroidManifest.xml");
 		var receivers = document.manifest.application[0].receiver;
 		[
-			'<receiver android:name="com.ibm.mce.sdk.location.LocationUpdateCaller" />',
-			'<receiver android:name="co.acoustic.mobile.push.plugin.location.RNAcousticMobilePushBroadcastReceiver"><intent-filter><action android:name="com.ibm.mce.sdk.NOTIFIER" /></intent-filter></receiver>'
+			'<receiver android:name="co.acoustic.mobile.push.sdk.location.LocationBroadcastReceiver" />', 
+			'<receiver android:name="co.acoustic.mobile.push.sdk.location.LocationUpdateCaller" />',
+			'<receiver android:name="co.acoustic.mobile.push.plugin.location.RNAcousticMobilePushBroadcastReceiver"><intent-filter><action android:name="co.acoustic.mobile.push.sdk.NOTIFIER" /></intent-filter></receiver>'
 		].forEach((receiver) => {
 			receivers = verifyStanza(receivers, receiver);
 		});
@@ -98,9 +99,9 @@ function modifyManifest(installDirectory) {
 		console.log("Adding required services to AndroidManifest.xml");
 		var services = document.manifest.application[0].service;
 		[
-			'<service android:name="com.ibm.mce.sdk.location.LocationEventsIntentService" />',
-            '<service android:name="com.ibm.mce.sdk.location.LocationSyncAlarmListener" />',
-            '<service android:name="com.ibm.mce.sdk.location.LocationRetrieveService" />'
+			'<service android:name="co.acoustic.mobile.push.sdk.location.LocationEventsIntentService" />',
+            '<service android:name="co.acoustic.mobile.push.sdk.location.LocationSyncAlarmListener" />',
+            '<service android:name="co.acoustic.mobile.push.sdk.location.LocationRetrieveService" />'
 		].forEach((service) => {
 			services = verifyStanza(services, service);
 		});

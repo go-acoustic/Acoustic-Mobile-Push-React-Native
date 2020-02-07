@@ -61,7 +61,7 @@ export class InboxMessageScreen extends React.Component {
 	}
 
 	next = () => {
-		if(length-1==index) {
+		if(this.state.inboxMessages.length-1==this.state.index) {
 			return;
 		}
 		this.props.navigation.goBack();

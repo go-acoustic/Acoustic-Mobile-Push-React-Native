@@ -8,7 +8,8 @@
  * prohibited.
  */
 
- #import <Foundation/Foundation.h>
+@import Foundation;
+@import AcousticMobilePush;
 
 @interface RNAcousticMobilePushActionHandler : RCTEventEmitter <RCTBridgeModule, MCEActionProtocol>
 @end

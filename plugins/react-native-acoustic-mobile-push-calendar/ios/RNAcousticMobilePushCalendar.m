@@ -103,14 +103,17 @@ RCT_EXPORT_MODULE();
             event.notes=action[@"description"];
         }
         
+        
         if([action[@"interactive"] boolValue]) {
-            EKEventEditViewController *controller = [[EKEventEditViewController alloc] init];
-            controller.event = event;
-            controller.eventStore = store;
-            controller.editViewDelegate = self;
-            
-            UIWindow * window = [[UIApplication sharedApplication] keyWindow];
-            [window.rootViewController presentViewController:controller animated:TRUE completion:nil];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                EKEventEditViewController *controller = [[EKEventEditViewController alloc] init];
+                controller.event = event;
+                controller.eventStore = store;
+                controller.editViewDelegate = self;
+                
+                UIWindow * window = [[UIApplication sharedApplication] keyWindow];
+                [window.rootViewController presentViewController:controller animated:TRUE completion:nil];
+            });
         } else {
             NSError * saveError = nil;
             BOOL success = [store saveEvent: event span:EKSpanThisEvent commit:TRUE error:&saveError];

@@ -114,7 +114,7 @@ RCT_EXPORT_MODULE();
 
 - (NSDictionary *)constantsToExport {
     MCEConfig * config = MCESdk.sharedInstance.config;
-    return @{@"pluginVersion": @"3.0.1", @"sdkVersion": MCESdk.sharedInstance.sdkVersion, @"appKey": config.appKey ? config.appKey : [NSNull null]};
+    return @{@"pluginVersion": @"3.8.0", @"sdkVersion": MCESdk.sharedInstance.sdkVersion, @"appKey": config.appKey ? config.appKey : [NSNull null]};
 }
 
 #pragma mark SDK - Events
@@ -229,7 +229,7 @@ RCT_REMAP_METHOD(registrationDetails, registrationDetailsWithResolver:(RCTPromis
     }
     else
     {
-        NSError * error = [NSError errorWithDomain:@"IBMMobilePush" code:100 userInfo:@{}];
+        NSError * error = [NSError errorWithDomain:@"AcousticMobilePush" code:100 userInfo:@{}];
         reject(@"not_registered", @"Not yet registered", error);
     }
 }

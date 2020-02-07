@@ -21,10 +21,10 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeArray;
 import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
-import com.ibm.mce.sdk.location.LocationManager;
-import com.ibm.mce.sdk.location.LocationPreferences;
-import com.ibm.mce.sdk.location.LocationsDatabaseHelper;
-import com.ibm.mce.sdk.location.MceLocation;
+import co.acoustic.mobile.push.sdk.location.LocationManager;
+import co.acoustic.mobile.push.sdk.location.LocationPreferences;
+import co.acoustic.mobile.push.sdk.location.LocationsDatabaseHelper;
+import co.acoustic.mobile.push.sdk.location.MceLocation;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,7 +47,6 @@ public class RNAcousticMobilePushGeofenceModule extends ReactContextBaseJavaModu
 	@Override
 	public Map<String, Object> getConstants() {
 		final Map<String, Object> constants = new HashMap<>();
-		constants.put("geofenceEnabled", LocationPreferences.isEnableLocations(reactContext));
 		return constants;
 	}
 

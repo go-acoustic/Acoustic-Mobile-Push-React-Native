@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		B3E7B58A1CC2AC0600A0062D /* RNAcousticMobilePush.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* RNAcousticMobilePush.m */; };
 		C315BB13226E1A5D00578C97 /* RNAcousticMobilePushActionHanlder.m in Sources */ = {isa = PBXBuildFile; fileRef = C315BB12226E1A5D00578C97 /* RNAcousticMobilePushActionHanlder.m */; };
-		C381F96B225E475600897A2D /* IBMMobilePush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C381F96A225E475600897A2D /* IBMMobilePush.a */; };
+		C3A35F7B239823FB00F44144 /* AcousticMobilePush.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3A35F7A239823FB00F44144 /* AcousticMobilePush.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -30,30 +30,7 @@
 		B3E7B5891CC2AC0600A0062D /* RNAcousticMobilePush.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNAcousticMobilePush.m; sourceTree = "<group>"; };
 		C315BB11226E1A5D00578C97 /* RNAcousticMobilePushActionHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNAcousticMobilePushActionHandler.h; sourceTree = "<group>"; };
 		C315BB12226E1A5D00578C97 /* RNAcousticMobilePushActionHanlder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNAcousticMobilePushActionHanlder.m; sourceTree = "<group>"; };
-		C381F952225E471800897A2D /* MCEApiUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCEApiUtil.h; sourceTree = "<group>"; };
-		C381F953225E471900897A2D /* MCEClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCEClient.h; sourceTree = "<group>"; };
-		C381F954225E471A00897A2D /* MCEAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCEAppDelegate.h; sourceTree = "<group>"; };
-		C381F955225E471A00897A2D /* MCEActionRegistry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCEActionRegistry.h; sourceTree = "<group>"; };
-		C381F956225E471B00897A2D /* MCESdk.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCESdk.h; sourceTree = "<group>"; };
-		C381F957225E471C00897A2D /* MCEEventService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCEEventService.h; sourceTree = "<group>"; };
-		C381F958225E471C00897A2D /* UIColor+Hex.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIColor+Hex.h"; sourceTree = "<group>"; };
-		C381F959225E471E00897A2D /* MCEAttributesClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCEAttributesClient.h; sourceTree = "<group>"; };
-		C381F95A225E471E00897A2D /* MCEInboxQueueManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCEInboxQueueManager.h; sourceTree = "<group>"; };
-		C381F95B225E471F00897A2D /* MCEInboxDatabase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCEInboxDatabase.h; sourceTree = "<group>"; };
-		C381F95C225E472000897A2D /* MCENotificationDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCENotificationDelegate.h; sourceTree = "<group>"; };
-		C381F95D225E472000897A2D /* MCEInboxMessage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCEInboxMessage.h; sourceTree = "<group>"; };
-		C381F95E225E472100897A2D /* MCEInAppMessage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCEInAppMessage.h; sourceTree = "<group>"; };
-		C381F95F225E472200897A2D /* MCETemplateRegistry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCETemplateRegistry.h; sourceTree = "<group>"; };
-		C381F960225E472300897A2D /* MCEArea.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCEArea.h; sourceTree = "<group>"; };
-		C381F961225E472400897A2D /* IBMMobilePush.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IBMMobilePush.h; sourceTree = "<group>"; };
-		C381F962225E472400897A2D /* MCECallbackDatabaseManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCECallbackDatabaseManager.h; sourceTree = "<group>"; };
-		C381F963225E472500897A2D /* MCEAttributesQueueManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCEAttributesQueueManager.h; sourceTree = "<group>"; };
-		C381F964225E472600897A2D /* MCELocationClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCELocationClient.h; sourceTree = "<group>"; };
-		C381F965225E472700897A2D /* MCERegistrationDetails.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCERegistrationDetails.h; sourceTree = "<group>"; };
-		C381F966225E472800897A2D /* MCEEventClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCEEventClient.h; sourceTree = "<group>"; };
-		C381F967225E472800897A2D /* MCEConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCEConfig.h; sourceTree = "<group>"; };
-		C381F968225E472900897A2D /* MCEInAppTemplate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCEInAppTemplate.h; sourceTree = "<group>"; };
-		C381F96A225E475600897A2D /* IBMMobilePush.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = IBMMobilePush.a; sourceTree = "<group>"; };
+		C3A35F7A239823FB00F44144 /* AcousticMobilePush.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AcousticMobilePush.framework; path = ../AcousticMobilePush.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,7 +38,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C381F96B225E475600897A2D /* IBMMobilePush.a in Frameworks */,
+				C3A35F7B239823FB00F44144 /* AcousticMobilePush.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -79,7 +56,6 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
-				C381F96C225E48D500897A2D /* IBMMobilePush */,
 				B3E7B5881CC2AC0600A0062D /* RNAcousticMobilePush.h */,
 				B3E7B5891CC2AC0600A0062D /* RNAcousticMobilePush.m */,
 				C315BB11226E1A5D00578C97 /* RNAcousticMobilePushActionHandler.h */,
@@ -92,39 +68,9 @@
 		C381F969225E475600897A2D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				C381F96A225E475600897A2D /* IBMMobilePush.a */,
+				C3A35F7A239823FB00F44144 /* AcousticMobilePush.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		C381F96C225E48D500897A2D /* IBMMobilePush */ = {
-			isa = PBXGroup;
-			children = (
-				C381F961225E472400897A2D /* IBMMobilePush.h */,
-				C381F955225E471A00897A2D /* MCEActionRegistry.h */,
-				C381F952225E471800897A2D /* MCEApiUtil.h */,
-				C381F954225E471A00897A2D /* MCEAppDelegate.h */,
-				C381F960225E472300897A2D /* MCEArea.h */,
-				C381F959225E471E00897A2D /* MCEAttributesClient.h */,
-				C381F963225E472500897A2D /* MCEAttributesQueueManager.h */,
-				C381F962225E472400897A2D /* MCECallbackDatabaseManager.h */,
-				C381F953225E471900897A2D /* MCEClient.h */,
-				C381F966225E472800897A2D /* MCEEventClient.h */,
-				C381F957225E471C00897A2D /* MCEEventService.h */,
-				C381F95E225E472100897A2D /* MCEInAppMessage.h */,
-				C381F968225E472900897A2D /* MCEInAppTemplate.h */,
-				C381F965225E472700897A2D /* MCERegistrationDetails.h */,
-				C381F956225E471B00897A2D /* MCESdk.h */,
-				C381F95F225E472200897A2D /* MCETemplateRegistry.h */,
-				C381F958225E471C00897A2D /* UIColor+Hex.h */,
-				C381F95B225E471F00897A2D /* MCEInboxDatabase.h */,
-				C381F95D225E472000897A2D /* MCEInboxMessage.h */,
-				C381F95A225E471E00897A2D /* MCEInboxQueueManager.h */,
-				C381F95C225E472000897A2D /* MCENotificationDelegate.h */,
-				C381F967225E472800897A2D /* MCEConfig.h */,
-				C381F964225E472600897A2D /* MCELocationClient.h */,
-			);
-			path = IBMMobilePush;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -276,7 +222,7 @@
 		58B511F01A9E6C8500147676 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = "";
+				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/..\"";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -297,7 +243,7 @@
 		58B511F11A9E6C8500147676 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = "";
+				FRAMEWORK_SEARCH_PATHS = "\"$(SRCROOT)/..\"";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,

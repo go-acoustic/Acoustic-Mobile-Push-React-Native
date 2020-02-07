@@ -8,11 +8,12 @@
  * prohibited.
  */
 
+@import Foundation;
+@import CoreLocation;
+@import AcousticMobilePush;
+
 #import <React/RCTBridgeModule.h>
-#import <Foundation/Foundation.h>
 #import <React/RCTEventEmitter.h>
-#import "IBMMobilePush/IBMMobilePush.h"
-#import <CoreLocation/CoreLocation.h>
 
 @interface RNAcousticMobilePush : RCTEventEmitter <RCTBridgeModule>
 @end

@@ -12,7 +12,7 @@
 import React from 'react';
 import {Text, ScrollView, TouchableNativeFeedback, TouchableOpacity, Platform} from 'react-native';
 import {ListItem} from 'react-native-elements'
-import {styles} from '../styles'
+import {styles, colors} from '../styles'
 import {SubscribedComponent} from './subscribed-component';
 import {RNAcousticMobilePushBeacon, RNAcousticMobilePushLocation} from 'NativeModules';
 import {RNAcousticMobilePushLocationEmitter, RNAcousticMobilePushBeaconEmitter} from './home-screen';
@@ -33,11 +33,18 @@ export class iBeaconScreen extends SubscribedComponent {
 
     constructor(props) {
         super(props);
-		this.state = {regions: [], status: {}};
+		this.state = {	
+			status: "unknown",
+			statusColor: colors.none,
+			statusDetail: {},
+			regions: []
+		};
 	}
 
 	componentWillMount() {
 		super.componentWillMount();
+
+		this.checkStatus();			
 
 		this.subscriptions.push( RNAcousticMobilePushLocationEmitter.addListener('DownloadedLocations', (error, events) => {
 			RNAcousticMobilePushBeacon.beaconRegions().then((regions) => { 
@@ -46,19 +53,38 @@ export class iBeaconScreen extends SubscribedComponent {
 		}));
 
 		this.subscriptions.push( RNAcousticMobilePushBeaconEmitter.addListener('EnteredBeacon', (detail) => {
-			var status = {}
-			status[detail.id] = 'Entered Minor' + detail.minor;
-			this.setState({status: status});
+			var statusDetail = {}
+			statusDetail[detail.id] = 'Entered Minor' + detail.minor;
+			this.setState({statusDetail: statusDetail});
 		}));
 
 		this.subscriptions.push( RNAcousticMobilePushBeaconEmitter.addListener('ExitedBeacon', (detail) => {
-			var status = {}
-			status[detail.id] = 'Exited Minor' + detail.minor;
-			this.setState({status: status});
+			var statusDetail = {}
+			statusDetail[detail.id] = 'Exited Minor' + detail.minor;
+			this.setState({status: statusDetail});
 		}));
 
 		RNAcousticMobilePushBeacon.beaconRegions().then((regions) => { 
 			this.setState({regions: regions});
+		});
+	}
+
+	checkStatus() {
+		const self = this;
+		RNAcousticMobilePushLocation.locationStatus((status)=>{
+			if(status == "denied") {
+				self.setState({status: "Denied", statusColor: colors.error});
+			} else if(status == "delayed") {
+				self.setState({status: "Delayed (Touch to enable)", statusColor: colors.none});
+			} else if(status == "always") {
+				self.setState({status: "Enabled", statusColor: colors.success});
+			} else if(status == "restricted") {
+				self.setState({status: "Restricted", statusColor: colors.error});
+			} else if(status == "enabled") {
+				self.setState({status: "Enabled (When in use)", statusColor: colors.warning});
+			} else if(status == "disabled") {
+				self.setState({status: "Disabled", statusColor: colors.error});
+			}
 		});
 	}
 
@@ -67,13 +93,13 @@ export class iBeaconScreen extends SubscribedComponent {
 			<ScrollView style={styles.scrollView}>
 				<Text style={styles.tableHeader}>iBeacon Feature</Text>
 				<ListItem title="UUID" style={styles.firstRow} subtitle={RNAcousticMobilePushBeacon.uuid} />
-				<ListItem title="Status" style={styles.row} subtitleStyle={{color: RNAcousticMobilePushBeacon.beaconEnabled ? "green" : "red"}} subtitle={RNAcousticMobilePushBeacon.beaconEnabled ? "Enabled" : "Disabled"} />
+				<ListItem title="Status" style={styles.row} subtitleStyle={{color: this.state.statusColor }} subtitle={this.state.status} />
 
 				<Text style={styles.tableHeader}>iBeacon Major Regions</Text>
 					{ this.state.regions.map((region) => {
-						if(this.state.status[region.id]) {
+						if(this.state.statusDetail[region.id]) {
 							return (
-								<ListItem key={region.id} title={region.major + ""} rightTitle={this.state.status[region.id]} />
+								<ListItem key={region.id} title={region.major + ""} rightTitle={this.state.statusDetail[region.id]} />
 							);
 						} else {
 							return (

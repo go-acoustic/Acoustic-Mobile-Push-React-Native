@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- 
+Copyright © 2019 Acoustic, L.P. All rights reserved.
+
+NOTICE: This file contains material that is confidential and proprietary to
+Acoustic, L.P. and/or other developers. No license is granted under any intellectual or
+industrial property rights of Acoustic, L.P. except as may be provided in an agreement with
+Acoustic, L.P. Any unauthorized copying or distribution of content from this file is
+prohibited.
+ -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools" package="co.acoustic.mobile.push.sample">
   <application android:name=".MainApplication" android:label="@string/app_name" android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round" android:allowBackup="false" android:theme="@style/AppTheme" tools:ignore="GoogleAppIndexingWarning">
     <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyCCySNsF8-0MEXC6ojYX2UitWU9BYc9_eE"/>
@@ -10,7 +19,7 @@
     </activity>
     <activity android:name="com.facebook.react.devsupport.DevSettingsActivity"/>
     <activity android:name="co.acoustic.mobile.push.plugin.displayweb.DisplayWebViewActivity"/>
-    <receiver android:name="com.ibm.mce.sdk.wi.AlarmReceiver">
+    <receiver android:name="co.acoustic.mobile.push.sdk.wi.AlarmReceiver">
       <intent-filter>
         <action android:name="android.intent.action.BOOT_COMPLETED"/>
       </intent-filter>
@@ -27,40 +36,35 @@
     </receiver>
     <receiver android:name="co.acoustic.mobile.push.RNAcousticMobilePushBroadcastReceiver">
       <intent-filter>
-        <action android:name="com.ibm.mce.sdk.NOTIFIER"/>
+        <action android:name="co.acoustic.mobile.push.sdk.NOTIFIER"/>
       </intent-filter>
     </receiver>
-    <receiver android:name="com.ibm.mce.sdk.notification.NotifActionReceiver"/>
-    <receiver android:name="com.ibm.mce.sdk.location.LocationUpdateCaller"/>
+    <receiver android:name="co.acoustic.mobile.push.sdk.notification.NotifActionReceiver"/>
+    <receiver android:name="co.acoustic.mobile.push.sdk.location.LocationUpdateCaller"/>
     <receiver android:name="co.acoustic.mobile.push.plugin.location.RNAcousticMobilePushBroadcastReceiver">
       <intent-filter>
-        <action android:name="com.ibm.mce.sdk.NOTIFIER"/>
+        <action android:name="co.acoustic.mobile.push.sdk.NOTIFIER"/>
       </intent-filter>
     </receiver>
-    <provider android:name="com.ibm.mce.sdk.db.Provider" android:authorities="${applicationId}.MCE_PROVIDER" android:exported="false"/>
-    <service android:name="com.ibm.mce.sdk.session.SessionTrackingIntentService"/>
-    <service android:name="com.ibm.mce.sdk.events.EventsAlarmListener"/>
-    <service android:name="com.ibm.mce.sdk.registration.PhoneHomeIntentService"/>
-    <service android:name="com.ibm.mce.sdk.registration.RegistrationIntentService"/>
-    <service android:name="com.ibm.mce.sdk.attributes.AttributesQueueConsumer"/>
-    <service android:name="com.ibm.mce.sdk.job.MceJobService" android:permission="android.permission.BIND_JOB_SERVICE"/>
-    <service android:name="com.ibm.mce.sdk.fcm.FcmInstanceIdService">
-      <intent-filter>
-        <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
-      </intent-filter>
-    </service>
-    <service android:name="com.ibm.mce.sdk.fcm.FcmMessagingService">
+    <provider android:name="co.acoustic.mobile.push.sdk.db.Provider" android:authorities="${applicationId}.MCE_PROVIDER" android:exported="false"/>
+    <service android:name="co.acoustic.mobile.push.sdk.session.SessionTrackingIntentService"/>
+    <service android:name="co.acoustic.mobile.push.sdk.events.EventsAlarmListener"/>
+    <service android:name="co.acoustic.mobile.push.sdk.registration.PhoneHomeIntentService"/>
+    <service android:name="co.acoustic.mobile.push.sdk.registration.RegistrationIntentService"/>
+    <service android:name="co.acoustic.mobile.push.sdk.attributes.AttributesQueueConsumer"/>
+    <service android:name="co.acoustic.mobile.push.sdk.job.MceJobService" android:permission="android.permission.BIND_JOB_SERVICE"/>
+    <service android:name="co.acoustic.mobile.push.sdk.messaging.fcm.FcmMessagingService">
       <intent-filter>
         <action android:name="com.google.firebase.MESSAGING_EVENT"/>
       </intent-filter>
     </service>
-    <service android:name="com.ibm.mce.sdk.beacons.MceBluetoothScanner"/>
-    <service android:name="com.ibm.mce.sdk.beacons.BeaconsVerifier"/>
-    <service android:name="com.ibm.mce.sdk.location.GeofenceIntentService"/>
-    <service android:name="com.ibm.mce.sdk.plugin.inbox.InboxUpdateService"/>
-    <service android:name="com.ibm.mce.sdk.location.LocationEventsIntentService"/>
-    <service android:name="com.ibm.mce.sdk.location.LocationSyncAlarmListener"/>
-    <service android:name="com.ibm.mce.sdk.location.LocationRetrieveService"/>
+    <service android:name="co.acoustic.mobile.push.sdk.beacons.MceBluetoothScanner"/>
+    <service android:name="co.acoustic.mobile.push.sdk.beacons.BeaconsVerifier"/>
+    <service android:name="co.acoustic.mobile.push.sdk.location.GeofenceIntentService"/>
+    <service android:name="co.acoustic.mobile.push.sdk.plugin.inbox.InboxUpdateService"/>
+    <service android:name="co.acoustic.mobile.push.sdk.location.LocationEventsIntentService"/>
+    <service android:name="co.acoustic.mobile.push.sdk.location.LocationSyncAlarmListener"/>
+    <service android:name="co.acoustic.mobile.push.sdk.location.LocationRetrieveService"/>
     <service android:name="co.acoustic.mobile.push.plugin.snooze.SnoozeIntentService"/>
   </application>
   <uses-permission android:name="android.permission.INTERNET"/>

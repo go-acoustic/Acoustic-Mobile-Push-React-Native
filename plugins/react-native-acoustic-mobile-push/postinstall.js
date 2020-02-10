@@ -16,6 +16,11 @@ const xml2js = require('xml2js');
 const chalk = require('chalk');
 
 function findInstallDirectory() {
+    if(process.env.MCE_RN_DIRECTORY) {
+        console.log(chalk.yellow.bold("Using MCE_RN_DIRECTORY override instead of finding the application source directory."))
+        return process.env.MCE_RN_DIRECTORY;
+    }
+    
 	// Mac
 	var currentDirectory = process.argv[ process.argv.length-1 ];
 	if(currentDirectory != "$INIT_CWD") {
@@ -24,7 +29,7 @@ function findInstallDirectory() {
 
 	// Windows
 	currentDirectory = process.cwd();
-	while(!fs.existsSync(path.join(currentDirectory, "index.js"))) {
+	while(!fs.existsSync(path.join(currentDirectory, "app.json"))) {
 		var parentDirectory = path.dirname(currentDirectory);
 		console.log("cwd: ", currentDirectory, ", parent: ", parentDirectory);
 		if(parentDirectory == currentDirectory) {
@@ -218,6 +223,11 @@ function verifyString(name, strings) {
 }
 
 function modifyStrings(installDirectory) {
+    if(process.env.MCE_RN_NOSTRINGS) {
+        console.log(chalk.yellow.bold("Android strings.xml will not be modified because MCE_RN_NOSTRINGS environment flag detected."));
+        return;
+    }
+    
 	let stringsPath = path.join(installDirectory, "android", "app", "src", "main", "res", "values", "strings.xml");
 
 	console.log("Modifying strings.xml in Android project");
@@ -239,6 +249,11 @@ function addiOSConfigFile(mainAppPath) {
 	} else {
 		console.log("MceConfig.json already exists at " + configPath);
 	}
+}
+
+if(process.env.MCE_RN_NOCONFIG) {
+    console.log(chalk.yellow.bold("Acoustic Mobile Push SDK installed, but will not be auto configured because MCE_RN_NOCONFIG environment flag detected."));
+    return;
 }
 
 console.log(chalk.green.bold("Setting up Acoustic Mobile Push SDK"));

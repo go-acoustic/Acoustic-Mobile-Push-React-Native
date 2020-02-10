@@ -15,6 +15,11 @@ const xml2js = require('xml2js');
 const chalk = require('chalk');
 
 function findInstallDirectory() {
+    if(process.env.MCE_RN_DIRECTORY) {
+        console.log(chalk.yellow.bold("Using MCE_RN_DIRECTORY override instead of finding the application source directory."))
+        return process.env.MCE_RN_DIRECTORY;
+    }
+
 	// Mac
 	var currentDirectory = process.argv[ process.argv.length-1 ];
 	if(currentDirectory != "$INIT_CWD") {
@@ -23,7 +28,7 @@ function findInstallDirectory() {
 
 	// Windows
 	currentDirectory = process.cwd();
-	while(!fs.existsSync(path.join(currentDirectory, "App.js"))) {		
+	while(!fs.existsSync(path.join(currentDirectory, "app.json"))) {
 		var parentDirectory = path.dirname(currentDirectory);
 		console.log("cwd: ", currentDirectory, ", parent: ", parentDirectory);
 		if(parentDirectory == currentDirectory) {
@@ -225,6 +230,11 @@ function updateAndroidConfigFile(installDirectory) {
 		};
 	}
 	fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+}
+
+if(process.env.MCE_RN_NOCONFIG) {
+    console.log(chalk.yellow.bold("Acoustic Mobile Push Location Plugin installed, but will not be auto configured because MCE_RN_NOCONFIG environment flag detected."));
+    return;
 }
 
 console.log(chalk.green.bold("Setting up Acoustic Mobile Push Location Plugin"));

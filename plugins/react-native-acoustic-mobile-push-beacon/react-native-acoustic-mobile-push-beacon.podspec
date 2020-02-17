@@ -3,11 +3,11 @@ require "json"
 package = JSON.parse(File.read(File.join(__dir__, "package.json")))
 
 Pod::Spec.new do |s|
-  s.name         = "react-native-acoustic-mobile-push-location"
+  s.name         = "react-native-acoustic-mobile-push-beacon"
   s.version      = package["version"]
   s.summary      = package["description"]
   s.description  = <<-DESC
-                  react-native-acoustic-mobile-push-location
+                  react-native-acoustic-mobile-push-beacon
                    DESC
   s.homepage     = "https://github.com/Acoustic-Mobile-Push/React-Native"
   s.license      = "Copyright (c) 2019. Acoustic, L.P. All rights reserved"

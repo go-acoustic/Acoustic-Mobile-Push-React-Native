@@ -1,5 +1,5 @@
 /*
- * Copyright © 2016, 2019 Acoustic, L.P. All rights reserved.
+ * Copyright © 2019 Acoustic, L.P. All rights reserved.
  *
  * NOTICE: This file contains material that is confidential and proprietary to
  * Acoustic, L.P. and/or other developers. No license is granted under any intellectual or
@@ -8,13 +8,9 @@
  * prohibited.
  */
 
-#if __has_feature(modules)
-@import UserNotifications;
-#else
 #import <UserNotifications/UserNotifications.h>
-#endif
-
-#import <IBMMobilePushNotificationService/MCENotificationService.h>
+@import AcousticMobilePushNotification;
 
 @interface NotificationService : MCENotificationService
+
 @end

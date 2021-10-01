@@ -44,11 +44,15 @@ This action provides a way to display urls within the application rather then se
 
 ## Installation
 ```sh
+yarn add file:<sdk folder>/plugins/react-native-acoustic-mobile-push-displayweb
+```
+or 
+```sh
 npm install --save <sdk folder>/plugins/react-native-acoustic-mobile-push-displayweb
 ```
 
 ### Post Installation Steps
-> Link the plugin with
+> For React Native v.059 and lower link the plugin with
 ```sh
 react-native link react-native-acoustic-mobile-push-displayweb
 ```

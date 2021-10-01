@@ -8,59 +8,69 @@
  * prohibited.
  */
 
-'use strict';
 import React from 'react';
+import { ListItem } from 'react-native-elements';
+import { Text, View, NativeModules } from 'react-native';
+import { WebView } from 'react-native-webview';
 import InboxTemplateRegistry from './inbox-template-registry';
-import {ListItem} from 'react-native-elements'
-import {Text, View} from 'react-native';
-import {WebView} from 'react-native-webview';
-import {RNAcousticMobilePushInbox} from 'NativeModules';
+
+const { RNAcousticMobilePushInbox } = NativeModules;
 
 const instance = undefined;
 Object.freeze(instance);
 export default instance;
 
-InboxTemplateRegistry.registerMessageViewRenderer('default', function (inboxMessage) {
-    var html = '<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">' + inboxMessage.content.messageDetails.richContent;
+InboxTemplateRegistry.registerMessageViewRenderer('default', (inboxMessage) => {
+  const html = `<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">${inboxMessage.content.messageDetails.richContent}`;
 
-	return (
-        <View style={{flex: 1, alignItems: 'stretch' }}>
-            <View style={{padding: 8, borderBottomColor: "#dbdbdb", borderBottomWidth: 1}}>
-                <Text style={{ color: inboxMessage.isExpired ? '#aaaaaa' : "#000000"}} numberOfLines={1}>{inboxMessage.content.messagePreview.subject}</Text>
-                { inboxMessage.isExpired ? 
-                    (<Text numberOfLines={1} style={{color: 'red'}}>Expired: {new Date( inboxMessage.expirationDate ).toLocaleString()}</Text>) :
-                    (<Text numberOfLines={1} style={{color: '#327BF7'}}>{new Date( inboxMessage.sendDate ).toLocaleString()}</Text>)
-                }
-                </View>
-            <WebView onShouldStartLoadWithRequest={ (nav) => {
-                if(nav.url.startsWith("actionid:")) {
-                    var identifier = nav.url.slice(9);
-                    var action = inboxMessage.content.actions[identifier];
-                    RNAcousticMobilePushInbox.clickInboxAction(action, inboxMessage.inboxMessageId);
-                    return false;
-                }
-                return true;
-            } } startInLoadingState={true} style={{padding:0, width: '100%', height: '100%'}} originWhitelist={['*']} source={{html: html}} />
-            
-        </View>
-    );
+  return (
+    <View style={{ flex: 1, alignItems: 'stretch' }}>
+      <View style={{ padding: 8, borderBottomColor: '#dbdbdb', borderBottomWidth: 1 }}>
+        <Text style={{ color: inboxMessage.isExpired ? '#aaaaaa' : '#000000' }} numberOfLines={1}>{inboxMessage.content.messagePreview.subject}</Text>
+        {inboxMessage.isExpired
+          ? (
+            <Text numberOfLines={1} style={{ color: 'red' }}>
+              Expired:
+              {new Date(inboxMessage.expirationDate).toLocaleString()}
+            </Text>
+          )
+          : (<Text numberOfLines={1} style={{ color: '#327BF7' }}>{new Date(inboxMessage.sendDate).toLocaleString()}</Text>)}
+      </View>
+      <WebView onShouldStartLoadWithRequest={(nav) => {
+        if (nav.url.startsWith('actionid:')) {
+          const identifier = nav.url.slice(9);
+          const action = inboxMessage.content.actions[identifier];
+          RNAcousticMobilePushInbox.clickInboxAction(action, inboxMessage.inboxMessageId);
+          return false;
+        }
+        return true;
+      }}
+        startInLoadingState
+        style={{ padding: 0, width: '100%', height: '100%' }}
+        originWhitelist={['*']}
+        source={{ html }}
+      />
+
+    </View>
+  );
 });
 
-InboxTemplateRegistry.registerListItemRenderer('default', function (inboxMessage) {
-	return (
-		<ListItem 
-			chevron
-			title={inboxMessage.content.messagePreview.subject}  
-			titleStyle={{fontWeight: inboxMessage.isRead ? "normal" : "bold", color: inboxMessage.isExpired ? '#aaaaaa' : "#000000"}}
-			titleProps={{numberOfLines: 1}}
-			subtitle={inboxMessage.content.messagePreview.previewContent}
-			subtitleStyle={{ color: inboxMessage.isExpired ? '#aaaaaa' : "#000000"}}
-			subtitleProps={{numberOfLines: 1}}
-			rightElement={
-				inboxMessage.isExpired ?
-				(<Text style={{color: 'red'}}>Expired: {new Date( inboxMessage.expirationDate ).toLocaleDateString()}</Text>) :
-				(<Text style={{color: '#327BF7'}}>{new Date( inboxMessage.sendDate ).toLocaleDateString()}</Text>)
-			}
-		/>
-	);
-});
+InboxTemplateRegistry.registerListItemRenderer('default', (inboxMessage) => (
+  <ListItem
+    chevron
+    title={inboxMessage.content.messagePreview.subject}
+    titleStyle={{ fontWeight: inboxMessage.isRead ? 'normal' : 'bold', color: inboxMessage.isExpired ? '#aaaaaa' : '#000000' }}
+    titleProps={{ numberOfLines: 1 }}
+    subtitle={inboxMessage.content.messagePreview.previewContent}
+    subtitleStyle={{ color: inboxMessage.isExpired ? '#aaaaaa' : '#000000' }}
+    subtitleProps={{ numberOfLines: 1 }}
+    rightElement={inboxMessage.isExpired
+      ? (
+        <Text style={{ color: 'red' }}>
+          Expired:
+          {new Date(inboxMessage.expirationDate).toLocaleDateString()}
+        </Text>
+      )
+      : (<Text style={{ color: '#327BF7' }}>{new Date(inboxMessage.sendDate).toLocaleDateString()}</Text>)}
+  />
+));

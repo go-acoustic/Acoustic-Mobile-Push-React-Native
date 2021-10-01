@@ -16,7 +16,7 @@
 @interface MCEAttributesQueueManager : NSObject
 
 /** This method returns the singleton object of this class. */
-@property(class, nonatomic, readonly) MCEAttributesQueueManager * sharedInstance NS_SWIFT_NAME(shared);
+@property(class, nonatomic, readonly) MCEAttributesQueueManager * _Nonnull sharedInstance NS_SWIFT_NAME(shared);
 
 /** @name Channel Methods */
 
@@ -27,7 +27,7 @@
  
  Please note, setChannelAttributes is deprecated.
  */
--(void)setChannelAttributes:(NSDictionary*)attributes __attribute__ ((deprecated));
+-(void)setChannelAttributes:(NSDictionary*_Nonnull)attributes __attribute__ ((deprecated));
 
 /** The updateChannelAttributes method adds or updates the specified attributes to the channel record on the server.
  
@@ -36,7 +36,7 @@
  
  Please note, updateChannelAttributes is deprecated.
  */
--(void)updateChannelAttributes:(NSDictionary*)attributes __attribute__ ((deprecated));
+-(void)updateChannelAttributes:(NSDictionary*_Nonnull)attributes __attribute__ ((deprecated));
 
 /** The deleteChannelAttributes method removes the specified keys from the channel record on the server.
  
@@ -45,7 +45,7 @@
  
  Please note, deleteChannelAttributes is deprecated.
 */
--(void)deleteChannelAttributes:(NSArray*) keys __attribute__ ((deprecated));
+-(void)deleteChannelAttributes:(NSArray*_Nonnull) keys __attribute__ ((deprecated));
 
 /** @name User Methods */
 
@@ -56,20 +56,20 @@
  
  Please note, setUserAttributes is deprecated. Please use updateUserAttributes to set attribute values, and deleteUserAttributes to clear existing values.
  */
--(void)setUserAttributes:(NSDictionary*)attributes __attribute__ ((deprecated));
+-(void)setUserAttributes:(NSDictionary*_Nonnull)attributes __attribute__ ((deprecated));
 
 /** The updateUserAttributes method adds or updates the specified attributes to the user record on the server.
  
  When the operation completes successfully it will send a NSNotification with the name UpdateUserAttributesSuccess.
  When the operation fails it will send a NSNotification with the name UpdateUserAttributesError, however it will automatically retry as needed.
 */
--(void)updateUserAttributes:(NSDictionary*)attributes;
+-(void)updateUserAttributes:(NSDictionary*_Nonnull)attributes;
 
 /** The deleteUserAttributes method removes the specified keys from the user record on the server.
  
  When the operation completes successfully, it sends a NSNotification with the DeleteUserAttributesSuccess name.
  When the operation fails, it sends a NSNotification with the DeleteUserAttributesError name; however, it automatically retries as needed.
  */
--(void)deleteUserAttributes:(NSArray*) keys;
+-(void)deleteUserAttributes:(NSArray*_Nonnull) keys;
 
 @end

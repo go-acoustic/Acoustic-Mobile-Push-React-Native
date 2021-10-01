@@ -27,7 +27,7 @@ function findInstallDirectory() {
 
 	// Windows
 	currentDirectory = process.cwd();
-	while(!fs.existsSync(path.join(currentDirectory, "app.json"))) {		
+	while(!fs.existsSync(path.join(currentDirectory, "app.json"))) {
 		var parentDirectory = path.dirname(currentDirectory);
 		console.log("cwd: ", currentDirectory, ", parent: ", parentDirectory);
 		if(parentDirectory == currentDirectory) {
@@ -37,7 +37,7 @@ function findInstallDirectory() {
 		currentDirectory = parentDirectory;
 	}
 	console.log("Install Directory Found:", currentDirectory);
-	
+
 	return currentDirectory;
 }
 
@@ -70,7 +70,7 @@ function modifyManifest(installDirectory) {
 	new xml2js.Parser().parseString(fs.readFileSync(manifestPath), function (err, document) {
 
 		console.log("Adding required service to Android Manifest");
-		var services = document.manifest.application[0].service;		
+		var services = document.manifest.application[0].service;
 		var service = '<service android:name="co.acoustic.mobile.push.plugin.snooze.SnoozeIntentService" />';
 		document.manifest.application[0].service = verifyStanza(services, service);
 
@@ -90,5 +90,5 @@ modifyManifest(installDirectory);
 console.log(chalk.green("Installation Complete!"));
 console.log(chalk.blue.bold("\nPost Installation Steps\n"));
 
-console.log(chalk.blue('Link the plugin with:'));
+console.log(chalk.blue('For react-native 0.59 and lower link the plugin with:'));
 console.log('react-native link react-native-acoustic-mobile-push-snooze\n');

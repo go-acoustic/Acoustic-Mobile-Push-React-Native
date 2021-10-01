@@ -15,54 +15,59 @@ Add API docs for:
 Android Support
 */
 
-'use strict';
-import {AppRegistry, View, Animated, SafeAreaView, Platform, TouchableNativeFeedback, TouchableOpacity} from 'react-native';
-import {RNAcousticMobilePushInbox} from 'NativeModules';
+import { AppRegistry, View, Animated, SafeAreaView, NativeModules } from 'react-native';
 import React from 'react';
-import {InboxMessageView} from './inbox-message-view';
-import {Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Ionicons';
-const Touchable = Platform.OS === 'android' ? TouchableNativeFeedback : TouchableOpacity;
+
+import { InboxMessageView } from './inbox-message-view';
+import { Touchable } from '../components/Touchable';
+
+const { RNAcousticMobilePushInbox } = NativeModules;
 
 export class InboxAction extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-            inboxMessage: props.message
-		}
-        this.state.animation = new Animated.Value(0);
-		RNAcousticMobilePushInbox.readInboxMessage(this.state.inboxMessage.inboxMessageId);
-	}
+  constructor(props) {
+    super(props);
+    this.state = {
+      animation: new Animated.Value(0),
+      inboxMessage: props.message,
+    };
 
-	hide() {
-		Animated.timing(this.state.animation, {toValue: 0, duration: 500}).start((finished) => { RNAcousticMobilePushInbox.hideInbox(); });
-	}
+    RNAcousticMobilePushInbox.readInboxMessage(this.state.inboxMessage.inboxMessageId);
+  }
 
-	show() {
-		Animated.timing(this.state.animation, {toValue: 1, duration: 500}).start();
-	}
+  hide() {
+    const { animation } = this.state;
+    Animated.timing(animation, { toValue: 0, duration: 500, useNativeDriver: false }).start(() => { RNAcousticMobilePushInbox.hideInbox(); });
+  }
 
-	componentDidMount() {
-		this.show();
-	}
+  show() {
+    const { animation } = this.state;
+    Animated.timing(animation, { toValue: 1, duration: 500, useNativeDriver: false }).start();
+  }
 
-	render() {
-		return (
-			<Animated.View style={{ height: '100%', width: '100%', opacity: this.state.animation, backgroundColor: "#ffffff" }}>
-				<SafeAreaView style={{height: "100%", width: "100%"}}>
-					<View style={{width: '100%', height: '100%'}}>
-                        <View style={{backgroundColor: "#dddddd"}}>
-                            <Touchable onPress={()=>{this.hide();}}>
-                                <Icon name="ios-close-circle" color="#000" size={24} style={{alignSelf: "flex-end", padding: 10}} />
-                            </Touchable>
-                        </View>
-    	        		<InboxMessageView inboxMessage={this.state.inboxMessage} />
-                    </View>
-                </SafeAreaView>
-            </Animated.View>
-		);
-	}
+  componentDidMount() {
+    this.show();
+  }
+
+  render() {
+    const { animation, inboxMessage } = this.state;
+
+    return (
+      <Animated.View style={{ height: '100%', width: '100%', opacity: animation, backgroundColor: '#ffffff' }}>
+        <SafeAreaView style={{ height: '100%', width: '100%' }}>
+          <View style={{ width: '100%', height: '100%' }}>
+            <View style={{ backgroundColor: '#dddddd' }}>
+              <Touchable onPress={() => { this.hide(); }}>
+                <Icon name="ios-close-circle" color="#000" size={24} style={{ alignSelf: 'flex-end', padding: 10 }} />
+              </Touchable>
+            </View>
+            <InboxMessageView inboxMessage={inboxMessage} />
+          </View>
+        </SafeAreaView>
+      </Animated.View>
+    );
+  }
 }
 
-AppRegistry.registerComponent("InboxAction", () => InboxAction);
-RNAcousticMobilePushInbox.registerInboxComponent("InboxAction");
+AppRegistry.registerComponent('InboxAction', () => InboxAction);
+RNAcousticMobilePushInbox.registerInboxComponent('InboxAction');

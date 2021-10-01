@@ -21,7 +21,7 @@
 @interface MCEInAppTemplateRegistry : NSObject
 
 /** This method returns the singleton object of this class. */
-@property(class, nonatomic, readonly) MCEInAppTemplateRegistry * sharedInstance NS_SWIFT_NAME(shared);
+@property(class, nonatomic, readonly) MCEInAppTemplateRegistry * _Nonnull sharedInstance NS_SWIFT_NAME(shared);
 
 /** The registerTemplate:handler: method records a specific object to handle templates of the specified name.
  
@@ -29,7 +29,7 @@
  @param handler The template that provides the display objects. Must implement the MCEInAppTemplate protocol.
  @return Returns TRUE if the template was able to register and FALSE otherwise.
  */
--(BOOL) registerTemplate:(NSString*)templateName hander:(NSObject<MCEInAppTemplate>*)handler;
+- (BOOL) registerTemplate: (NSString * _Nonnull) templateName hander: (NSObject<MCEInAppTemplate> * _Nonnull) handler;
 
 
 /** The handlerForTemplate: method returns the registered handler for the specified template name.
@@ -37,5 +37,5 @@
  @param templateName An identifier tying a template name to an object that handles it.
  @return Returns the template handler object.
  */
--(id<MCEInAppTemplate>) handlerForTemplate:(NSString*)templateName;
+- (id<MCEInAppTemplate> _Nullable) handlerForTemplate: (NSString * _Nonnull) templateName;
 @end

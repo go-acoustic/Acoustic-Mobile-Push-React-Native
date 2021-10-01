@@ -1,6 +1,6 @@
 {
   "name": "react-native-acoustic-mobile-push",
-  "version": "3.8.0",
+  "version": "3.8.4",
   "description": "Acoustic Mobile Push Plugin",
   "main": "index.js",
   "scripts": {
@@ -12,9 +12,7 @@
   ],
   "author": "Acoustic",
   "license": "Copyright (c) 2019. Acoustic, L.P. All rights reserved.",
-  "peerDependencies": {
-
-  },
+  "peerDependencies": {},
   "dependencies": {
     "chalk": "^2.4.2",
     "ncp": "^2.0.0",

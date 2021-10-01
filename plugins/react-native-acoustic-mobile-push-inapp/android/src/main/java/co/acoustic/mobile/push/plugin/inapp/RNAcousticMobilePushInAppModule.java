@@ -42,8 +42,7 @@ import co.acoustic.mobile.push.sdk.plugin.inapp.InAppManager;
 import co.acoustic.mobile.push.sdk.plugin.inapp.InAppPayload;
 import co.acoustic.mobile.push.sdk.plugin.inapp.InAppPlugin;
 import co.acoustic.mobile.push.sdk.plugin.inapp.InAppStorage;
-import co.acoustic.mobile.push.sdk.plugin.inbox.RichContent;
-import co.acoustic.mobile.push.sdk.plugin.inbox.InboxMessagesClient;
+import co.acoustic.mobile.push.sdk.api.message.MessageSync;
 import co.acoustic.mobile.push.sdk.api.MceSdk;
 import co.acoustic.mobile.push.sdk.api.attribute.Attribute;
 import co.acoustic.mobile.push.sdk.api.attribute.StringAttribute;
@@ -474,14 +473,14 @@ public class RNAcousticMobilePushInAppModule extends ReactContextBaseJavaModule 
 
 	@ReactMethod
 	public void syncInAppMessages() {
-		InboxMessagesClient.loadInboxMessages(reactContext, new OperationCallback<List<RichContent>>() {
+		MessageSync.syncMessages(reactContext, new OperationCallback<MessageSync.SyncReport>() {
 			@Override
-			public void onSuccess(List<RichContent> newRichContents, OperationResult result) {
+			public void onSuccess(MessageSync.SyncReport newSyncReport, OperationResult result) {
 				sendEvent("SyncInbox", null);
 			}
 
 			@Override
-			public void onFailure(List<RichContent> richContents, OperationResult result) {
+			public void onFailure(MessageSync.SyncReport syncReport, OperationResult result) {
 				sendEvent("SyncInbox", null);
 			}
 		});

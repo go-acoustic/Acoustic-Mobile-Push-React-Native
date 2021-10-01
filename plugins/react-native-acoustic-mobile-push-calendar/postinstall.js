@@ -18,7 +18,7 @@ function findInstallDirectory() {
         console.log(chalk.yellow.bold("Using MCE_RN_DIRECTORY override instead of finding the application source directory."))
         return process.env.MCE_RN_DIRECTORY;
     }
-    
+
 	// Mac
 	var currentDirectory = process.argv[ process.argv.length-1 ];
 	if(currentDirectory != "$INIT_CWD") {
@@ -27,7 +27,7 @@ function findInstallDirectory() {
 
 	// Windows
 	currentDirectory = process.cwd();
-	while(!fs.existsSync(path.join(currentDirectory, "app.json"))) {		
+	while(!fs.existsSync(path.join(currentDirectory, "app.json"))) {
 		var parentDirectory = path.dirname(currentDirectory);
 		console.log("cwd: ", currentDirectory, ", parent: ", parentDirectory);
 		if(parentDirectory == currentDirectory) {
@@ -37,7 +37,7 @@ function findInstallDirectory() {
 		currentDirectory = parentDirectory;
 	}
 	console.log("Install Directory Found:", currentDirectory);
-	
+
 	return currentDirectory;
 }
 
@@ -49,7 +49,7 @@ function findMainPath(installDirectory) {
 
 	const iosDirectory = path.join(installDirectory, 'ios');
 	var directory;
-	fs.readdirSync(iosDirectory).forEach((basename) => { 
+	fs.readdirSync(iosDirectory).forEach((basename) => {
 		const mainPath = path.join(iosDirectory, basename);
 		if(fs.lstatSync(mainPath).isDirectory()) {
 			const filename = path.join(mainPath, "main.m");
@@ -80,7 +80,7 @@ function modifyInfoPlist(mainAppPath) {
 	console.log("Adding placeholder value to info.plist key NSCalendarsUsageDescription");
 	if(typeof infoPlist.NSCalendarsUsageDescription == "undefined")
 		infoPlist.NSCalendarsUsageDescription = "Adding interesting events to your calendar!";
-	
+
     fs.writeFileSync(infoPath, plist.build(infoPlist), "utf8");
 }
 
@@ -97,7 +97,7 @@ modifyInfoPlist(mainAppPath);
 console.log(chalk.green("Installation Complete!"));
 console.log(chalk.blue.bold("\nPost Installation Steps\n"));
 
-console.log(chalk.blue('Link the plugin with:'));
+console.log(chalk.blue('For react-native 0.59 and lower link the plugin with:'));
 console.log("react-native link react-native-acoustic-mobile-push-calendar\n");
 console.log(chalk.blue.bold("iOS Support"));
 console.log("Please replace the placeholder calendar usage descriptions in info.plist in the NSCalendarsUsageDescription key. This value helps inform your users how you're going to respectfully use the access.\n");

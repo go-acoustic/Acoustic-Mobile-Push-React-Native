@@ -65,17 +65,22 @@ Then install as normal
 
 ## Installation
 ```sh
+yarn add file:<sdk folder>/plugins/react-native-acoustic-mobile-push-location
+```
+or 
+```sh
 npm install --save <sdk folder>/plugins/react-native-acoustic-mobile-push-location
 ```
 
 ### Post Installation Steps
-> Link the plugin with
+> For React Native v.059 and lower link the plugin with
 ```sh
 react-native link react-native-acoustic-mobile-push-location
 ```
 
-**Android Support**
-If your app is using React Native v0.60 or later and are using the AndroidX libraries instead of the Android Support libraries. You will need to adjust the imports in **RNAcousticMobilePushLocationModule.java** by removing:
+**Android Support** (with new SampleApp this step is already applied)
+
+>If your app is using React Native v0.60 or later and are using the AndroidX libraries instead of the Android Support libraries. You will need to adjust the imports in **RNAcousticMobilePushLocationModule.java** by removing:
 ```java
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -90,6 +95,12 @@ import androidx.core.content.ContextCompat;
 > Please replace the placeholder location usage descriptions in info.plist in the NSLocationWhenInUseUsageDescription, NSLocationAlwaysUsageDescription and NSLocationAlwaysAndWhenInUseUsageDescription keys. These values help inform your users how you're going to respectfully use the access.
 
 ## Module API
+
+### From React Native v.060 and higher NativeModules are part of react-native. If you are using lower version of RN please use the following code to import RNAcoustic modules:
+
+```js
+import { RNAcousticMobilePushLocation } from 'NativeModules';
+````
 
 ### locationStatus(`callback`)
 
@@ -107,7 +118,9 @@ This method can be used to determine if the application has permission to use lo
 
 #### Example
 ```js
-import {RNAcousticMobilePushLocation} from 'NativeModules';
+import { NativeModules } from 'react-native';
+
+const { RNAcousticMobilePushLocation } = NativeModules;
 
 RNAcousticMobilePushLocation.locationStatus((status)=>{
 	if(status == "denied") {
@@ -133,7 +146,9 @@ Request geofence and beacon sync with server. Use `DownloadedLocations` event to
 
 #### Example
 ```js
-import {RNAcousticMobilePushLocation} from 'NativeModules';
+import { NativeModules } from 'react-native';
+
+const { RNAcousticMobilePushLocation } = NativeModules;
 
 RNAcousticMobilePushLocation.syncLocations();
 ```
@@ -155,7 +170,9 @@ Turns on location support when delayed in the MceConfig.json file.
 
 *In Application*
 ```js
-import {RNAcousticMobilePushLocation} from 'NativeModules';
+import { NativeModules } from 'react-native';
+
+const { RNAcousticMobilePushLocation } = NativeModules;
 
 // After user uses a feature that would require location features
 RNAcousticMobilePushLocation.enableLocation();
@@ -170,9 +187,9 @@ This event is emmited when the geofence/beacon list is updated from the server.
 
 #### Example
 ```js
-import {NativeEventEmitter} from 'react-native';
-import {RNAcousticMobilePushLocation} from 'NativeModules';
+import { NativeEventEmitter, NativeModules } from 'react-native';
 
+const { RNAcousticMobilePushLocation } = NativeModules;
 const emitter = new NativeEventEmitter(RNAcousticMobilePushLocation);
 
 emitter.addListener('DownloadedLocations', () => { 

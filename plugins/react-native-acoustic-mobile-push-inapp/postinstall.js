@@ -7,7 +7,7 @@
  * Acoustic, L.P. Any unauthorized copying or distribution of content from this file is
  * prohibited.
  */
- 
+
 const fs = require('fs');
 const path = require('path');
 const xml2js = require('xml2js');
@@ -27,7 +27,7 @@ function findInstallDirectory() {
 
 	// Windows
 	currentDirectory = process.cwd();
-	while(!fs.existsSync(path.join(currentDirectory, "app.json"))) {		
+	while(!fs.existsSync(path.join(currentDirectory, "app.json"))) {
 		var parentDirectory = path.dirname(currentDirectory);
 		console.log("cwd: ", currentDirectory, ", parent: ", parentDirectory);
 		if(parentDirectory == currentDirectory) {
@@ -37,7 +37,7 @@ function findInstallDirectory() {
 		currentDirectory = parentDirectory;
 	}
 	console.log("Install Directory Found:", currentDirectory);
-	
+
 	return currentDirectory;
 }
 
@@ -75,7 +75,7 @@ function modifyManifest(installDirectory) {
 
 		var output = new xml2js.Builder().buildObject(document);
 		fs.writeFileSync(manifestPath, output);
-	});    
+	});
 }
 
 if(process.env.MCE_RN_NOCONFIG) {
@@ -90,7 +90,7 @@ modifyManifest(installDirectory);
 console.log(chalk.green("Installation Complete!"));
 
 console.log(chalk.blue.bold("\nPost Installation Steps\n"));
-console.log(chalk.blue('Link the plugin with:'));
+console.log(chalk.blue('For react-native 0.59 and lower link the plugin with:'));
 console.log('react-native link react-native-acoustic-mobile-push-inapp\n');
 
 console.log(chalk.blue('Application Support:'));

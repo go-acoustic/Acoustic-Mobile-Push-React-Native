@@ -8,19 +8,18 @@
  * prohibited.
  */
 
-'use strict';
 import React from 'react';
+
 import InboxTemplateRegistry from './inbox-template-registry';
 
 export class InboxMessageView extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			inboxMessage: props.inboxMessage,
-		};
-	}
+  state = {
+    inboxMessage: this.props.inboxMessage,
+  };
 
-	render() {
-		return InboxTemplateRegistry.renderMessageView(this.state.inboxMessage);
-	}
+  render() {
+    const { inboxMessage } = this.state;
+
+    return InboxTemplateRegistry.renderMessageView(inboxMessage);
+  }
 }

@@ -19,22 +19,22 @@
 @interface MCEConfig : NSObject
 
 /** This method returns the singleton object of this class. */
-@property(class, nonatomic, readonly) MCEConfig * sharedInstance NS_SWIFT_NAME(shared);
+@property(class, nonatomic, readonly) MCEConfig * _Nonnull sharedInstance NS_SWIFT_NAME(shared);
 
 /** This method allows you to configure the app with a NSDicionary instead of a MceConfig.json file */
-+ (instancetype)sharedInstanceWithDictionary:(NSDictionary*)dictionary;
++ (instancetype _Nonnull )sharedInstanceWithDictionary:(NSDictionary*_Nullable)dictionary;
 
 /** sessionTimeout specifies how long sessions last. It can be specified in the MceConfig.json file. If it is not specified, it is 20 minutes by default. */
 @property NSInteger sessionTimeout;
 
-/** baseUrl specifies where the SDK connects to. It can be specified in the MceConfig.json file. If it is not specified, it is https://api.co.acoustic.mobilepush.com by default. */
-@property NSURL* baseUrl;
+/** baseUrl specifies where the SDK connects to. It can be specified in the MceConfig.json file. If it is not specified, it is https://api.ibm.com by default. */
+@property NSURL* _Nullable baseUrl;
 
 /** appKey specifies the appKey that is currently in use. A devAppKey and prodAppKey can be specified in the MceConfig.json file and are automatically determined on launch, depending on the environment the app is running in.
  
  Note: This value may not be correct on Apple Watch, please use MCERegistrationDetails.sharedInstance.appKey instead.
  */
-@property NSString* appKey;
+@property NSString* _Nullable appKey;
 
 /** autoInitializeFlag specifies if the SDK should initialize itself automatically or wait until the MCESdk manualInitialization method is called. This could be helpful if you want to limit the registered users and channels in your database. If not specified, this value is TRUE. */
 @property BOOL autoInitializeFlag;
@@ -43,7 +43,7 @@
 @property BOOL autoInitializeLocationFlag;
 
 /** appDelegateClass specifies the class that app delegate calls are forwarded to if you use the easy integration method. By default, it is not specified and does not forward calls that are not present in MceConfig.json. */
-@property Class appDelegateClass;
+@property Class _Nullable appDelegateClass;
 
 /** locationSyncRadius specifies the size of the reference region to sync from the server to the device. */
 @property int locationSyncRadius;
@@ -58,19 +58,19 @@
 @property BOOL beaconEnabled;
 
 /** Beacon UUID to search for */
-@property NSUUID * beaconUUID;
+@property NSUUID * _Nullable beaconUUID;
 
 /** Location accuracy to set for location manager object */
 @property CLLocationAccuracy geofenceAccuracy;
 
 /** Name of user activity handoff activity name, used when the Apple Watch hands off actions to the iPhone paired with it. **/
-@property NSString * handoffUserActivityName;
+@property NSString * _Nullable handoffUserActivityName;
 
 /** Name of the interface controller used to let the user know that they will need to continue the action on their iPhone. **/
-@property NSString * handoffInterfaceController;
+@property NSString * _Nullable handoffInterfaceController;
 
 /** The name of the action cateory that is used to display dynamic watch notifications to the user. **/
-@property NSString * watchCategory;
+@property NSString * _Nullable watchCategory;
 
 /** A configuration flag that resets the userId and channelId to new values on reinstallation. **/
 @property BOOL invalidateExistingUser;

@@ -63,12 +63,16 @@ This plugin adds beacon support to your application. Beacons are defined on the 
 
 ## Installation
 ```sh
+yarn add file:<sdk folder>/plugins/react-native-acoustic-mobile-push-beacon
+```
+or 
+```sh
 npm install --save <sdk folder>/plugins/react-native-acoustic-mobile-push-beacon
 ```
 
 ### Post Installation Steps
 
-**Link the plugin:**
+**For React Native v.059 and lower link the plugin with:**
 ```sh
 react-native link react-native-acoustic-mobile-push-beacon
 ```
@@ -76,13 +80,22 @@ react-native link react-native-acoustic-mobile-push-beacon
 > Please set the UUID used by your beacons in the MceConfig.json file for both Android and iOS. Without this information the devices will not be able to locate the beacons.
 
 ### Constants Exported
+
+### From React Native v.060 and higher NativeModules are part of react-native. If you are using lower version of RN please use the following code to import RNAcoustic modules:
+
+```js
+import { RNAcousticMobilePushBeacon } from 'NativeModules';
+````
+
 #### uuid
 ##### Description
 This constant provides access to the beacon UUID value in the MceConfig.json file.
 
 ##### Example
 ```js
-import {RNAcousticMobilePushBeacon} from 'NativeModules';
+import { NativeModules } from 'react-native';
+
+const { RNAcousticMobilePushBeacon } = NativeModules;
 
 console.log("iBeacon UUID: " + RNAcousticMobilePushBeacon.uuid);
 ```
@@ -94,13 +107,15 @@ Lists major beacon regions via a promise. The promise includes a list of beacons
 
 #### Example
 ```js
-import {RNAcousticMobilePushBeacon} from 'NativeModules';
+import { NativeModules } from 'react-native';
 
-var latitude = 40.7128;
-var longitude = -74.0060;
-var radius = 1000; // Meters
+const { RNAcousticMobilePushBeacon } = NativeModules;
+const latitude = 40.7128;
+const longitude = -74.0060;
+const radius = 1000; // Meters
+
 RNAcousticMobilePushBeacon.beaconRegions().then((beacons) => { 
-    beacons.forEach(function (beacon) {
+    beacons.forEach((beacon) => {
         console.log("Beacon with major " + beacon.major + " has identifier " + beacon.id);
     });
 }).catch((error) => {
@@ -115,7 +130,9 @@ This event is emitted when a user enters a beacon fence.
 
 ##### Example
 ```js
-import {RNAcousticMobilePushBeacon} from 'NativeModules';
+import { NativeEventEmitter, NativeModules } from 'react-native';
+
+const { RNAcousticMobilePushBeacon } = NativeModules;
 const emitter = new NativeEventEmitter(RNAcousticMobilePushBeacon);
 
 emitter.addListener('EnteredBeacon', (beacon) => { 
@@ -129,7 +146,9 @@ This event is emitted when a user exits a beacon fence.
 
 ##### Example
 ```js
-import {RNAcousticMobilePushBeacon} from 'NativeModules';
+import { NativeEventEmitter, NativeModules } from 'react-native';
+
+const { RNAcousticMobilePushBeacon } = NativeModules;
 const emitter = new NativeEventEmitter(RNAcousticMobilePushBeacon);
 
 emitter.addListener('ExitedBeacon', (beacon) => { 

@@ -2,17 +2,19 @@
 buildscript {
     repositories {
         jcenter()
+        google()
+        mavenCentral()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.3.1'
+        classpath 'com.android.tools.build:gradle:4.1.0'
     }
 }
 
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 28
 
     defaultConfig {
         minSdkVersion 16
@@ -34,6 +36,8 @@ dependencies {
         exclude group: 'com.android.support'
     }
 
-    compileOnly fileTree(dir: '../../react-native-acoustic-mobile-push/android/libs', include: ['*.jar'])
+    implementation "androidx.core:core:1+"
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    compileOnly fileTree(dir: '../../react-native-acoustic-mobile-push/android/libs', include: ['*.aar'])
 }
   

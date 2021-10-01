@@ -15,6 +15,6 @@
 #endif
 
 /** Superclass to be used for application's Notification Service for iOS 10+ notification action support. */
-@interface MCENotificationService : UNNotificationServiceExtension <NSURLSessionDownloadDelegate, NSURLSessionDataDelegate, NSURLSessionTaskDelegate, NSURLSessionDataDelegate>
+@interface MCENotificationService : UNNotificationServiceExtension
 
 @end

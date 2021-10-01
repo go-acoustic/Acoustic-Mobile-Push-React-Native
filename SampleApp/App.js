@@ -8,44 +8,39 @@
  * prohibited.
  */
 
-'use strict';
-import {createStackNavigator, createAppContainer} from 'react-navigation';
-import {Platform, NativeEventEmitter} from 'react-native';
-import {HomeScreen} from './screens/home-screen';
-import {RegistrationScreen} from './screens/registration-screen';
-import {InboxScreen} from './screens/inbox-screen';
-import {InAppScreen} from './screens/inapp-screen';
-import {SendTestEventScreen} from './screens/send-test-event-screen';
-import {SendUserAttributeScreen} from './screens/send-user-attirbutes-screen';
-import {CustomActionScreen} from './screens/custom-action-screen';
-import {GeofenceScreen} from './screens/geofence-screen';
-import {iBeaconScreen} from './screens/ibeacon-screen';
-import {InboxMessageScreen} from './screens/inbox-message-screen';
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
 
+import { HomeScreen } from './screens/home-screen';
+import { RegistrationScreen } from './screens/registration-screen';
+import { InboxScreen } from './screens/inbox-screen';
+import { InAppScreen } from './screens/inapp-screen';
+import { SendTestEventScreen } from './screens/send-test-event-screen';
+import { SendUserAttributeScreen } from './screens/send-user-attirbutes-screen';
+import { CustomActionScreen } from './screens/custom-action-screen';
+import { GeofenceScreen } from './screens/geofence-screen';
+import { iBeaconScreen } from './screens/ibeacon-screen';
+import { InboxMessageScreen } from './screens/inbox-message-screen';
 
-// InApp Templates modules must be imported before used
-import {InAppBanner} from './in-app/in-app-banner';
-import {inAppMedia} from './in-app/in-app-media';
-
-// Custom action modules must be imported in order to register with the system
-import {SendEmailAction} from './custom-actions/send-email-action';
-
-// Inbox Templates modules must be imported before used
-import {DefaultInbox} from './inbox/default-inbox-template';
-import {PostInbox} from './inbox/post-inbox-template';
-import {InboxAction} from './inbox/inbox-action';
+// InApp Actions/Templates modules must be imported in order to register with the system
+import './in-app/in-app-banner';
+import './in-app/in-app-media';
+import './custom-actions/send-email-action';
+import './inbox/default-inbox-template';
+import './inbox/post-inbox-template';
+import './inbox/inbox-action';
 
 const MainNavigator = createStackNavigator({
-	Home: HomeScreen,
-	Registration: RegistrationScreen,
-	Inbox: InboxScreen,
-	InApp: InAppScreen,
-	CustomActions: CustomActionScreen,
-	SendTestEvents: SendTestEventScreen,
-	SendUserAttributes: SendUserAttributeScreen,
-	Geofences: GeofenceScreen,
-	iBeacons: iBeaconScreen,
-	InboxMessage: InboxMessageScreen
+  Home: HomeScreen,
+  Registration: RegistrationScreen,
+  Inbox: InboxScreen,
+  InApp: InAppScreen,
+  CustomActions: CustomActionScreen,
+  SendTestEvents: SendTestEventScreen,
+  SendUserAttributes: SendUserAttributeScreen,
+  Geofences: GeofenceScreen,
+  iBeacons: iBeaconScreen,
+  InboxMessage: InboxMessageScreen,
 });
 
 const App = createAppContainer(MainNavigator);

@@ -10,14 +10,8 @@
 
 package co.acoustic.mobile.push.plugin.location;
 
-// When using React Native 0.60+
-//import androidx.core.app.ActivityCompat;
-//import androidx.core.content.ContextCompat;
-
-// When using React Native 0.59-
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;

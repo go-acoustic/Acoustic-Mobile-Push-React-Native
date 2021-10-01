@@ -8,55 +8,55 @@
  * prohibited.
  */
 
-'use strict';
-import {View, Image} from 'react-native';
-import React, {Component} from 'react';
+import { View, Image } from 'react-native';
+import React, { Component } from 'react';
 
 export default class FullWidthImage extends Component {
-    constructor() {
-        super();
+  state = {
+    width: 0,
+    height: 0,
+  };
 
-        this.state = {
-            width: 0,
-            height: 0
-        };
+  onLayout(event) {
+    const { ratio, source } = this.props;
+    const containerWidth = event.nativeEvent.layout.width;
+
+    if (ratio) {
+      this.setState({
+        width: containerWidth,
+        height: containerWidth * ratio,
+      });
+    } else if (typeof source === 'number') {
+      const assetSource = Image.resolveAssetSource(source);
+
+      this.setState({
+        width: containerWidth,
+        height: containerWidth * assetSource.height / assetSource.width,
+      });
+    } else if (typeof source === 'object') {
+      Image.getSize(source.uri, (width, height) => {
+        this.setState({
+          width: containerWidth,
+          height: containerWidth * height / width,
+        });
+      });
     }
+  }
 
-    onLayout(event) {
-        const containerWidth = event.nativeEvent.layout.width;
+  render() {
+    const { source } = this.props;
+    const { height, width } = this.state;
 
-        if (this.props.ratio) {
-            this.setState({
-                width: containerWidth,
-                height: containerWidth * this.props.ratio
-            });
-        } else if (typeof this.props.source === 'number') {
-            const source = resolveAssetSource(this.props.source);
-
-            this.setState({
-                width: containerWidth,
-                height: containerWidth * source.height / source.width
-            });
-        } else if (typeof this.props.source === 'object') {
-            Image.getSize(this.props.source.uri, (width, height) => {
-                this.setState({
-                    width: containerWidth,
-                    height: containerWidth * height / width
-                });
-            });
-        }
-    }
-
-    render() {
-        return (
-            <View onLayout={this.onLayout.bind(this)}>
-                <Image
-                    source={this.props.source}
-                    style={{
-                        width: this.state.width,
-                        height: this.state.height
-                    }} />
-            </View>
-        );
-    }
+    return (
+      <View onLayout={this.onLayout.bind(this)}>
+        <Image
+          source={source}
+          style={{
+            width,
+            height,
+          }}
+        />
+      </View>
+    );
+  }
 }

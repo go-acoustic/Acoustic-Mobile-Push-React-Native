@@ -8,86 +8,111 @@
  * prohibited.
  */
 
-'use strict';
 import React from 'react';
-import {View, TouchableNativeFeedback, TouchableOpacity, Platform} from 'react-native';
-import {RNAcousticMobilePushInbox} from 'NativeModules';
-import {InboxMessageView} from '../inbox/inbox-message-view';
+import { View, NativeModules } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-const Touchable = Platform.OS === 'android' ? TouchableNativeFeedback : TouchableOpacity;
+
+import { InboxMessageView } from '../inbox/inbox-message-view';
+import { Touchable } from '../components/Touchable';
+
+const { RNAcousticMobilePushInbox } = NativeModules;
 
 export class InboxMessageScreen extends React.Component {
-	static navigationOptions = ({ navigation }) => {
-		const previous = navigation.getParam('previous');
-		const next = navigation.getParam('next');
-		const trash = navigation.getParam('trash');
-		const index = navigation.getParam('index');
-		const length = navigation.getParam('inboxMessages').length;
-		return {
-			headerRight: (
-				<View style={{flex:1, flexDirection: "row"}}>
-					<Touchable onPress={previous}>
-						<Icon name="ios-arrow-up" color={ index==0 ? "#ccc" : "#000" } size={24} style={{paddingRight: 20}} />
-					</Touchable>
-					<Touchable onPress={next}>
-						<Icon name="ios-arrow-down" color={ length-1==index ? "#ccc" : "#000" } size={24} style={{paddingRight: 20}} />
-					</Touchable>
-					<Touchable onPress={trash}>
-						<Icon name="ios-trash" color="#000" size={24} style={{paddingRight: 20}} />
-					</Touchable>
-				</View>
-			),
-		};
-	};
+  static navigationOptions = ({ navigation }) => {
+    const previous = navigation.getParam('previous');
+    const next = navigation.getParam('next');
+    const trash = navigation.getParam('trash');
+    const index = navigation.getParam('index');
+    const { length } = navigation.getParam('inboxMessages');
 
-	componentDidMount() {
-		this.props.navigation.setParams({ 
-			index: this.state.index, 
-			inboxMessages: this.state.inboxMessages, 
-			previous: this.previous, 
-			next: this.next, 
-			trash: this.trash 
-		});
-	}
+    return {
+      headerRight: () => (
+        <View style={{ flex: 1, flexDirection: 'row' }}>
+          <Touchable onPress={previous}>
+            <Icon name="ios-arrow-up" color={index === 0 ? '#ccc' : '#000'} size={24} style={{ paddingRight: 20 }} />
+          </Touchable>
+          <Touchable onPress={next}>
+            <Icon name="ios-arrow-down"
+              color={length - 1 === index ? '#ccc' : '#000'}
+              size={24}
+              style={{ paddingRight: 20 }}
+            />
+          </Touchable>
+          <Touchable onPress={trash}>
+            <Icon name="ios-trash" color="#000" size={24} style={{ paddingRight: 20 }} />
+          </Touchable>
+        </View>
+      ),
+    };
+  };
 
-	previous = () => {
-		if(index==0) {
-			return;
-		}
-		this.props.navigation.goBack();
-		const index = this.state.index - 1;
-		const inboxMessage = this.state.inboxMessages[index];
-		this.props.navigation.push('InboxMessage', {inboxMessage: inboxMessage, index: index, inboxMessages: this.state.inboxMessages });
-	}
+  constructor(props) {
+    super(props);
 
-	next = () => {
-		if(this.state.inboxMessages.length-1==this.state.index) {
-			return;
-		}
-		this.props.navigation.goBack();
-		const index = this.state.index + 1;
-		const inboxMessage = this.state.inboxMessages[index];
-		this.props.navigation.push('InboxMessage', {inboxMessage: inboxMessage, index: index, inboxMessages: this.state.inboxMessages });
-	}
+    const inboxMessage = props.navigation.getParam('inboxMessage', {});
+    this.state = {
+      index: props.navigation.getParam('index', 0),
+      inboxMessages: props.navigation.getParam('inboxMessages', []),
+      inboxMessage,
+    };
 
-	trash = () => {
-		this.props.navigation.goBack();
-		RNAcousticMobilePushInbox.deleteInboxMessage(this.state.inboxMessage.inboxMessageId);
-	}
+    RNAcousticMobilePushInbox.readInboxMessage(inboxMessage.inboxMessageId);
+  }
 
-	constructor(props) {
-		super(props);
-		this.state = {
-			index: props.navigation.getParam('index', 0),
-			inboxMessages: props.navigation.getParam('inboxMessages', []),
-			inboxMessage: props.navigation.getParam('inboxMessage', {})
-		}
-		RNAcousticMobilePushInbox.readInboxMessage(this.state.inboxMessage.inboxMessageId);
-	}
+  componentDidMount() {
+    const { navigation } = this.props;
+    const { index, inboxMessages } = this.state;
 
-	render() {
-		return (
-			<InboxMessageView inboxMessage={this.state.inboxMessage} />
-		);
-	}
+    navigation.setParams({
+      index,
+      inboxMessages,
+      previous: this.previous,
+      next: this.next,
+      trash: this.trash,
+    });
+  }
+
+  previous = () => {
+    const { navigation } = this.props;
+    const { index: currentIndex, inboxMessages } = this.state;
+
+    if (currentIndex === 0) {
+      return;
+    }
+
+    navigation.goBack();
+    const newIndex = currentIndex - 1;
+    const inboxMessage = inboxMessages[currentIndex];
+    navigation.push('InboxMessage', { inboxMessage, newIndex, inboxMessages });
+  }
+
+  next = () => {
+    const { navigation } = this.props;
+    const { index: currentIndex, inboxMessages } = this.state;
+
+    if (inboxMessages.length - 1 === currentIndex) {
+      return;
+    }
+
+    navigation.goBack();
+    const index = currentIndex + 1;
+    const inboxMessage = inboxMessages[index];
+    navigation.push('InboxMessage', { inboxMessage, index, inboxMessages });
+  }
+
+  trash = () => {
+    const { navigation } = this.props;
+    const { inboxMessage } = this.state;
+
+    navigation.goBack();
+    RNAcousticMobilePushInbox.deleteInboxMessage(inboxMessage.inboxMessageId);
+  }
+
+  render() {
+    const { inboxMessage } = this.state;
+
+    return (
+      <InboxMessageView inboxMessage={inboxMessage} />
+    );
+  }
 }

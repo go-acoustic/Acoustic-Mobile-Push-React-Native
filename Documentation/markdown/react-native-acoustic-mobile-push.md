@@ -81,11 +81,15 @@ export ANDROID_X=1
 
 Then install as normal
 ```sh
+yarn add file:<sdk folder>/plugins/react-native-acoustic-mobile-push
+```
+or 
+```sh
 npm install --save <sdk folder>/plugins/react-native-acoustic-mobile-push
 ```
 
 ### Post Installation Steps
-**Link the plugin:**
+**For React Native v.059 and lower link the plugin with:**
 ```sh
 react-native link react-native-acoustic-mobile-push
 ```
@@ -109,13 +113,21 @@ react-native link react-native-acoustic-mobile-push
 
 ## Constants Exported
 
+### From React Native v.060 and higher NativeModules are part of react-native. If you are using lower version of RN please use the following code to import RNAcoustic modules:
+
+```js
+import { RNAcousticMobilePush } from 'NativeModules';
+````
+
 ### sdkVersion
 #### Description
 This constant provides the current sdk version number.
 
 #### Example
 ```js
-import {RNAcousticMobilePush} from 'NativeModules';
+import { NativeModules } from 'react-native';
+
+const { RNAcousticMobilePush } = NativeModules;
 
 console.log("The sdk version number is " + RNAcousticMobilePush.sdkVersion);
 ```
@@ -126,7 +138,9 @@ This constant provides the current React Native plugin version number.
 
 #### Example
 ```js
-import {RNAcousticMobilePush} from 'NativeModules';
+import { NativeModules } from 'react-native';
+
+const { RNAcousticMobilePush } = NativeModules;
 
 console.log("The plugin version number is " + RNAcousticMobilePush.pluginVersion);
 ```
@@ -137,7 +151,9 @@ This constant provides the application's appKey from the MceConfig.json file.
 
 #### Example
 ```js
-import {RNAcousticMobilePush} from 'NativeModules';
+import { NativeModules } from 'react-native';
+
+const { RNAcousticMobilePush } = NativeModules;
 
 console.log("This application's appkey is " + RNAcousticMobilePush.appKey);
 ```
@@ -151,7 +167,9 @@ This function forces the events sitting in the queue to be sent to the server.
 
 ##### Example
 ```js
-import {RNAcousticMobilePush} from 'NativeModules';
+import { NativeModules } from 'react-native';
+
+const { RNAcousticMobilePush } = NativeModules;
 
 // Send events to server
 RNAcousticMobilePush.sendEvents();
@@ -163,13 +181,15 @@ This function sends custom events to the server for processing. Success can be o
 
 ##### Example
 ```js
-import {RNAcousticMobilePush} from 'NativeModules';
+import { NativeModules } from 'react-native';
 
-var minimalEvent = {name: "minimal", type: "event"};
-var nonImmediate = false; 
+const { RNAcousticMobilePush } = NativeModules;
+const minimalEvent = {name: "minimal", type: "event"};
+const nonImmediate = false; 
+
 RNAcousticMobilePush.addEvent(minimalEvent, nonImmediate);
 
-var event = {
+const event = {
 	name: "required event name string",
 	type: "required event type string",
 	attribution: "optional attribution string",
@@ -181,7 +201,8 @@ var event = {
 		dateKey: new Date()
 	}
 };
-var immediate = true; 
+const immediate = true; 
+
 RNAcousticMobilePush.addEvent(event, immediate);
 ```
 
@@ -191,14 +212,16 @@ Updates user attributes on server for user record. Values can be numeric, boolea
 
 ##### Example
 ```js
-import {RNAcousticMobilePush} from 'NativeModules';
+import { NativeModules } from 'react-native';
 
-var attributes = {
+const { RNAcousticMobilePush } = NativeModules;
+const attributes = {
 	boolKey: false,
 	numkey: 4,
 	stringKey: "value",
 	dateKey: new Date()
 };
+
 RNAcousticMobilePush.updateUserAttributes(attributes);
 ```
 
@@ -208,7 +231,10 @@ Deletes user attributes on server for user record. Provide a list of keys to be 
 
 ##### Example
 ```js
-import {RNAcousticMobilePush} from 'NativeModules';
+import { NativeModules } from 'react-native';
+
+const { RNAcousticMobilePush } = NativeModules;
+
 RNAcousticMobilePush.deleteUserAttributes(['key1', 'key2']);
 ```
 
@@ -218,7 +244,9 @@ Retrieves current userId and channelId for device. Observing the <a href="#regis
 
 ##### Example
 ```js
-import {RNAcousticMobilePush} from 'NativeModules';
+import { NativeModules } from 'react-native';
+
+const { RNAcousticMobilePush } = NativeModules;
 
 RNAcousticMobilePush.registrationDetails().then((registrationDetails) => {
 	console.log("UserId = " + registrationDetails.userId);
@@ -243,7 +271,9 @@ This function starts the SDK if it has been configured for delayed startup. In t
 
 *In Application*
 ```js
-import {RNAcousticMobilePush} from 'NativeModules';
+import { NativeModules } from 'react-native';
+
+const { RNAcousticMobilePush } = NativeModules;
 
 // Start up the SDK when it makes sense to in the application
 RNAcousticMobilePush.manualInitialization()
@@ -255,7 +285,9 @@ This function requests push permission from the user. Note, on iOS this is requi
 
 ##### Example
 ```js
-import {RNAcousticMobilePush} from 'NativeModules';
+import { NativeModules } from 'react-native';
+
+const { RNAcousticMobilePush } = NativeModules;
 
 // Request push permission when app starts or defer it until later
 RNAcousticMobilePush.requestPushPermission()
@@ -267,7 +299,9 @@ This function provides the safe area region of the screen for absolute location 
 
 ##### Example
 ```js
-import {RNAcousticMobilePush} from 'NativeModules';
+import { NativeModules } from 'react-native';
+
+const { RNAcousticMobilePush } = NativeModules;
 
 RNAcousticMobilePush.safeAreaInsets(function (safeArea) {
 	console.log("Safe area for current device is left: " + safeArea.left + ", right: " + safeArea.right + ", top: " + safeArea.top + ", bottom: " + safeArea.bottom );
@@ -283,9 +317,9 @@ This function allows your application to register code to be run in the event of
 
 ##### Example
 ```js
-import {NativeEventEmitter} from 'react-native';
-import {RNAcousticMobilePushActionHandler} from 'NativeModules';
+import { NativeEventEmitter, NativeModules } from 'react-native';
 
+const { RNAcousticMobilePushActionHandler } = NativeModules;
 const emitter = new NativeEventEmitter(RNAcousticMobilePushActionHandler);
 
 export default function demonstrationAction(details) {
@@ -310,12 +344,13 @@ This event is emitted when events are successfully delivered to the server.
 
 ##### Example
 ```js
-import {NativeEventEmitter} from 'react-native';
-import {RNAcousticMobilePush} from 'NativeModules';
+import { NativeEventEmitter, NativeModules } from 'react-native';
+
+const { RNAcousticMobilePush } = NativeModules;
 const emitter = new NativeEventEmitter(RNAcousticMobilePush);
 
 emitter.addListener('EventSuccess', function (userInfo) {
-	var events = [];
+	const events = [];
 	for(let index in userInfo.events) {
 		let event = userInfo.events[index];
 		events.push("name: " + event.name + ", type: " + event.type);
@@ -331,12 +366,13 @@ This event is emitted when events fail to send to the server. Note, the event se
 
 ##### Example
 ```js
-import {NativeEventEmitter} from 'react-native';
-import {RNAcousticMobilePush} from 'NativeModules';
+import { NativeEventEmitter, NativeModules } from 'react-native';
+
+const { RNAcousticMobilePush } = NativeModules;
 const emitter = new NativeEventEmitter(RNAcousticMobilePush);
 
 emitter.addListener('EventFailure', function (userInfo) {
-	var events = [];
+	const events = [];
 	for(let index in userInfo.events) {
 		let event = userInfo.events[index];
 		events.push("name: " + event.name + ", type: " + event.type);
@@ -352,8 +388,9 @@ This event is emitted when the SDK registers with the server.
 
 ##### Example
 ```js
-import {NativeEventEmitter} from 'react-native';
-import {RNAcousticMobilePush} from 'NativeModules';
+import { NativeEventEmitter, NativeModules } from 'react-native';
+
+const { RNAcousticMobilePush } = NativeModules;
 const emitter = new NativeEventEmitter(RNAcousticMobilePush);
 
 emitter.addListener('Registered', ()=>{
@@ -373,8 +410,9 @@ This event is emitted when the registration changes with the server.
 
 ##### Example
 ```js
-import {NativeEventEmitter} from 'react-native';
-import {RNAcousticMobilePush} from 'NativeModules';
+import { NativeEventEmitter, NativeModules } from 'react-native';
+
+const { RNAcousticMobilePush } = NativeModules;
 const emitter = new NativeEventEmitter(RNAcousticMobilePush);
 
 emitter.addListener('RegistrationChanged', ()=>{
@@ -394,12 +432,13 @@ This event is emitted when user attributes have been sent to the server.
 
 ##### Example
 ```js
-import {NativeEventEmitter} from 'react-native';
-import {RNAcousticMobilePush} from 'NativeModules';
+import { NativeEventEmitter, NativeModules } from 'react-native';
+
+const { RNAcousticMobilePush } = NativeModules;
 const emitter = new NativeEventEmitter(RNAcousticMobilePush);
 
 emitter.addListener('UpdateUserAttributesSuccess', (userInfo)=>{
-	var attributes = [];
+	const attributes = [];
 	const keys = Object.getOwnPropertyNames(userInfo.attributes);
 	for(let index in keys) {
 		let key = keys[index];
@@ -418,12 +457,13 @@ This event is emitted when user attributes can not be sent to the server. Note: 
 
 ##### Example
 ```js
-import {NativeEventEmitter} from 'react-native';
-import {RNAcousticMobilePush} from 'NativeModules';
+import { NativeEventEmitter, NativeModules } from 'react-native';
+
+const { RNAcousticMobilePush } = NativeModules;
 const emitter = new NativeEventEmitter(RNAcousticMobilePush);
 
 emitter.addListener('UpdateUserAttributesSuccess', (userInfo)=>{
-	var attributes = [];
+	const attributes = [];
 	const keys = Object.getOwnPropertyNames(userInfo.attributes);
 	for(let index in keys) {
 		let key = keys[index];
@@ -442,8 +482,9 @@ This event is emitted when user attributes are successfully deleted from the ser
 
 ##### Example
 ```js
-import {NativeEventEmitter} from 'react-native';
-import {RNAcousticMobilePush} from 'NativeModules';
+import { NativeEventEmitter, NativeModules } from 'react-native';
+
+const { RNAcousticMobilePush } = NativeModules;
 const emitter = new NativeEventEmitter(RNAcousticMobilePush);
 
 emitter.addListener('DeleteUserAttributesSuccess', (userInfo) => { 
@@ -458,8 +499,9 @@ This event is emitted when user attribtes fail to delete from the server. Note: 
 
 ##### Example
 ```js
-import {NativeEventEmitter} from 'react-native';
-import {RNAcousticMobilePush} from 'NativeModules';
+import { NativeEventEmitter, NativeModules } from 'react-native';
+
+const { RNAcousticMobilePush } = NativeModules;
 const emitter = new NativeEventEmitter(RNAcousticMobilePush);
 
 emitter.addListener('DeleteUserAttributesSuccess', (userInfo) => { 
@@ -474,8 +516,9 @@ This event is emitted when a custom action that was previously registered but is
 
 ##### Example
 ```js
-import {NativeEventEmitter} from 'react-native';
-import {RNAcousticMobilePush} from 'NativeModules';
+import { NativeEventEmitter, NativeModules } from 'react-native';
+
+const { RNAcousticMobilePush } = NativeModules;
 const emitter = new NativeEventEmitter(RNAcousticMobilePush);
 
 emitter.addListener('CustomPushNotYetRegistered', function (userInfo) {
@@ -490,8 +533,9 @@ This event is emitted when a custom action is received, but has never had a push
 
 ##### Example
 ```js
-import {NativeEventEmitter} from 'react-native';
-import {RNAcousticMobilePush} from 'NativeModules';
+import { NativeEventEmitter, NativeModules } from 'react-native';
+
+const { RNAcousticMobilePush } = NativeModules;
 const emitter = new NativeEventEmitter(RNAcousticMobilePush);
 
 emitter.addListener('CustomPushNotRegistered', function (userInfo) {
@@ -506,9 +550,9 @@ Custom action events are emitted from a different `NativeEventEmitter` to preven
 
 ##### Example
 ```js
-import {NativeEventEmitter} from 'react-native';
-import {RNAcousticMobilePushActionHandler} from 'NativeModules';
+import { NativeEventEmitter, NativeModules } from 'react-native';
 
+const { RNAcousticMobilePushActionHandler } = NativeModules;
 const emitter = new NativeEventEmitter(RNAcousticMobilePushActionHandler);
 
 export default function demonstrationAction(details) {

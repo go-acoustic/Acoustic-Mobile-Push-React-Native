@@ -33,6 +33,6 @@ dependencies {
     compileOnly('com.facebook.react:react-native:+') {
         exclude group: 'com.android.support'
     }
-    compileOnly fileTree(dir: '../../react-native-acoustic-mobile-push/android/libs', include: ['*.jar'])
+    compileOnly fileTree(dir: '../../react-native-acoustic-mobile-push/android/libs', include: ['*.aar'])
 }
   

@@ -27,7 +27,7 @@
 /**
  locationId represents the unique key for this iBeacon on the server.
  */
-@property NSString * locationId;
+@property NSString * _Nonnull locationId;
 
 /**
  isCustom is true if the geofence is defined by behavior and false otherwise.
@@ -37,6 +37,6 @@
 /**
  region provides a core location circular region for the geofence.
  */
-@property (readonly) CLCircularRegion * region;
+@property (readonly) CLCircularRegion * _Nonnull region;
 
 @end

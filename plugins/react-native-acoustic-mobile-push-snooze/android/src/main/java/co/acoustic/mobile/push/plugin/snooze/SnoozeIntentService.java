@@ -17,10 +17,11 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import co.acoustic.mobile.push.sdk.api.Constants;
-import co.acoustic.mobile.push.sdk.notification.NotificationsUtility;
+import co.acoustic.mobile.push.sdk.notification.AlertProcessor;
 import co.acoustic.mobile.push.sdk.util.Logger;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Calendar;
 
@@ -41,7 +42,8 @@ public class SnoozeIntentService extends IntentService {
         extras.putString(Constants.Notifications.ALERT_KEY, intent.getStringExtra(Constants.Notifications.SOURCE_NOTIFICATION_KEY));
         extras.putString(Constants.Notifications.MCE_PAYLOAD_KEY, intent.getStringExtra(Constants.Notifications.SOURCE_MCE_PAYLOAD_KEY));
         try {
-            NotificationsUtility.showNotification(getApplicationContext(), extras, 0, null);
+            AlertProcessor.processAlert(getApplicationContext(), extras);
+            
         } catch (JSONException jsone) {
             Logger.e(TAG, "Failed to parse notification", jsone);
         }

@@ -18,7 +18,7 @@ function findInstallDirectory() {
         console.log(chalk.yellow.bold("Using MCE_RN_DIRECTORY override instead of finding the application source directory."))
         return process.env.MCE_RN_DIRECTORY;
     }
-    
+
 	// Mac
 	var currentDirectory = process.argv[ process.argv.length-1 ];
 	if(currentDirectory != "$INIT_CWD") {
@@ -27,7 +27,7 @@ function findInstallDirectory() {
 
 	// Windows
 	currentDirectory = process.cwd();
-	while(!fs.existsSync(path.join(currentDirectory, "app.json"))) {		
+	while(!fs.existsSync(path.join(currentDirectory, "app.json"))) {
 		var parentDirectory = path.dirname(currentDirectory);
 		console.log("cwd: ", currentDirectory, ", parent: ", parentDirectory);
 		if(parentDirectory == currentDirectory) {
@@ -37,7 +37,7 @@ function findInstallDirectory() {
 		currentDirectory = parentDirectory;
 	}
 	console.log("Install Directory Found:", currentDirectory);
-	
+
 	return currentDirectory;
 }
 
@@ -49,7 +49,7 @@ function findMainPath(installDirectory) {
 
 	const iosDirectory = path.join(installDirectory, 'ios');
 	var directory;
-	fs.readdirSync(iosDirectory).forEach((basename) => { 
+	fs.readdirSync(iosDirectory).forEach((basename) => {
 		const mainPath = path.join(iosDirectory, basename);
 		if(fs.lstatSync(mainPath).isDirectory()) {
 			const filename = path.join(mainPath, "main.m");
@@ -88,7 +88,7 @@ function verifyStanza(array, stanzaString) {
 function modifyManifest(installDirectory) {
 	let manifestPath = path.join(installDirectory, "android", "app", "src", "main", "AndroidManifest.xml");
 	new xml2js.Parser().parseString(fs.readFileSync(manifestPath), function (err, document) {
-		
+
 		console.log("Adding required services to Android Manifest");
 		var services = document.manifest.application[0].service;
 		[
@@ -111,7 +111,7 @@ function modifyManifest(installDirectory) {
 
 		var output = new xml2js.Builder().buildObject(document);
 		fs.writeFileSync(manifestPath, output);
-	});    
+	});
 }
 
 function updateiOSConfigFile(mainAppPath) {
@@ -178,7 +178,7 @@ modifyManifest(installDirectory);
 console.log(chalk.green("Installation Complete!"));
 
 console.log(chalk.blue.bold("\nPost Installation Steps\n"));
-console.log(chalk.blue('Link the plugin with:'));
+console.log(chalk.blue('For react-native 0.59 and lower link the plugin with:'));
 console.log('react-native link react-native-acoustic-mobile-push-beacon\n');
 console.log("Please set the UUID used by your beacons in the MceConfig.json file for both Android and iOS. Without this information the devices will not be able to locate the beacons.\n");
 

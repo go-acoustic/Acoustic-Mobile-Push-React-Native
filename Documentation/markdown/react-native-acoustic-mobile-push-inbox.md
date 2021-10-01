@@ -64,24 +64,34 @@ This plugin is used to add inbox functionality to your application. The messages
 
 ## Installation
 ```sh
+yarn add file:<sdk folder>/plugins/react-native-acoustic-mobile-push-inbox
+```
+or 
+```sh
 npm install --save <sdk folder>/plugins/react-native-acoustic-mobile-push-inbox
 ```
 
 ### Post Installation Steps
-> Link the plugin with
+> For React Native v.059 and lower link the plugin with
 ```sh
 react-native link react-native-acoustic-mobile-push-inbox
 ```
 
 > Template files in this plugins javascript directory will need to be integrated into your application and the templates will need to be imported so they can register with the SDK at startup like this:
 ```js
-import {DefaultInbox} from './inbox/default-inbox-template';
-import {PostInbox} from './inbox/post-inbox-template';
-import {InboxAction} from './inbox/inbox-action';
+import './inbox/default-inbox-template';
+import './inbox/post-inbox-template';
+import './inbox/inbox-action';
 ``` 
 Additionally, you will need to create pages to display the list of messages and the full screen messages. See the sample project's inbox-message-screen.js and inbox-screen.js for examples of how this can be done.
 
 ## Module API
+
+### From React Native v.060 and higher NativeModules are part of react-native. If you are using lower version of RN please use the following code to import RNAcoustic modules:
+
+```js
+import { RNAcousticMobilePushInbox } from 'NativeModules';
+````
 
 ### inboxMessageCount(`callback`)
 #### Description
@@ -89,7 +99,9 @@ This function can be used to determine how many inbox messages are in the inbox 
 
 #### Example
 ```js
-import {RNAcousticMobilePushInbox} from 'NativeModules';
+import { NativeModules } from 'react-native';
+
+const { RNAcousticMobilePushInbox } = NativeModules;
 
 RNAcousticMobilePushInbox.inboxMessageCount(function(counts) { 
 	console.log("There are " + counts.messages + " messages in the inbox and " + counts.unread + " are unread");
@@ -103,9 +115,11 @@ This function can be used to delete the inbox message with the provided `inboxMe
 
 #### Example
 ```js
-import {RNAcousticMobilePushInbox} from 'NativeModules';
+import { NativeModules } from 'react-native';
 
-var inboxMessageId = "abc";
+const { RNAcousticMobilePushInbox } = NativeModules;
+const inboxMessageId = "abc";
+
 RNAcousticMobilePushInbox.deleteInboxMessage(inboxMessageId);
 ```
 
@@ -116,9 +130,11 @@ This function can be used to mark an inbox message as read via the inbox message
 
 #### Example
 ```js
-import {RNAcousticMobilePushInbox} from 'NativeModules';
+import { NativeModules } from 'react-native';
 
-var inboxMessageId = "abc";
+const { RNAcousticMobilePushInbox } = NativeModules;
+const inboxMessageId = "abc";
+
 RNAcousticMobilePushInbox.readInboxMessage(inboxMessageId);
 ```
 
@@ -128,7 +144,9 @@ This function requests the SDK to sync the inbox messages with the server.
 
 #### Example
 ```js
-import {RNAcousticMobilePushInbox} from 'NativeModules';
+import { NativeModules } from 'react-native';
+
+const { RNAcousticMobilePushInbox } = NativeModules;
 
 RNAcousticMobilePushInbox.syncInboxMessages();
 ```
@@ -138,10 +156,12 @@ RNAcousticMobilePushInbox.syncInboxMessages();
 This function can be used to list the contents of the inbox. The `ascending` parameter can be `true` for messages sorted in ascending order of send date and `false` to sort the messages in descending order. The messages are provided to the `callback` function for processing.
 #### Example
 ```js
-import {RNAcousticMobilePushInbox} from 'NativeModules';
+import { NativeModules } from 'react-native';
+
+const { RNAcousticMobilePushInbox } = NativeModules;
 
 RNAcousticMobilePushInbox.listInboxMessages(false, (inboxMessages) => {
-	inboxMessages.forEach( (inboxMessage) => {
+	inboxMessages.forEach((inboxMessage) => {
 		console.log("Inbox message found with inboxMessageId: " + inboxMessage.inboxMessageId + ", content: " + JSON.stringify(inboxMessage.content) + ", expirationDate: " + inboxMessage.expirationDate + ", sendDate: " + inboxMessage.sendDate +  ", displayed using template: " + inboxMessage.templateName + ", the message is" +  (inboxMessage.isRead ? "" : " NOT" ) + " read, the message is" + (inboxMessage.isDeleted ? "" : " NOT" ) + " deleted, and is" + (inboxMessage.isRead ? "" : " NOT" ) + " expired.");
 	})
 });
@@ -152,11 +172,13 @@ RNAcousticMobilePushInbox.listInboxMessages(false, (inboxMessages) => {
 This function can be used to trigger an inbox message action. The `action` is defined in the message which is referenced by it's `inboxMessageId`. Note: these should both come from valid inbox messages in the inbox. See default and post inbox templates for concrete examples.
 #### Example
 ```js
-import {RNAcousticMobilePushInbox} from 'NativeModules';
+import { NativeModules } from 'react-native';
 
-var action = {type: "url", value: "http://accoustic.co"};
-var inboxMessageId = "abc";
-clickInboxAction(actionFromMessage, inboxMessageId);
+const { RNAcousticMobilePushInbox } = NativeModules;
+const action = {type: "url", value: "http://accoustic.co"};
+const inboxMessageId = "abc";
+
+RNAcousticMobilePushInbox.clickInboxAction(actionFromMessage, inboxMessageId);
 ```
 
 ### registerInboxComponent(`module`)
@@ -165,7 +187,9 @@ This function registers the root view for the inbox message push action handler.
 
 #### Example
 ```js
-import {RNAcousticMobilePushInbox} from 'NativeModules';
+import { NativeModules } from 'react-native';
+
+const { RNAcousticMobilePushInbox } = NativeModules;
 
 RNAcousticMobilePushInbox.registerInboxComponent("InboxAction");
 ```
@@ -177,7 +201,9 @@ This function hides the inbox message overlay that is popped up when an inbox me
 
 #### Example
 ```js
-import {RNAcousticMobilePushInbox} from 'NativeModules';
+import { NativeModules } from 'react-native';
+
+const { RNAcousticMobilePushInbox } = NativeModules;
 
 RNAcousticMobilePushInbox.hideInbox();
 ```
@@ -190,9 +216,9 @@ This event is emitted when the contents of the inbox have changed due to a sync 
 
 #### Example
 ```js
-import {NativeEventEmitter} from 'react-native';
-import {RNAcousticMobilePushInbox} from 'NativeModules';
+import { NativeEventEmitter, NativeModules } from 'react-native';
 
+const { RNAcousticMobilePushInbox } = NativeModules;
 const emitter = new NativeEventEmitter(RNAcousticMobilePushInbox);
 
 emitter.addListener('SyncInbox', () => { 
@@ -206,9 +232,9 @@ Thie event is emitted when the number of messages or unread messages changes.
 
 #### Example
 ```js
-import {NativeEventEmitter} from 'react-native';
-import {RNAcousticMobilePushInbox} from 'NativeModules';
+import { NativeEventEmitter, NativeModules } from 'react-native';
 
+const { RNAcousticMobilePushInbox } = NativeModules;
 const emitter = new NativeEventEmitter(RNAcousticMobilePushInbox);
 
 emitter.addListener('InboxCountUpdate', () => { 

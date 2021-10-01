@@ -8,144 +8,177 @@
  * prohibited.
  */
 
-'use strict';
 import React from 'react';
-import {Text, ScrollView, NativeEventEmitter, StyleSheet, TouchableNativeFeedback, Platform, TextInput, TouchableOpacity} from 'react-native';
-import {colors} from '../styles'
-import {SubscribedComponent} from './subscribed-component';
-import {RNAcousticMobilePush, RNAcousticMobilePushActionHandler} from 'NativeModules';
+import {
+  Text,
+  ScrollView,
+  StyleSheet,
+  NativeModules,
+  Platform,
+  TextInput,
+} from 'react-native';
 
-const RNAcousticMobilePushEmitter = new NativeEventEmitter(RNAcousticMobilePush);
-const RNAcousticMobilePushActionHandlerEmitter = new NativeEventEmitter(RNAcousticMobilePushActionHandler);
+import { colors } from '../styles';
+import { SubscribedComponent } from './subscribed-component';
+import { Touchable } from '../components/Touchable';
+import { ANDROID } from '../enums/os';
+import { CUSTOM_PUSH_NOT_REGISTERED, CUSTOM_PUSH_NOT_YET_REGISTERED } from '../enums/events';
+import { RNAcousticMobilePushEmitter, RNAcousticMobilePushActionHandlerEmitter } from '../helpers/eventEmitters';
 
-const Touchable = Platform.OS === 'android' ? TouchableNativeFeedback : TouchableOpacity;
+const { RNAcousticMobilePushActionHandler } = NativeModules;
 
 const pageStyles = StyleSheet.create({
-	row: {
-		flex: 1, 
-		flexDirection:"row", 
-		alignItems: "center",
-		height: 40
-	}, 
-	textInput: {
-		paddingLeft: 8,
-		textAlign: "left",
-		height: Platform.OS === 'android' ? 40 : 30,
-		flexGrow: 1, 
-		borderWidth: 1, 
-		borderColor: "#cccccc", 
-		borderRadius: 5 
-	}, 
-	title: {
-		paddingTop: 16, 
-		paddingBottom: 8, 
-		fontWeight: "bold"
-	},
-	rowTitle: {
-		width: 90,
-		paddingRight: 16
-	},
-	scrollView: {
-		paddingTop: 8, 
-		paddingBottom: 8, 
-		paddingLeft: 16,
-		paddingRight: 16, 
-	}
+  row: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: 40,
+  },
+  textInput: {
+    paddingLeft: 8,
+    textAlign: 'left',
+    height: Platform.OS === ANDROID ? 40 : 30,
+    flexGrow: 1,
+    borderWidth: 1,
+    borderColor: '#cccccc',
+    borderRadius: 5,
+  },
+  title: {
+    paddingTop: 16,
+    paddingBottom: 8,
+    fontWeight: 'bold',
+  },
+  rowTitle: {
+    width: 90,
+    paddingRight: 16,
+  },
+  scrollView: {
+    paddingTop: 8,
+    paddingBottom: 8,
+    paddingLeft: 16,
+    paddingRight: 16,
+  },
 });
 
 export class CustomActionScreen extends SubscribedComponent {
-	static navigationOptions = {
-		title: 'Custom Action',
-	};
+  static navigationOptions = {
+    title: 'Custom Action',
+  };
 
-	constructor(props){
-		super(props);
-		this.state = {
-			type: '',
-			statusText: 'No status yet',
-			statusColor: colors.none,
-			registeredActions: new Set()
-		};
-	}
+  state = {
+    type: '',
+    statusText: 'No status yet',
+    statusColor: colors.none,
+    registeredActions: new Set(),
+  }
 
-	unregisterCustomAction() {
-		if(this.state.registeredActions.has(this.state.type)) {
-			const registeredActions = this.state.registeredActions;
-			registeredActions.delete(this.state.type);
-			this.setState({registeredActions: registeredActions, statusText: 'Unregistering Custom Action: ' + this.state.type, statusColor: colors.success});
-			
-			RNAcousticMobilePushActionHandler.unregisterAction(this.state.type);
-			RNAcousticMobilePushActionHandlerEmitter.removeListener(this.state.type);
-		} else {
-			this.setState({statusText: "Custom action type " + this.state.type + ' is not registered', statusColor: colors.warning});				
-		}
-	}
+  componentDidMount() {
+    RNAcousticMobilePushEmitter.addListener(CUSTOM_PUSH_NOT_YET_REGISTERED, (userInfo) => {
+      this.setState({
+        statusText: `Custom action received, but is not yet registered ${userInfo.type}`,
+        statusColor: colors.warning,
+      });
+    });
 
-	componentWillMount() {
-		super.componentWillMount();
-		const self = this;
-		RNAcousticMobilePushEmitter.addListener('CustomPushNotYetRegistered', function (userInfo) {
-			self.setState({statusText: "Custom action received, but is not yet registered " + userInfo.type, statusColor: colors.warning});
-		});
+    RNAcousticMobilePushEmitter.addListener(CUSTOM_PUSH_NOT_REGISTERED, (userInfo) => {
+      this.setState({
+        statusText: `Custom action received, but is not registered ${userInfo.type}`,
+        statusColor: colors.error,
+      });
+    });
+  }
 
-		RNAcousticMobilePushEmitter.addListener('CustomPushNotRegistered', function (userInfo) {
-			self.setState({statusText: "Custom action received, but is not registered " + userInfo.type, statusColor: colors.error});
-		});
-	}
+  componentWillUnmount() {
+    const { registeredActions } = this.state;
+    super.componentWillUnmount();
+    RNAcousticMobilePushEmitter.removeListener(CUSTOM_PUSH_NOT_REGISTERED);
+    RNAcousticMobilePushEmitter.removeListener(CUSTOM_PUSH_NOT_YET_REGISTERED);
 
-	componentWillUnmount() {
-		super.componentWillUnmount();
-		RNAcousticMobilePushEmitter.removeListener('CustomPushNotYetRegistered');
-		RNAcousticMobilePushEmitter.removeListener('CustomPushNotRegistered');
-		const registeredActions = this.state.registeredActions.values();
-		for(const type in registeredActions) {
-			RNAcousticMobilePushActionHandler.unregisterAction(type);
-			RNAcousticMobilePushActionHandlerEmitter.removeListener(type);
-		}
-	}
+    for (const type of registeredActions) {
+      RNAcousticMobilePushActionHandler.unregisterAction(type);
+      RNAcousticMobilePushActionHandlerEmitter.removeListener(type);
+    }
+  }
 
-	registerCustomAction() {
-		const registeredActions = this.state.registeredActions;
-		const self = this;
-		if(registeredActions.has(this.state.type)) {
-			self.setState({statusText: "Custom action type " + this.state.type + " is already registered", statusColor: colors.warning});
-		} else {
-			self.setState({statusText: 'Registering Custom Action: ' + this.state.type, statusColor: colors.success});
-		}
-		registeredActions.add(this.state.type);
-		self.setState({registeredActions: registeredActions});
+  unregisterCustomAction = () => {
+    const { registeredActions, type } = this.state;
 
-		function handleCustomAction(details) {
-			self.setState({statusText: "Received Custom Action: " + JSON.stringify(details), statusColor: colors.success});
-		}
+    if (registeredActions.has(type)) {
+      registeredActions.delete(type);
+      this.setState({
+        registeredActions,
+        statusText: `Unregistering Custom Action: ${type}`,
+        statusColor: colors.success,
+      });
 
-		RNAcousticMobilePushActionHandler.registerAction(this.state.type, handleCustomAction);
-		RNAcousticMobilePushActionHandlerEmitter.addListener(this.state.type, handleCustomAction);
-	}
+      RNAcousticMobilePushActionHandler.unregisterAction(type);
+      RNAcousticMobilePushActionHandlerEmitter.removeListener(type);
+    } else {
+      this.setState({
+        statusText: `Custom action type ${type} is not registered`,
+        statusColor: colors.warning,
+      });
+    }
+  }
 
-	render() {
-		const self = this;
-		return (
-			<ScrollView style={{minHeight:'100%', paddingLeft: 16, paddingRight: 16}}>
-				<Text style={pageStyles.title}>Custom Action Type</Text>
-				<TextInput placeholder="optional" style={pageStyles.textInput} value={self.state.type} onChangeText={(text) =>    
-					self.setState({type: text})
-				} keyboardType="default" autoCorrect={false} autoCompleteType={"off"} autoCapitalize="none" clearButtonMode="always" />
+  handleCustomAction = (details) => {
+    this.setState({ statusText: `Received Custom Action: ${JSON.stringify(details)}`, statusColor: colors.success });
+  };
 
-				<Text style={pageStyles.title}>Register Custom Action</Text>
-				<Touchable accessibilityRole="button" onPress={ () => { self.registerCustomAction() } }>
-					<Text style={{color: colors.blue}}>Register Custom Action with Type</Text>
-				</Touchable>
-				<Text style={pageStyles.title}>Unregister Custom Action</Text>
+  registerCustomAction = () => {
+    const { registeredActions, type } = this.state;
 
-				<Touchable accessibilityRole="button" onPress={ () => { self.unregisterCustomAction() } }>
-					<Text style={{color: colors.blue}}>Unregister Custom Action with Type</Text>
-				</Touchable>
+    if (registeredActions.has(type)) {
+      this.setState({
+        statusText: `Custom action type ${type} is already registered`,
+        statusColor: colors.warning,
+      });
+    } else {
+      this.setState({ statusText: `Registering Custom Action: ${type}`, statusColor: colors.success });
+    }
+    registeredActions.add(type);
+    this.setState({ registeredActions });
 
-				<Text style={pageStyles.title}>Status</Text>
-				<Text style={{color: self.state.statusColor}}>{self.state.statusText}</Text>
+    RNAcousticMobilePushActionHandler.registerAction(type, this.handleCustomAction);
+    RNAcousticMobilePushActionHandlerEmitter.addListener(type, this.handleCustomAction);
+  }
 
-			</ScrollView>
-		);
-	}
+  render() {
+    const { type, statusColor, statusText } = this.state;
+
+    return (
+      <ScrollView style={{ minHeight: '100%', paddingLeft: 16, paddingRight: 16 }}>
+        <Text style={pageStyles.title}>Custom Action Type</Text>
+        <TextInput
+          placeholder="optional"
+          style={pageStyles.textInput}
+          value={type}
+          onChangeText={(text) => this.setState({ type: text })}
+          keyboardType="default"
+          autoCorrect={false}
+          autoCompleteType="off"
+          autoCapitalize="none"
+          clearButtonMode="always"
+        />
+
+        <Text style={pageStyles.title}>Register Custom Action</Text>
+        <Touchable
+          accessibilityRole="button"
+          onPress={this.registerCustomAction}>
+          <Text style={{ color: colors.blue }}>Register Custom Action with Type</Text>
+        </Touchable>
+        <Text style={pageStyles.title}>Unregister Custom Action</Text>
+
+        <Touchable
+          accessibilityRole="button"
+          onPress={this.unregisterCustomAction}>
+          <Text style={{ color: colors.blue }}>Unregister Custom Action with Type</Text>
+        </Touchable>
+
+        <Text style={pageStyles.title}>Status</Text>
+        <Text style={{ color: statusColor }}>{statusText}</Text>
+
+      </ScrollView>
+    );
+  }
 }

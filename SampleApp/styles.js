@@ -8,47 +8,46 @@
  * prohibited.
  */
 
-'use strict';
-import {PixelRatio, StyleSheet} from 'react-native';
+import { PixelRatio, StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
-	row: {
-		borderBottomColor: '#cacaec',
-		borderBottomWidth: 1 / PixelRatio.get(),
-		backgroundColor: '#ffffff'
-	},
-	firstRow: {
-		borderBottomColor: '#cacaec',
-		borderBottomWidth: 1 / PixelRatio.get(),
-		borderTopColor: '#cacaec',
-		borderTopWidth: 1 / PixelRatio.get(),
-		backgroundColor: '#ffffff'
-	},
-	scrollView: {
-		backgroundColor: '#efeff4', 
-		minHeight:'100%'
-	},
-	tableHeader: {
-		paddingBottom: 5, 
-		paddingLeft: 10, 
-		paddingTop: 30, 
-		textTransform: "uppercase", 
-		fontSize: 12, 
-		color: '#737377'
-	},
-	tableFooter: {
-		paddingLeft: 10, 
-		paddingTop: 5, 
-		fontSize: 12, 
-		color: '#737377'
-	},
+  row: {
+    borderBottomColor: '#cacaec',
+    borderBottomWidth: 1 / PixelRatio.get(),
+    backgroundColor: '#ffffff',
+  },
+  firstRow: {
+    borderBottomColor: '#cacaec',
+    borderBottomWidth: 1 / PixelRatio.get(),
+    borderTopColor: '#cacaec',
+    borderTopWidth: 1 / PixelRatio.get(),
+    backgroundColor: '#ffffff',
+  },
+  scrollView: {
+    backgroundColor: '#efeff4',
+    minHeight: '100%',
+  },
+  tableHeader: {
+    paddingBottom: 5,
+    paddingLeft: 10,
+    paddingTop: 30,
+    textTransform: 'uppercase',
+    fontSize: 12,
+    color: '#737377',
+  },
+  tableFooter: {
+    paddingLeft: 10,
+    paddingTop: 5,
+    fontSize: 12,
+    color: '#737377',
+  },
 });
 
 export const colors = {
-	queued: "#DAA520", 
-	warning: "#DAA520", 
-	success: '#228B22', 
-	error: '#B22222', 
-	none: '#808080', 
-	blue: "#3478F7"
+  queued: '#DAA520',
+  warning: '#DAA520',
+  success: '#228B22',
+  error: '#B22222',
+  none: '#808080',
+  blue: '#3478F7',
 };

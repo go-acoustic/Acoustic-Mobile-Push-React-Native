@@ -78,6 +78,11 @@ import co.acoustic.mobile.push.sdk.util.Iso8601;
 import co.acoustic.mobile.push.sdk.util.Logger;
 import co.acoustic.mobile.push.sdk.wi.MceSdkWakeLock;
 import co.acoustic.mobile.push.sdk.location.LocationBroadcastReceiver;
+import co.acoustic.mobile.push.sdk.api.message.MessageProcessor;
+import co.acoustic.mobile.push.sdk.api.message.MessageProcessorRegistry;
+import co.acoustic.mobile.push.sdk.plugin.inapp.InAppMessageProcessor;
+import co.acoustic.mobile.push.sdk.plugin.inbox.InboxMessageProcessor;
+import co.acoustic.mobile.push.sdk.notification.CertificationMessageProcessor;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -184,6 +189,7 @@ public class RNAcousticMobilePushModule extends ReactContextBaseJavaModule imple
     private static void startMceSdk() {
         applyMceSdkConfiguration();
         Logger.d(TAG, "SDK configuration was applied");
+        initMessageProcessors();
         try {
             Class inAppPluginClass = Class.forName("co.acoustic.mobile.push.sdk.plugin.inapp.InAppPlugin");
             Plugin inAppPlugin = (Plugin)inAppPluginClass.newInstance();
@@ -200,6 +206,24 @@ public class RNAcousticMobilePushModule extends ReactContextBaseJavaModule imple
 
         if(MceSdk.getRegistrationClient().getRegistrationDetails(reactContext).getUserId() != null) {
             sendReactNativeChannelAttribute();
+        }
+    }
+
+    private static void initMessageProcessors() {
+
+        MessageProcessor pushMsg = MessageProcessorRegistry.getMessageProcessor("certifiedPushMessages");
+        if(pushMsg == null) {
+            MessageProcessorRegistry.registerMessageProcessor("certifiedPushMessages", new CertificationMessageProcessor());
+        }
+
+        MessageProcessor inApp = MessageProcessorRegistry.getMessageProcessor("inAppMessages");
+        if(inApp == null) {
+            MessageProcessorRegistry.registerMessageProcessor("inAppMessages", new InAppMessageProcessor());
+        }
+
+        MessageProcessor inbox = MessageProcessorRegistry.getMessageProcessor("messages");
+        if(inbox == null) {
+            MessageProcessorRegistry.registerMessageProcessor("messages", new InboxMessageProcessor());
         }
     }
 
@@ -434,12 +458,6 @@ public class RNAcousticMobilePushModule extends ReactContextBaseJavaModule imple
         RegistrationClientImpl.setAutoReinitialize(reactContext, mceSdkConfiguration.isAutoReinitialize());
         RegistrationDetails registrationDetails = MceSdk.getRegistrationClient().getRegistrationDetails(reactContext);
         MessagingManager.setMessagingServiceImpl(reactContext, mceSdkConfiguration.getMessagingService());
-        if(registrationDetails.getChannelId() != null) {
-            Logger.d(TAG,"SDK is registered. Verifying Zebra...");
-            if(RegistrationIntentService.shouldUpdateZebraClientId(reactContext)) {
-                RegistrationIntentService.addToQueue(reactContext, RegistrationIntentService.RegistrationType.ZEBRA_REGISTRATION);
-            }
-        }
     }
 
 	@Override
@@ -454,7 +472,7 @@ public class RNAcousticMobilePushModule extends ReactContextBaseJavaModule imple
 
 		final Map<String, Object> constants = new HashMap<>();
 		constants.put("sdkVersion", MceSdk.getSdkVerNumber());
-        constants.put("pluginVersion", "3.8.0");
+        constants.put("pluginVersion", "3.8.4");
 		constants.put("appKey", appKey );
 		return constants;
 	}

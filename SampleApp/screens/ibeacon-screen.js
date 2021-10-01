@@ -8,106 +8,134 @@
  * prohibited.
  */
 
-'use strict';
 import React from 'react';
-import {Text, ScrollView, TouchableNativeFeedback, TouchableOpacity, Platform} from 'react-native';
-import {ListItem} from 'react-native-elements'
-import {styles, colors} from '../styles'
-import {SubscribedComponent} from './subscribed-component';
-import {RNAcousticMobilePushBeacon, RNAcousticMobilePushLocation} from 'NativeModules';
-import {RNAcousticMobilePushLocationEmitter, RNAcousticMobilePushBeaconEmitter} from './home-screen';
-const Touchable = Platform.OS === 'android' ? TouchableNativeFeedback : TouchableOpacity;
+import { Text, ScrollView, NativeModules } from 'react-native';
+import { ListItem } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Ionicons';
 
+import { styles, colors } from '../styles';
+import { SubscribedComponent } from './subscribed-component';
+import { RNAcousticMobilePushLocationEmitter, RNAcousticMobilePushBeaconEmitter } from '../helpers/eventEmitters';
+import { Touchable } from '../components/Touchable';
+import { ALWAYS, DELAYED, DENIED, DISABLED, ENABLED, RESTRICTED, UNKNOWN } from '../enums/status';
+import { DOWNLOADED_LOCATIONS, ENTERED_BEACON, EXITED_BEACON } from '../enums/events';
+
+const { RNAcousticMobilePushBeacon, RNAcousticMobilePushLocation } = NativeModules;
+
 export class iBeaconScreen extends SubscribedComponent {
-	static navigationOptions = ({ navigation }) => {
-		return {
-			title: "Beacons",
-			headerRight: (
-				<Touchable onPress={ () => { RNAcousticMobilePushLocation.syncLocations(); } }>
-					<Icon name="ios-sync" color="#000" size={24} style={{paddingRight: 20}} />
-				</Touchable>
-			),
-		};
-	};		
+  static navigationOptions = {
+    title: 'Beacons',
+    headerRight: () => (
+      <Touchable onPress={() => {
+        RNAcousticMobilePushLocation.syncLocations();
+      }}>
+        <Icon name="ios-sync" color="#000" size={24} style={{ paddingRight: 20 }} />
+      </Touchable>
+    ),
+  };
 
-    constructor(props) {
-        super(props);
-		this.state = {	
-			status: "unknown",
-			statusColor: colors.none,
-			statusDetail: {},
-			regions: []
-		};
-	}
+  constructor(props) {
+    super(props);
+    this.state = {
+      status: UNKNOWN,
+      statusColor: colors.none,
+      statusDetail: {},
+      regions: [],
+    };
+  }
 
-	componentWillMount() {
-		super.componentWillMount();
+  componentDidMount() {
+    this.checkStatus();
 
-		this.checkStatus();			
+    this.subscriptions.push(RNAcousticMobilePushLocationEmitter.addListener(DOWNLOADED_LOCATIONS, () => {
+      RNAcousticMobilePushBeacon.beaconRegions().then((regions) => {
+        this.setState({ regions });
+      });
+    }));
 
-		this.subscriptions.push( RNAcousticMobilePushLocationEmitter.addListener('DownloadedLocations', (error, events) => {
-			RNAcousticMobilePushBeacon.beaconRegions().then((regions) => { 
-			this.setState({regions: regions});
-			});
-		}));
+    this.subscriptions.push(RNAcousticMobilePushBeaconEmitter.addListener(ENTERED_BEACON, (detail) => {
+      const statusDetail = {};
+      statusDetail[detail.id] = `Entered Minor${detail.minor}`;
+      this.setState({ statusDetail });
+    }));
 
-		this.subscriptions.push( RNAcousticMobilePushBeaconEmitter.addListener('EnteredBeacon', (detail) => {
-			var statusDetail = {}
-			statusDetail[detail.id] = 'Entered Minor' + detail.minor;
-			this.setState({statusDetail: statusDetail});
-		}));
+    this.subscriptions.push(RNAcousticMobilePushBeaconEmitter.addListener(EXITED_BEACON, (detail) => {
+      const statusDetail = {};
+      statusDetail[detail.id] = `Exited Minor${detail.minor}`;
+      this.setState({ status: statusDetail });
+    }));
 
-		this.subscriptions.push( RNAcousticMobilePushBeaconEmitter.addListener('ExitedBeacon', (detail) => {
-			var statusDetail = {}
-			statusDetail[detail.id] = 'Exited Minor' + detail.minor;
-			this.setState({status: statusDetail});
-		}));
+    RNAcousticMobilePushBeacon.beaconRegions().then((regions) => {
+      this.setState({ regions });
+    });
+  }
 
-		RNAcousticMobilePushBeacon.beaconRegions().then((regions) => { 
-			this.setState({regions: regions});
-		});
-	}
+  checkStatus() {
+    RNAcousticMobilePushLocation.locationStatus((status) => {
+      if (status === DENIED) {
+        this.setState({ status: 'Denied', statusColor: colors.error });
+      } else if (status === DELAYED) {
+        this.setState({ status: 'Delayed (Touch to enable)', statusColor: colors.none });
+      } else if (status === ALWAYS) {
+        this.setState({ status: 'Enabled', statusColor: colors.success });
+      } else if (status === RESTRICTED) {
+        this.setState({ status: 'Restricted', statusColor: colors.error });
+      } else if (status === ENABLED) {
+        this.setState({ status: 'Enabled (When in use)', statusColor: colors.warning });
+      } else if (status === DISABLED) {
+        this.setState({ status: 'Disabled', statusColor: colors.error });
+      }
+    });
+  }
 
-	checkStatus() {
-		const self = this;
-		RNAcousticMobilePushLocation.locationStatus((status)=>{
-			if(status == "denied") {
-				self.setState({status: "Denied", statusColor: colors.error});
-			} else if(status == "delayed") {
-				self.setState({status: "Delayed (Touch to enable)", statusColor: colors.none});
-			} else if(status == "always") {
-				self.setState({status: "Enabled", statusColor: colors.success});
-			} else if(status == "restricted") {
-				self.setState({status: "Restricted", statusColor: colors.error});
-			} else if(status == "enabled") {
-				self.setState({status: "Enabled (When in use)", statusColor: colors.warning});
-			} else if(status == "disabled") {
-				self.setState({status: "Disabled", statusColor: colors.error});
-			}
-		});
-	}
+  render() {
+    const { regions, status, statusColor, statusDetail } = this.state;
 
-	render() {
-		return (
-			<ScrollView style={styles.scrollView}>
-				<Text style={styles.tableHeader}>iBeacon Feature</Text>
-				<ListItem title="UUID" style={styles.firstRow} subtitle={RNAcousticMobilePushBeacon.uuid} />
-				<ListItem title="Status" style={styles.row} subtitleStyle={{color: this.state.statusColor }} subtitle={this.state.status} />
+    return (
+      <ScrollView style={styles.scrollView}>
+        <Text style={styles.tableHeader}>iBeacon Feature</Text>
+        {/* <ListItem title="UUID" style={styles.firstRow} subtitle={RNAcousticMobilePushBeacon.uuid} />
+        <ListItem title="Status"
+          style={styles.row}
+          subtitleStyle={{ color: statusColor }}
+          subtitle={status}
+        /> */}
+        <ListItem style={styles.firstRow}>
+                <ListItem.Content>
+                  <ListItem.Title>UUID</ListItem.Title>
+                  <ListItem.Subtitle>{RNAcousticMobilePushBeacon.uuid}</ListItem.Subtitle>
+                </ListItem.Content>
+              </ListItem>
+        <ListItem style={styles.row}>
+                <ListItem.Content>
+                  <ListItem.Title>Status</ListItem.Title>
+                  <ListItem.Subtitle style={{ color: statusColor }}>{status}</ListItem.Subtitle>
+                </ListItem.Content>
+              </ListItem>
 
-				<Text style={styles.tableHeader}>iBeacon Major Regions</Text>
-					{ this.state.regions.map((region) => {
-						if(this.state.statusDetail[region.id]) {
-							return (
-								<ListItem key={region.id} title={region.major + ""} rightTitle={this.state.statusDetail[region.id]} />
-							);
-						} else {
-							return (
-								<ListItem key={region.id} title={region.major + ""} />
-							);
-						}
-					}) }
-			</ScrollView>
-		);
-	}
+        <Text style={styles.tableHeader}>iBeacon Major Regions</Text>
+        {regions.map((region) => {
+          if (statusDetail[region.id]) {
+            return (
+              // <ListItem key={region.id} title={`${region.major}`} rightTitle={statusDetail[region.id]} />
+              <ListItem key={region.id}>
+                <ListItem.Content>
+                  <ListItem.Title>{`${region.major}`}</ListItem.Title>
+                  <ListItem.Subtitle>{statusDetail[region.id]}</ListItem.Subtitle>
+                </ListItem.Content>
+              </ListItem>
+            );
+          }
+          return (
+            // <ListItem key={region.id} title={`${region.major}`} />
+            <ListItem key={region.id}>
+              <ListItem.Content>
+                <ListItem.Title>{`${region.major}`}</ListItem.Title>
+              </ListItem.Content>
+            </ListItem>
+          );
+        })}
+      </ScrollView>
+    );
+  }
 }

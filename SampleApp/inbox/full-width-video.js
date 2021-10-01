@@ -8,59 +8,59 @@
  * prohibited.
  */
 
-'use strict';
-import {View, Platform, TouchableNativeFeedback, TouchableOpacity} from 'react-native';
+import { View } from 'react-native';
 import Video from 'react-native-video';
-import React, {Component} from 'react';
-const Touchable = Platform.OS === 'android' ? TouchableNativeFeedback : TouchableOpacity;
+import React, { Component } from 'react';
+
+import { Touchable } from '../components/Touchable';
 
 export default class FullWidthVideo extends Component {
-    constructor() {
-        super();
-        
-        this.state = {
-            containerWidth: 0,
-            width: 1,
-            height: 1,
-            videoPaused: false
-        };
-    }
+  state = {
+    containerWidth: 0,
+    width: 1,
+    height: 1,
+    videoPaused: false,
+  };
 
-    onLayout(event) {
-        const containerWidth = event.nativeEvent.layout.width;
-        this.setState({containerWidth:containerWidth});
-    }
+  componentWillUnmount() {
+    this.setState({ videoPaused: true });
+  }
 
-    onLoad(response) {
-        const { width, height } = response.naturalSize;
-        this.setState({width: width, height: height, videoPaused: true});
-    }
+  onLayout(event) {
+    const containerWidth = event.nativeEvent.layout.width;
+    this.setState({ containerWidth });
+  }
 
-    onPress() {
-        this.setState({ videoPaused: !this.state.videoPaused});
-    }
+  onLoad(response) {
+    const { width, height } = response.naturalSize;
+    this.setState({ width, height, videoPaused: true });
+  }
 
-    componentWillUnmount() {
-        this.setState({ videoPaused: true });
-    }
+  onPress() {
+    this.setState((state) => ({ videoPaused: !state.videoPaused }));
+  }
 
-    render() {
-        const heightScaled = this.state.height * (this.state.containerWidth / this.state.width);
-        return (
-            <View onLayout={this.onLayout.bind(this)}>
-                <Touchable accessibilityRole="button" onPress={this.onPress.bind(this)}>
-                    <Video 
-                        controls={true}
-                        style={{
-                            width: this.state.containerWidth,
-                            height: heightScaled
-                        }}
-                        resizeMode='cover'
-                        paused={this.state.videoPaused}
-                        onLoad={this.onLoad.bind(this)}
-                        source={this.props.source} />
-                </Touchable>
-            </View>
-        )
-    }
+  render() {
+    const { containerWidth, height, width, videoPaused } = this.state;
+    const { source } = this.props;
+    const heightScaled = height * (containerWidth / width);
+
+    return (
+      <View onLayout={this.onLayout.bind(this)}>
+        <Touchable accessibilityRole="button" onPress={this.onPress.bind(this)}>
+          <Video
+            controls
+            style={{
+              width: containerWidth,
+              height: heightScaled,
+            }}
+            resizeMode="cover"
+            paused={videoPaused}
+            onLoad={this.onLoad.bind(this)}
+            source={source}
+          />
+        </Touchable>
+      </View>
+    );
+  }
 }

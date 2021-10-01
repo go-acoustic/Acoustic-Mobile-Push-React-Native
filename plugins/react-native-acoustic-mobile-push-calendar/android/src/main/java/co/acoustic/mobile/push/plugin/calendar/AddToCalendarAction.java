@@ -151,4 +151,9 @@ public class AddToCalendarAction implements MceNotificationAction{
         }
         return TimeZone.getDefault();
     }
+
+    @Override
+    public boolean shouldSendDefaultEvent(Context context) {
+        return true;
+    }
 }

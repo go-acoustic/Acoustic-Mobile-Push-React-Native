@@ -55,23 +55,33 @@ This plugin is used to add InApp functionality to your application. The messages
 
 ## Installation
 ```sh
+yarn add file:<sdk folder>/plugins/react-native-acoustic-mobile-push-inapp
+```
+or 
+```sh
 npm install --save <sdk folder>/plugins/react-native-acoustic-mobile-push-inapp
 ```
 
 ### Post Installation Steps
-> Link the plugin with
+> For React Native v.059 and lower link the plugin with
 ```sh
 react-native link react-native-acoustic-mobile-push-inapp
 ```
 
 > Template files in this plugins javascript directory will need to be integrated into your application and the templates will need to be imported so they can register with the SDK at startup like this:
 ```js
-import {InAppBanner} from './in-app/in-app-banner';
-import {inAppMedia} from './in-app/in-app-media';
+import './in-app/in-app-banner';
+import './in-app/in-app-media';
 ```
 > You should also add appropriate places in the app that display messages. See <a href="#user-content-executeinapprules">executeInApp</a> for details.
 
 ## Module API
+
+### From React Native v.060 and higher NativeModules are part of react-native. If you are using lower version of RN please use the following code to import RNAcoustic modules:
+
+```js
+import { RNAcousticMobilePushInapp } from 'NativeModules';
+````
 
 ### hideInApp()
 #### Description
@@ -79,7 +89,9 @@ This function hides the currently displayed InApp message.
 
 #### Example
 ```js
-import {RNAcousticMobilePushInapp} from 'NativeModules';
+import { NativeModules } from 'react-native';
+
+const { RNAcousticMobilePushInapp } = NativeModules;
 
 RNAcousticMobilePushInapp.hideInApp();
 ```
@@ -90,20 +102,22 @@ This function can be used to add a new InApp message to the system. Note: this i
 
 #### Example
 ```js
-import {RNAcousticMobilePushInapp} from 'NativeModules';
+import { NativeModules } from 'react-native';
 
-var content = {
+const { RNAcousticMobilePushInapp } = NativeModules;
+const content = {
 	text: "Minimal Banner Message",
 	action: {
 		type: "url",
 		value: "http://acoustic.co"
 	}
 };
-var template = "default";
-var rules = ['product', 'home']; // Keywords of when to display this InApp message 
-var maxViews = 5; // Maximum number of times a message is displayed
-var attribution = "optional attribution string";
-var mailingId = "optional mailing id string";
+const template = "default";
+const rules = ['product', 'home']; // Keywords of when to display this InApp message 
+const maxViews = 5; // Maximum number of times a message is displayed
+const attribution = "optional attribution string";
+const mailingId = "optional mailing id string";
+
 RNAcousticMobilePushInapp.createInApp(content, template, rules, maxViews, attribution, mailingId);
 ```
 
@@ -113,9 +127,11 @@ This function executes the specified `rules`, which is an array of keywords. If 
 
 #### Example
 ```js
-import {RNAcousticMobilePushInapp} from 'NativeModules';
+import { NativeModules } from 'react-native';
 
-var rules = ["product", "about"];
+const { RNAcousticMobilePushInapp } = NativeModules;
+const rules = ["product", "about"];
+
 RNAcousticMobilePushInapp.executeInApp(rules);
 ```
 
@@ -125,9 +141,10 @@ This function registers an InApp template with the sdk. The `template` name shou
 
 #### Example
 ```js
-import {AppRegistry} from 'react-native';
-import {RNAcousticMobilePushInapp} from 'NativeModules';
-import {InAppTemplate} from './in-app-template';
+import { AppRegistry, NativeModules } from 'react-native';
+import { InAppTemplate } from './in-app-template';
+
+const { RNAcousticMobilePushInapp } = NativeModules;
 
 export default class ExampleTemplate extends InAppTemplate {
 	render() {
@@ -147,9 +164,11 @@ This function registers a click of an InApp message which sends an event back to
 
 #### Example
 ```js
-import {RNAcousticMobilePushInapp} from 'NativeModules';
+import { NativeModules } from 'react-native';
 
-var inAppMessageId = "ABCD";
+const { RNAcousticMobilePushInapp } = NativeModules;
+const inAppMessageId = "ABCD";
+
 RNAcousticMobilePushInapp.clickInApp(inAppMessageid)
 ```
 
@@ -159,7 +178,9 @@ This function requests the SDK to sync the inbox messages with the server.
 
 #### Example
 ```js
-import {RNAcousticMobilePushInapp} from 'NativeModules';
+import { NativeModules } from 'react-native';
+
+const { RNAcousticMobilePushInapp } = NativeModules;
 
 RNAcousticMobilePushInapp.syncInAppMessages();
 ```
@@ -170,8 +191,10 @@ This function can be used to remove an InApp message from the database. The `inA
 
 #### Example
 ```js
-import {RNAcousticMobilePushInapp} from 'NativeModules';
+import { NativeModules } from 'react-native';
 
-var inAppMessageId = "ABCD";
+const { RNAcousticMobilePushInapp } = NativeModules;
+const inAppMessageId = "ABCD";
+
 RNAcousticMobilePushInapp.deleteInApp(inAppMessageid)
 ```

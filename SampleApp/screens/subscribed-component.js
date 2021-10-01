@@ -8,17 +8,12 @@
  * prohibited.
  */
 
-'use strict';
-import React from 'react';
+import { Component } from 'react';
 
-export class SubscribedComponent extends React.Component {
-	componentWillUnmount() {
-		this.subscriptions.forEach(function (subscription){
-			subscription.remove();
-		});
-	}
+export class SubscribedComponent extends Component {
+  subscriptions = []
 
-	componentWillMount() {
-		this.subscriptions = [];
-	}
+  componentWillUnmount() {
+    this.subscriptions.forEach((subscription) => subscription.remove());
+  }
 }

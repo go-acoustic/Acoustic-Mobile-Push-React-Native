@@ -18,5 +18,15 @@ FOUNDATION_EXPORT const unsigned char AcousticMobilePushNotificationVersionStrin
 
 // In this header, you should import all the public headers of your framework using statements like #import <AcousticMobilePushNotification/PublicHeader.h>
 
+#import <AcousticMobilePushNotification/MCEPayload.h>
+#import <AcousticMobilePushNotification/MCEDeliveryActionPayload.h>
+#import <AcousticMobilePushNotification/MCECategoryActionPayload.h>
+#import <AcousticMobilePushNotification/MCENotificationPayload.h>
 #import <AcousticMobilePushNotification/MCENotificationService.h>
 #import <AcousticMobilePushNotification/MCEConfig.h>
+#import <AcousticMobilePushNotification/MCERegistrationDetails.h>
+#import <AcousticMobilePushNotification/MCEEventService.h>
+#import <AcousticMobilePushNotification/MCEEvent.h>
+#import <AcousticMobilePushNotification/MCEClient.h>
+#import <AcousticMobilePushNotification/MCEApiUtil.h>
+#import <AcousticMobilePushNotification/MCEConstants.h>

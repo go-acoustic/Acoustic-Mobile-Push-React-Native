@@ -56,6 +56,9 @@ import co.acoustic.mobile.push.sdk.plugin.inbox.InboxMessagesClient;
 import co.acoustic.mobile.push.sdk.plugin.inbox.RichContent;
 import co.acoustic.mobile.push.sdk.plugin.inbox.RichContentDatabaseHelper;
 import co.acoustic.mobile.push.sdk.util.Logger;
+import co.acoustic.mobile.push.sdk.api.message.MessageSync;
+import co.acoustic.mobile.push.sdk.plugin.inbox.InboxMessageProcessor;
+import co.acoustic.mobile.push.sdk.api.message.MessageProcessor;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -126,19 +129,27 @@ public class RNAcousticMobilePushInboxModule extends ReactContextBaseJavaModule 
 					final RichContent inboxMessage = messageReference.getMessageFromDb(reactContext);
 					if (inboxMessage == null) {
 						Logger.d(TAG, "Inbox message not found");
-						InboxMessagesClient.addMessageToLoad(messageReference);
-						InboxMessagesClient.loadInboxMessages(reactContext, new OperationCallback<List<RichContent>>() {
+						InboxMessageProcessor.addMessageToLoad(messageReference);
+						MessageSync.syncMessages(reactContext, new OperationCallback<MessageSync.SyncReport>() {
 							@Override
-							public void onSuccess(List<RichContent> inboxMessages, OperationResult result) {
+							public void onSuccess(MessageSync.SyncReport syncReport, OperationResult result) {
 								Logger.i(TAG, "Downloaded messages");
-								for (final RichContent inboxMessage : inboxMessages) {
-									if(inboxMessage.getMessageId().equals(messageReference.getInboxMessageId())) {
+								InboxMessageProcessor.Report report = null;
+								for(MessageProcessor.ProcessReport processReport: syncReport.getReports()) {
+									if(processReport instanceof InboxMessageProcessor.Report) {
+										report = (InboxMessageProcessor.Report)processReport;
+									}
+								}
+								for(int i=0; i<report.getNewMessages().size(); i++) {
+									RichContent message = report.getNewMessages().get(i);
+									if(message.getMessageId().equals(messageReference.getInboxMessageId())) {
 										Logger.i(TAG, "Downloaded message");
+										final RichContent msg = message;
 										activity.runOnUiThread(new Runnable() {
 											@Override
 											public void run() {
 												internalHideInbox();
-												showInboxMessage(inboxMessage, activity);
+												showInboxMessage(msg, activity);
 											}
 										});
 										return;
@@ -148,7 +159,7 @@ public class RNAcousticMobilePushInboxModule extends ReactContextBaseJavaModule 
 							}
 
 							@Override
-							public void onFailure(List<RichContent> richContents, OperationResult result) {
+							public void onFailure(MessageSync.SyncReport syncReport, OperationResult result) {
 								Logger.e(TAG, "Could not download message");
 							}
 						});
@@ -177,6 +188,11 @@ public class RNAcousticMobilePushInboxModule extends ReactContextBaseJavaModule 
 			@Override
 			public boolean shouldDisplayNotification(Context context, NotificationDetails notificationDetails, Bundle bundle) {
 				return true;
+			}
+
+			@Override
+			public boolean shouldSendDefaultEvent(Context context) {
+				return false;
 			}
 		});
 	}
@@ -295,14 +311,14 @@ public class RNAcousticMobilePushInboxModule extends ReactContextBaseJavaModule 
 
 	@ReactMethod
 	public void syncInboxMessages() {
-		InboxMessagesClient.loadInboxMessages(reactContext, new OperationCallback<List<RichContent>>() {
+		MessageSync.syncMessages(reactContext, new OperationCallback<MessageSync.SyncReport>() {
 			@Override
-			public void onSuccess(List<RichContent> newRichContents, OperationResult result) {
+			public void onSuccess(MessageSync.SyncReport syncReport, OperationResult result) {
 				sendEvent("SyncInbox", null);
 			}
 
 			@Override
-			public void onFailure(List<RichContent> richContents, OperationResult result) {
+			public void onFailure(final MessageSync.SyncReport syncReport, final OperationResult result) {
 				sendEvent("SyncInbox", null);
 			}
 		});

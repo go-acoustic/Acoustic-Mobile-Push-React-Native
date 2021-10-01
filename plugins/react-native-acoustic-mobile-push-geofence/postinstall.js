@@ -7,7 +7,7 @@
  * Acoustic, L.P. Any unauthorized copying or distribution of content from this file is
  * prohibited.
  */
- 
+
 const fs = require('fs');
 const path = require('path');
 const xml2js = require('xml2js');
@@ -27,7 +27,7 @@ function findInstallDirectory() {
 
 	// Windows
 	currentDirectory = process.cwd();
-	while(!fs.existsSync(path.join(currentDirectory, "app.json"))) {		
+	while(!fs.existsSync(path.join(currentDirectory, "app.json"))) {
 		var parentDirectory = path.dirname(currentDirectory);
 		console.log("cwd: ", currentDirectory, ", parent: ", parentDirectory);
 		if(parentDirectory == currentDirectory) {
@@ -37,7 +37,7 @@ function findInstallDirectory() {
 		currentDirectory = parentDirectory;
 	}
 	console.log("Install Directory Found:", currentDirectory);
-	
+
 	return currentDirectory;
 }
 
@@ -49,7 +49,7 @@ function findMainPath(installDirectory) {
 
 	const iosDirectory = path.join(installDirectory, 'ios');
 	var directory;
-	fs.readdirSync(iosDirectory).forEach((basename) => { 
+	fs.readdirSync(iosDirectory).forEach((basename) => {
 		const mainPath = path.join(iosDirectory, basename);
 		if(fs.lstatSync(mainPath).isDirectory()) {
 			const filename = path.join(mainPath, "main.m");
@@ -90,14 +90,14 @@ function modifyManifest(installDirectory) {
 	new xml2js.Parser().parseString(fs.readFileSync(manifestPath), function (err, document) {
 
 		console.log("Adding required receiver to Android Manifest");
-		var receivers = document.manifest.application[0].receiver;				
+		var receivers = document.manifest.application[0].receiver;
 		var receiver = '<receiver android:name="co.acoustic.mobile.push.sdk.location.GeofenceBroadcastReceiver" android:enabled="true" android:exported="true" />';
-		
+
 		document.manifest.application[0].receiver = verifyStanza(receivers, receiver);
 
 		var output = new xml2js.Builder().buildObject(document);
 		fs.writeFileSync(manifestPath, output);
-	});    
+	});
 }
 
 function updateiOSConfigFile(mainAppPath) {
@@ -132,5 +132,5 @@ modifyManifest(installDirectory);
 console.log(chalk.green("Installation Complete!"));
 
 console.log(chalk.blue.bold("\nPost Installation Steps\n"));
-console.log(chalk.blue('Link the plugin with:'));
+console.log(chalk.blue('For react-native 0.59 and lower link the plugin with:'));
 console.log('react-native link react-native-acoustic-mobile-push-geofence\n');

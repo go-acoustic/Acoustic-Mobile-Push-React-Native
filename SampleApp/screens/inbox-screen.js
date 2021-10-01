@@ -8,73 +8,89 @@
  * prohibited.
  */
 
-'use strict';
 import React from 'react';
-import {View, FlatList, TouchableOpacity, TouchableNativeFeedback, Platform, Text} from 'react-native';
-import {SubscribedComponent} from './subscribed-component';
-import {RNAcousticMobilePushInbox} from 'NativeModules';
-import {RNAcousticMobilePushInboxEmitter} from './home-screen';
-import InboxListItem from '../inbox/inbox-list-item';
+import { View, FlatList, TouchableOpacity, NativeModules, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-const Touchable = Platform.OS === 'android' ? TouchableNativeFeedback : TouchableOpacity;
+
+import { SubscribedComponent } from './subscribed-component';
+import { RNAcousticMobilePushInboxEmitter } from '../helpers/eventEmitters';
+import InboxListItem from '../inbox/inbox-list-item';
+import { Touchable } from '../components/Touchable';
+import { SYNC_INBOX } from '../enums/events';
+
+const { RNAcousticMobilePushInbox } = NativeModules;
 
 export class InboxScreen extends SubscribedComponent {
-	static navigationOptions = ({ navigation }) => {
-		return {
-			title: "Inbox Messages",
-			headerRight: (
-				<Touchable onPress={ () => { RNAcousticMobilePushInbox.syncInboxMessages(); } }>
-					<Icon name="ios-sync" color="#000" size={24} style={{paddingRight: 20}} />
-				</Touchable>
-			),
-		};
-	};	
+  static navigationOptions = {
+    title: 'Inbox Messages',
+    headerRight: () => (
+      <Touchable onPress={() => {
+        RNAcousticMobilePushInbox.syncInboxMessages();
+      }}>
+        <Icon name="ios-sync" color="#000" size={24} style={{ paddingRight: 20 }} />
+      </Touchable>
+    ),
+  };
 
-	renderSeparator = () => {
-		return (
-			<View style={{height: 1, backgroundColor: "#CED0CE", marginLeft: "2%"}} />
-		);
-	};
+  constructor(props) {
+    super(props);
+    this.state = { inboxMessages: [] };
+    RNAcousticMobilePushInbox.syncInboxMessages();
+    this.update();
+  }
 
-	componentDidMount() {
-		this.update();
-		this.subscriptions.push( RNAcousticMobilePushInboxEmitter.addListener('SyncInbox', () => { 
-            this.update();
-        }));
+  componentDidMount() {
+    this.update();
+    this.subscriptions.push(RNAcousticMobilePushInboxEmitter.addListener(SYNC_INBOX, () => {
+      this.update();
+    }));
+  }
 
-	}
+  update() {
+    RNAcousticMobilePushInbox.listInboxMessages(false, (inboxMessages) => {
+      this.setState({ inboxMessages });
+    });
+  }
 
-	update() {
-		RNAcousticMobilePushInbox.listInboxMessages(false, (inboxMessages) => {
-			this.setState({inboxMessages: inboxMessages});
-		});
-	}
+  openMessage(item, index) {
+    const { navigation } = this.props;
+    const { inboxMessages } = this.state;
 
-	constructor(props) {
-		super(props);
-		this.state = {inboxMessages: []};
-		RNAcousticMobilePushInbox.syncInboxMessages();
-		this.update();
-	}
+    navigation.navigate('InboxMessage', {
+      inboxMessage: item,
+      index,
+      inboxMessages,
+    });
+  }
 
-	openMessage(item, index) {
-		this.props.navigation.navigate('InboxMessage', {inboxMessage: item, index: index, inboxMessages: this.state.inboxMessages });
-	}
+  renderSeparator = () => (
+    <View style={{ height: 1, backgroundColor: '#CED0CE', marginLeft: '2%' }} />
+  );
 
-	renderItem = ({item, index}) => (
-		<TouchableOpacity accessibilityRole="button" onPress={() => {this.openMessage(item, index);}}>
-			<InboxListItem inboxMessage={item} />
-		</TouchableOpacity>
-	);
+  renderItem = ({ item, index }) => (
+    <TouchableOpacity
+      accessibilityRole="button"
+      onPress={() => { this.openMessage(item, index); }}>
+      <InboxListItem inboxMessage={item} />
+    </TouchableOpacity>
+  );
 
-	render() {
-		if(this.state.inboxMessages.length) {
-			return (
-				<FlatList ItemSeparatorComponent={this.renderSeparator} data={this.state.inboxMessages} keyExtractor={ inboxMessage => inboxMessage.inboxMessageId } ListFooterComponent={this.renderSeparator} renderItem={this.renderItem} />
-			);
-		} else {
-			return (<Text style={{ textAlign: "center", padding: 40, fontStyle: "italic"}}>The inbox has no messages</Text>)
-		}
-	}
+  render() {
+    const { inboxMessages } = this.state;
 
+    if (inboxMessages.length) {
+      return (
+        <FlatList
+          ItemSeparatorComponent={this.renderSeparator}
+          data={inboxMessages}
+          keyExtractor={(inboxMessage) => inboxMessage.inboxMessageId}
+          ListFooterComponent={this.renderSeparator}
+          renderItem={this.renderItem}
+        />
+      );
+    }
+    return (
+      <Text style={{ textAlign: 'center', padding: 40, fontStyle: 'italic' }}>The inbox has no messages</Text>
+    );
+  }
 }

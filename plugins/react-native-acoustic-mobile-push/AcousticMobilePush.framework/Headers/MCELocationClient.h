@@ -22,18 +22,7 @@
 /**
  The MCELocationClient syncronizes geofences and iBeacons to montior with the server.
  */
-@interface MCELocationClient : MCEClient  <NSURLSessionDelegate, NSURLSessionDownloadDelegate>
-
-/** Fetch completion handler to be executed after sync. */
-@property (nonatomic, copy) void (^fetchCompletionHandler)(UIBackgroundFetchResult);
-
-/**
- This method handles the background download of the location updates from the server.
- 
- @param identifier is passed from the application delegate callback.
- @param completionHandler is passed from the application delegate callback.
- */
--(BOOL)handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)(void))completionHandler;
+@interface MCELocationClient : MCEClient
 
 /** This method schedules a sync to the server. */
 -(void)scheduleSync;

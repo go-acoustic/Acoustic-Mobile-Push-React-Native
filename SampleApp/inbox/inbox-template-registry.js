@@ -8,49 +8,57 @@
  * prohibited.
  */
 
-"use strict";
+
 import React from 'react';
-import {Text} from 'react-native';
+import { Text } from 'react-native';
 
 class InboxTemplateRegistry {
-	constructor() {
-		if(! InboxTemplateRegistry.instance) {
-			this.messageViewRenderers = {};
-			this.listItemRenderers = {};
-			InboxTemplateRegistry.instance = this;
-		}
+  constructor() {
+    if (!InboxTemplateRegistry.instance) {
+      this.messageViewRenderers = {};
+      this.listItemRenderers = {};
+      InboxTemplateRegistry.instance = this;
+    }
 
-		return InboxTemplateRegistry.instance;
-	}
+    return InboxTemplateRegistry.instance;
+  }
 
-	registerMessageViewRenderer(templateName, renderer) {
-		this.messageViewRenderers[templateName] = renderer;
-	}
+  registerMessageViewRenderer(templateName, renderer) {
+    this.messageViewRenderers[templateName] = renderer;
+  }
 
-	registerListItemRenderer(templateName, renderer) {
-		this.listItemRenderers[templateName] = renderer;
-	}
+  registerListItemRenderer(templateName, renderer) {
+    this.listItemRenderers[templateName] = renderer;
+  }
 
-	renderListItem(inboxMessage) {
-		const renderer = this.listItemRenderers[inboxMessage.templateName];
-		if(typeof(renderer) == "undefined") {
-			return (
-				<Text>List item renderer not definied for template named: {inboxMessage.templateName}</Text>
-			);
-		}
-		return renderer(inboxMessage);
-	}
+  renderListItem(inboxMessage) {
+    const renderer = this.listItemRenderers[inboxMessage.templateName];
 
-	renderMessageView(inboxMessage) {
-		const renderer = this.messageViewRenderers[inboxMessage.templateName];
-		if(typeof(renderer) == "undefined") {
-			return (
-				<Text>Message View renderer not definied for template named: {inboxMessage.templateName}</Text>
-			);
-		}
-		return renderer(inboxMessage);
-	}
+    if (typeof (renderer) === 'undefined') {
+      return (
+        <Text>
+          List item renderer not definied for template named:
+          {inboxMessage.templateName}
+        </Text>
+      );
+    }
+    return renderer(inboxMessage);
+  }
+
+  renderMessageView(inboxMessage) {
+    const renderer = this.messageViewRenderers[inboxMessage.templateName];
+    if (typeof (renderer) === 'undefined') {
+      return (
+        <Text>
+          Message View renderer not definied for template named:
+          {inboxMessage.templateName}
+        </Text>
+      );
+    }
+    return renderer(inboxMessage);
+  }
 }
+
 const instance = new InboxTemplateRegistry();
 Object.freeze(instance);
 

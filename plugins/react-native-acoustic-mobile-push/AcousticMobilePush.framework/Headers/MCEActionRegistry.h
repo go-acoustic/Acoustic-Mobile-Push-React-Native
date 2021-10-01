@@ -21,7 +21,7 @@
 /** This method defines the optional method that is used to configure alert fields in text entry actions.
 @param textField The UITextField object to be configured.
  */
--(void)configureAlertTextField:(UITextField*)textField;
+- (void) configureAlertTextField:(UITextField * _Nonnull) textField;
 @end
 
 /** The MCEActionRegistry class is used to register and perform actions in the "notification-action" and "category-actions" sections of the APNS payload.
@@ -29,7 +29,7 @@
 @interface MCEActionRegistry : NSObject
 
 /** This method returns the singleton object of this class. */
-@property(class, nonatomic, readonly) MCEActionRegistry * sharedInstance NS_SWIFT_NAME(shared);
+@property(class, nonatomic, readonly) MCEActionRegistry * _Nonnull sharedInstance NS_SWIFT_NAME(shared);
 
 /** Method is deprecated, please do not use.
  
@@ -37,7 +37,7 @@
  @param action The name of the action registered.
  @return TRUE or FALSE depending if the action expects user text input.
  */
--(BOOL)actionIncludesUserText:(NSString*)action __attribute__((deprecated));
+- (BOOL) actionIncludesUserText:(NSString * _Nonnull) action __attribute__((deprecated));
 
 /** Method is deprecated, please do not use.
  
@@ -45,7 +45,7 @@
  @param textField The UITextField object to be configured
  @param action The name of the action registered.
  */
--(void)configureAlertTextField:(UITextField*)textField forAction:(NSString*)action __attribute__((deprecated));
+- (void) configureAlertTextField:(UITextField * _Nonnull) textField forAction:(NSString * _Nonnull) action __attribute__((deprecated));
 
 /** This method is used to register an object to receive action messages for a specified action type name.
  
@@ -56,22 +56,22 @@
  @return TRUE or FALSE depending if the registration was successful or not.
  
  */
--(BOOL)registerTarget:(NSObject <MCEActionProtocol> *)target withSelector:(SEL)selector forAction:(NSString*)type;
+- (BOOL) registerTarget: (NSObject <MCEActionProtocol> * _Nullable) target withSelector: (SEL _Nonnull) selector forAction: (NSString * _Nonnull) type;
 
 /** This method removes the registration for handling a specified action type name.
  
  @param type action the specified action type name to be used in the APNS payload as the type value
  */
--(void)unregisterAction:(NSString*)type;
+- (void) unregisterAction: (NSString* _Nonnull) type;
 
 /** Method is deprecated, please use -performAction:forPayload:source:attributes:userText: instead. */
--(void)performAction:(NSDictionary*)action forPayload:(NSDictionary*)payload source: (NSString*) source __attribute__((deprecated));
+-(void)performAction:(NSDictionary * _Nonnull) action forPayload:(NSDictionary * _Nonnull) payload source: (NSString * _Nonnull) source __attribute__((deprecated));
 
 /** Method is deprecated, please use -performAction:forPayload:source:attributes:userText: instead. */
--(void)performAction:(NSDictionary*)action forPayload:(NSDictionary*)payload source: (NSString*) source attributes: (NSDictionary*)attributes __attribute__((deprecated));
+-(void)performAction: (NSDictionary * _Nonnull) action forPayload: (NSDictionary * _Nonnull) payload source: (NSString * _Nonnull) source attributes: (NSDictionary * _Nullable) attributes __attribute__((deprecated));
 
 /** Method is deprecated, please use -performAction:forPayload:source:attributes:userText: instead. */
--(void)performAction:(NSDictionary*)action forPayload:(NSDictionary*)payload source: (NSString*) source userText: (NSString*)userText __attribute__((deprecated));
+-(void)performAction: (NSDictionary * _Nonnull) action forPayload: (NSDictionary * _Nonnull) payload source: (NSString * _Nonnull) source userText: (NSString * _Nullable) userText __attribute__((deprecated));
 
 /** This method performs the registered specified action for the APNS payload.
  
@@ -82,7 +82,7 @@
  @param userText Text entered by the user
  */
 
--(void)performAction:(NSDictionary*)action forPayload:(NSDictionary*)payload source: (NSString*) source attributes:(NSDictionary*)attributes userText: (NSString*)userText;
+-(void)performAction: (NSDictionary * _Nonnull) action forPayload: (NSDictionary * _Nonnull) payload source: (NSString * _Nonnull) source attributes: (NSDictionary * _Nullable) attributes userText: (NSString * _Nullable) userText;
 
 /** Method is deprecated, please do not use. 
  
@@ -92,6 +92,6 @@
  
  @return TRUE or FALSE depending if the action plugin wants the user to be prompted for text input if it wasn't provided otherwise.
 */
--(BOOL)actionExpectsUserText:(NSDictionary*)action __attribute__((deprecated));
+-(BOOL)actionExpectsUserText: (NSDictionary * _Nonnull) action __attribute__((deprecated));
 
 @end

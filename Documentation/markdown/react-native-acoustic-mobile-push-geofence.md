@@ -58,16 +58,27 @@ This plugin adds geofence support to your application. Geofences are created on 
 
 ## Installation
 ```sh
+yarn add file:<sdk folder>/plugins/react-native-acoustic-mobile-push-geofence
+```
+or 
+```sh
 npm install --save <sdk folder>/plugins/react-native-acoustic-mobile-push-geofence
 ```
 
 ### Post Installation Steps
-> Link the plugin with
+> For React Native v.059 and lower link the plugin with
 ```sh
 react-native link react-native-acoustic-mobile-push-geofence
 ```
 
 ## Module API
+
+### From React Native v.060 and higher NativeModules are part of react-native. If you are using lower version of RN please use the following code to import RNAcoustic modules:
+
+```js
+import { RNAcousticMobilePushGeofence } from 'NativeModules';
+````
+
 ### geofencesNearCoordinate(latitude, longitude, radius)
 
 ### Description
@@ -75,13 +86,15 @@ This function allows you to list the geofences that are near a specific point on
 
 ### Example
 ```js
-import {RNAcousticMobilePushGeofence} from 'NativeModules';
+import { NativeModules } from 'react-native';
 
-var latitude = 40.7128;
-var longitude = -74.0060;
-var radius = 1000; // Meters
+const { RNAcousticMobilePushGeofence } = NativeModules;
+const latitude = 40.7128;
+const longitude = -74.0060;
+const radius = 1000; // Meters
+
 RNAcousticMobilePushGeofence.geofencesNearCoordinate(latitude, longitude, radius).then((geofences) => { 
-    geofences.forEach(function (geofence) {
+    geofences.forEach((geofence) => {
         console.log("Geofence at latitude: " + geofence.latitude + ", longitude: " + geofence.longitude + ", radius: " + geofence.radius + ", has identifier: " + geofence.id + " and is " + (geofence.active ? "active" : "inactive") );
     });
 }).catch((error) => {
@@ -95,7 +108,9 @@ RNAcousticMobilePushGeofence.geofencesNearCoordinate(latitude, longitude, radius
 This event is emitted when geofences are updated on the device from the server durring a sync call.
 #### Example
 ```js
-import {RNAcousticMobilePushGeofence} from 'NativeModules';
+import { NativeEventEmitter, NativeModules } from 'react-native';
+
+const { RNAcousticMobilePushGeofence } = NativeModules;
 const emitter = new NativeEventEmitter(RNAcousticMobilePushGeofence);
 
 emitter.addListener('RefreshActiveGeofences', () => { 
@@ -109,7 +124,9 @@ This event is emitted when a user enters a geofence.
 
 #### Example
 ```js
-import {RNAcousticMobilePushGeofence} from 'NativeModules';
+import { NativeEventEmitter,  NativeModules } from 'react-native';
+
+const { RNAcousticMobilePushGeofence } = NativeModules;
 const emitter = new NativeEventEmitter(RNAcousticMobilePushGeofence);
 
 emitter.addListener('EnteredGeofence', (geofence) => { 
@@ -123,7 +140,9 @@ This event is emitted when a user exits a geofence.
 
 #### Example
 ```js
-import {RNAcousticMobilePushGeofence} from 'NativeModules';
+import { NativeEventEmitter, NativeModules } from 'react-native';
+
+const { RNAcousticMobilePushGeofence } = NativeModules;
 const emitter = new NativeEventEmitter(RNAcousticMobilePushGeofence);
 
 emitter.addListener('ExitedGeofence', (geofence) => { 

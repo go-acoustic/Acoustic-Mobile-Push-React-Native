@@ -20,7 +20,7 @@ function findInstallDirectory() {
         console.log(chalk.yellow.bold("Using MCE_RN_DIRECTORY override instead of finding the application source directory."))
         return process.env.MCE_RN_DIRECTORY;
     }
-    
+
 	// Mac
 	var currentDirectory = process.argv[ process.argv.length-1 ];
 	if(currentDirectory != "$INIT_CWD") {
@@ -39,7 +39,7 @@ function findInstallDirectory() {
 		currentDirectory = parentDirectory;
 	}
 	console.log("Install Directory Found:", currentDirectory);
-	
+
 	return currentDirectory;
 }
 
@@ -154,7 +154,7 @@ function findMainPath(installDirectory) {
 
 	const iosDirectory = path.join(installDirectory, 'ios');
 	var directory;
-	fs.readdirSync(iosDirectory).forEach((basename) => { 
+	fs.readdirSync(iosDirectory).forEach((basename) => {
 		const mainPath = path.join(iosDirectory, basename);
 		if(fs.lstatSync(mainPath).isDirectory()) {
 			const filename = path.join(mainPath, "main.m");
@@ -214,8 +214,8 @@ function stringExists(name, strings) {
 }
 
 function verifyString(name, strings) {
-	if(!stringExists(name, strings)) {	
-		new xml2js.Parser().parseString('<string name="' + name + '">REPLACE THIS PLACEHOLDER</string>', function (err, string) { 
+	if(!stringExists(name, strings)) {
+		new xml2js.Parser().parseString('<string name="' + name + '">REPLACE THIS PLACEHOLDER</string>', function (err, string) {
 			strings.resources.string.push( string.string );
 		});
 	}
@@ -227,11 +227,15 @@ function modifyStrings(installDirectory) {
         console.log(chalk.yellow.bold("Android strings.xml will not be modified because MCE_RN_NOSTRINGS environment flag detected."));
         return;
     }
-    
+
 	let stringsPath = path.join(installDirectory, "android", "app", "src", "main", "res", "values", "strings.xml");
 
 	console.log("Modifying strings.xml in Android project");
 	new xml2js.Parser().parseString(fs.readFileSync(stringsPath), function (err, strings) {
+		// TODO: it seems that both strings cannot be added to strings.xml as build will
+		// fail with information about duplicated entries
+		return;
+
 		["google_api_key", "google_app_id"].forEach((name) => {
 			verifyString(name, strings);
 		});
@@ -269,7 +273,7 @@ modifyStrings(installDirectory);
 console.log(chalk.green("Installation Complete!"));
 
 console.log(chalk.blue.bold("\nPost Installation Steps\n"));
-console.log(chalk.blue('Link the plugin with:'));
+console.log(chalk.blue('For react-native 0.59 and lower link the plugin with:'));
 console.log('react-native link react-native-acoustic-mobile-push\n');
 
 console.log(chalk.blue('iOS Support:'));

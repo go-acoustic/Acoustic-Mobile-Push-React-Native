@@ -142,6 +142,11 @@ public class RNAcousticMobilePushActionHandler extends ReactContextBaseJavaModul
                 public boolean shouldDisplayNotification(final Context context, NotificationDetails notificationDetails, final Bundle sourceBundle) {
                     return true;
                 }
+
+                @Override
+                public boolean shouldSendDefaultEvent(Context context) {
+                    return true;
+                }
         });
     }
 

@@ -8,93 +8,111 @@
  * prohibited.
  */
 
-'use strict';
 import React from 'react';
-import {Animated} from 'react-native';
-import {RNAcousticMobilePushInApp} from 'NativeModules';
+import { Animated, NativeModules } from 'react-native';
+
+const { RNAcousticMobilePushInApp } = NativeModules;
 
 export class InAppTemplate extends React.Component {
-	constructor(props) {
-		super(props);
-		
-		this.state = {
-			containerHeight: props.containerHeight,
-			contentHeight: props.contentHeight,
-			message: props.message,
-		};
-		this.state.animation = new Animated.Value(this.hiddenAnimationValue());
-	}
+  constructor(props) {
+    super(props);
 
-	hiddenAnimationValue() {
-		// Override this and provide the value for a hidden notification.
-	}
+    this.state = {
+      containerHeight: props.containerHeight,
+      contentHeight: props.contentHeight,
+      message: props.message,
+    };
+  }
 
-	shownAnimationValue() {
-		// Override this if zero isn't appropriate for your template.
-		return 0;
-	}
+  componentWillUnmount() {
+    clearTimeout(this.timer);
+  }
 
-	activate() {
-		this.hide();
-		RNAcousticMobilePushInApp.clickInApp(this.state.message.inAppMessageId);
-	}
+  componentDidMount() {
+    const animation = new Animated.Value(this.hiddenAnimationValue());
 
-	convertColor(color, defaultValue) {
-		if(typeof(color) == "undefined") {
-			return defaultValue;
-		}
+    this.setState({ animation }, () => {
+      this.show();
+    });
+  }
 
-		if(typeof(color.length) != "undefined") {
-			if(color[0] != '#') {
-				color = '#' + color;
-			}
-			return color;
-		} else if(typeof(color.red) != "undefined" && typeof(color.green) != "undefined" && typeof(color.blue) != "undefined") {
-			return "rgb(" + (color.red * 255) + "," + (color.green * 255) + "," +(color.blue * 255) + ")";
-		}
-		return defaultValue;
-	}
+  hiddenAnimationValue() {
+    // Override this and provide the value for a hidden notification.
+  }
 
-	hide() {
-		clearTimeout(this.timer);
-		Animated.timing(this.state.animation, {toValue: this.hiddenAnimationValue(), duration: this.animationLength()}).start((finished) => { RNAcousticMobilePushInApp.hideInApp(); });
-	}
+  shownAnimationValue() {
+    // Override this if zero isn't appropriate for your template.
+    return 0;
+  }
 
-	show() {
-		clearTimeout(this.timer);
-		Animated.timing(this.state.animation, {toValue: this.shownAnimationValue(), duration: this.animationLength()}).start();
-		if(this.duration()) {
-			this.timer = setTimeout(() => this.hide(), this.duration());
-		}
-	}
+  activate() {
+    const { message: { inAppMessageId } } = this.state;
 
-	componentWillUnmount() {
-		clearTimeout(this.timer);
-	}
+    this.hide();
+    RNAcousticMobilePushInApp.clickInApp(inAppMessageId);
+  }
 
+  convertColor(color, defaultValue) {
+    if (typeof (color) === 'undefined') {
+      return defaultValue;
+    }
 
-	componentDidMount() {
-		this.show();
-	}
+    if (typeof (color.length) !== 'undefined') {
+      return color[0] !== '#' ? `#${color}` : color;
+    }
 
-	content() {
-		return this.state.message.content;
-	}
+    if (typeof (color.red) !== 'undefined' && typeof (color.green) !== 'undefined' && typeof (color.blue) !== 'undefined') {
+      return `rgb(${color.red * 255},${color.green * 255},${color.blue * 255})`;
+    }
 
+    return defaultValue;
+  }
 
-	animationLength() {
-		let animationLength = this.content().animationLength;
-		if(typeof(animationLength) == "undefined") {
-			return 500;
-		}
-		return animationLength * 1000;
-	}
+  hide() {
+    const { animation } = this.state;
+    clearTimeout(this.timer);
+    Animated.timing(animation, {
+      toValue: this.hiddenAnimationValue(),
+      duration: this.animationLength(),
+      useNativeDriver: false,
+    }).start(() => { RNAcousticMobilePushInApp.hideInApp(); });
+  }
 
-	duration() {
-		let duration = this.content().duration;
-		if(typeof(duration) == "undefined") {
-			return 5000;
-		}
-		return duration * 1000;
-	}
+  show() {
+    const { animation } = this.state;
+    clearTimeout(this.timer);
+    Animated.timing(animation, {
+      toValue: this.shownAnimationValue(),
+      duration: this.animationLength(),
+      useNativeDriver: false,
+    }).start();
+
+    if (this.duration()) {
+      this.timer = setTimeout(() => this.hide(), this.duration());
+    }
+  }
+
+  content() {
+    const { message: { content } } = this.state;
+
+    return content;
+  }
+
+  animationLength() {
+    const { animationLength } = this.content();
+
+    if (typeof (animationLength) === 'undefined') {
+      return 500;
+    }
+    return animationLength * 1000;
+  }
+
+  duration() {
+    const { duration } = this.content();
+
+    if (typeof (duration) === 'undefined') {
+      return 5000;
+    }
+    return duration * 1000;
+  }
 }

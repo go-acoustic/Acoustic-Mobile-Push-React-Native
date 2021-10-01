@@ -22,14 +22,14 @@
 @interface MCELocationDatabase : NSObject
 
 /** This method returns the singleton object of this class. */
-@property(class, nonatomic, readonly) MCELocationDatabase * sharedInstance NS_SWIFT_NAME(shared);
+@property(class, nonatomic, readonly) MCELocationDatabase * _Nonnull sharedInstance NS_SWIFT_NAME(shared);
 
 /** This method returns the nearby sycned geofences from the server. */
--(NSMutableSet*)geofencesNearCoordinate: (CLLocationCoordinate2D)coordinate radius: (double)radius;
+-(NSMutableSet * _Nullable)geofencesNearCoordinate: (CLLocationCoordinate2D)coordinate radius: (double)radius;
 
-#if !TARGET_OS_UIKITFORMAC
+#if !TARGET_OS_MACCATALYST
 /** This method returns the beacon regions synced from the server. */
--(NSMutableSet*)beaconRegions;
+-(NSMutableSet * _Nullable)beaconRegions;
 #endif
 
 @end

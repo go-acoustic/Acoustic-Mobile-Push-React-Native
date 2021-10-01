@@ -60,4 +60,9 @@ public class DisplayWebViewAction implements MceNotificationAction {
     public boolean shouldDisplayNotification(Context context, NotificationDetails notificationDetails, Bundle sourceBundle) {
         return true;
     }
+
+    @Override
+    public boolean shouldSendDefaultEvent(Context context) {
+        return true;
+    }
 }

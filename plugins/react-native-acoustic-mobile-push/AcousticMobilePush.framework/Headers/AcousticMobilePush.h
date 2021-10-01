@@ -9,18 +9,17 @@ FOUNDATION_EXPORT double AcousticMobilePushVersionNumber;
 //! Project version string for AcousticMobilePush.
 FOUNDATION_EXPORT const unsigned char AcousticMobilePushVersionString[];
 
-// In this header, you should import all the public headers of your framework using statements like #import <AcousticMobilePush/PublicHeader.h>
-
-
-#import <AcousticMobilePush/MCEAppDelegate.h>
 #import <AcousticMobilePush/MCEActionRegistry.h>
 #import <AcousticMobilePush/MCEApiUtil.h>
+#import <AcousticMobilePush/MCEAppDelegate.h>
 #import <AcousticMobilePush/MCEArea.h>
 #import <AcousticMobilePush/MCEAttributesQueueManager.h>
 #import <AcousticMobilePush/MCECallbackDatabaseManager.h>
+#import <AcousticMobilePush/MCECategoryActionPayload.h>
 #import <AcousticMobilePush/MCEClient.h>
 #import <AcousticMobilePush/MCEConfig.h>
 #import <AcousticMobilePush/MCEConstants.h>
+#import <AcousticMobilePush/MCEDeliveryActionPayload.h>
 #import <AcousticMobilePush/MCEEvent.h>
 #import <AcousticMobilePush/MCEEventService.h>
 #import <AcousticMobilePush/MCEGeofence.h>
@@ -33,11 +32,13 @@ FOUNDATION_EXPORT const unsigned char AcousticMobilePushVersionString[];
 #import <AcousticMobilePush/MCEInboxQueueManager.h>
 #import <AcousticMobilePush/MCELocationClient.h>
 #import <AcousticMobilePush/MCELocationDatabase.h>
+#import <AcousticMobilePush/MCENotificationActionPayload.h>
 #import <AcousticMobilePush/MCENotificationDelegate.h>
+#import <AcousticMobilePush/MCENotificationPayload.h>
+#import <AcousticMobilePush/MCEPayload.h>
 #import <AcousticMobilePush/MCEPhoneHomeManager.h>
 #import <AcousticMobilePush/MCERegistrationDetails.h>
 #import <AcousticMobilePush/MCESdk.h>
 #import <AcousticMobilePush/MCETemplate.h>
 #import <AcousticMobilePush/MCETemplateRegistry.h>
-#import <AcousticMobilePush/MCEWebViewActionDelegate.h>
 #import <AcousticMobilePush/UIColor+Hex.h>

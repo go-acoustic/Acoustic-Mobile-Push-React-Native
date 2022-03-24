@@ -22,7 +22,7 @@ dependencies {
   }
   implementation fileTree(dir: 'libs', include: ['*.aar'])
   implementation 'com.google.android.gms:play-services-base:16.0.1'
-  implementation 'com.google.firebase:firebase-messaging:17.1.0'
+  implementation 'com.google.firebase:firebase-messaging:22.0.0'
   implementation "androidx.core:core:1+"
 }
 

@@ -1,68 +1,69 @@
 {
-  "project_info": {
-    "project_number": "366542326419",
-    "project_id": "acoustic-sdk-sample-app",
-    "storage_bucket": "acoustic-sdk-sample-app.appspot.com"
-  },
-  "client": [
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:366542326419:android:cae5cf345458d7a7be5b66",
-        "android_client_info": {
-          "package_name": "co.acoustic.mobile.push.sample"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "366542326419-jh0of890hfo5teda6dhovikd3krs4akl.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyADvEiaR7zWmVBIGvom7nz225XTXW9YYW0"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "366542326419-jh0of890hfo5teda6dhovikd3krs4akl.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
+    "project_info": {
+      "project_number": "366542326419",
+      "project_id": "acoustic-sdk-sample-app",
+      "storage_bucket": "acoustic-sdk-sample-app.appspot.com"
     },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:366542326419:android:f28928e031c23bc5be5b66",
-        "android_client_info": {
-          "package_name": "co.acoustic.mobile.push.samples.android"
+    "client": [
+      {
+        "client_info": {
+          "mobilesdk_app_id": "1:366542326419:android:cae5cf345458d7a7be5b66",
+          "android_client_info": {
+            "package_name": "co.acoustic.mobile.push.sample"
+          }
+        },
+        "oauth_client": [
+          {
+            "client_id": "366542326419-jh0of890hfo5teda6dhovikd3krs4akl.apps.googleusercontent.com",
+            "client_type": 3
+          }
+        ],
+        "api_key": [
+          {
+            "current_key": "AIzaSyADvEiaR7zWmVBIGvom7nz225XTXW9YYW0"
+          }
+        ],
+        "services": {
+          "appinvite_service": {
+            "other_platform_oauth_client": [
+              {
+                "client_id": "366542326419-jh0of890hfo5teda6dhovikd3krs4akl.apps.googleusercontent.com",
+                "client_type": 3
+              }
+            ]
+          }
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "366542326419-jh0of890hfo5teda6dhovikd3krs4akl.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyADvEiaR7zWmVBIGvom7nz225XTXW9YYW0"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "366542326419-jh0of890hfo5teda6dhovikd3krs4akl.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+      {
+        "client_info": {
+          "mobilesdk_app_id": "1:366542326419:android:f28928e031c23bc5be5b66",
+          "android_client_info": {
+            "package_name": "co.acoustic.mobile.push.samples.android"
+          }
+        },
+        "oauth_client": [
+          {
+            "client_id": "366542326419-jh0of890hfo5teda6dhovikd3krs4akl.apps.googleusercontent.com",
+            "client_type": 3
+          }
+        ],
+        "api_key": [
+          {
+            "current_key": "AIzaSyADvEiaR7zWmVBIGvom7nz225XTXW9YYW0"
+          }
+        ],
+        "services": {
+          "appinvite_service": {
+            "other_platform_oauth_client": [
+              {
+                "client_id": "366542326419-jh0of890hfo5teda6dhovikd3krs4akl.apps.googleusercontent.com",
+                "client_type": 3
+              }
+            ]
+          }
         }
       }
-    }
-  ],
-  "configuration_version": "1"
-}
+    ],
+    "configuration_version": "1"
+  }
+

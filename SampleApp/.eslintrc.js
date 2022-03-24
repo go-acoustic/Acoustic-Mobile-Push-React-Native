@@ -48,7 +48,7 @@ module.exports = {
     "react/jsx-first-prop-new-line": 0,
     "react/jsx-no-bind": 0,
     "react/prop-types": 0,
-    "react/sort-comp": 0 ,
+    "react/sort-comp": 0,
     "react/state-in-constructor": 0,
   }
 };

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="24.7490" tests="1" failures="0">
+  <testsuite name="Root Suite" timestamp="2022-03-24T20:49:16" tests="0" time="0.0000" failures="0">
+  </testsuite>
+  <testsuite name="Example" timestamp="2022-03-24T20:49:31" tests="1" file="/Users/automation/.jenkins/workspace/campaign-mobile/campaign-push/ca-mce-sdk/react-native-sdk-release/SampleApp/e2e/firstTest.spec.js" time="9.7290" failures="0">
+    <testcase name="Example should be able to do math" time="0.0010" classname="should be able to do math">
+    </testcase>
+  </testsuite>
+</testsuites>

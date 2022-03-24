@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/Acoustic-Mobile-Push/React-Native.git", :tag => "#{s.version}" }
 
   s.source_files = "ios/*.{h,m,swift}"
-  s.vendored_frameworks = 'AcousticMobilePush.framework'  
+  s.vendored_frameworks = 'AcousticMobilePush.xcframework'  
   s.requires_arc = true
 
   s.dependency "React"

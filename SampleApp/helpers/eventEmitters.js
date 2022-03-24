@@ -1,12 +1,12 @@
 import { NativeEventEmitter, NativeModules } from 'react-native';
 
 const {
-  RNAcousticMobilePush,
-  RNAcousticMobilePushActionHandler,
-  RNAcousticMobilePushLocation,
-  RNAcousticMobilePushBeacon,
-  RNAcousticMobilePushGeofence,
-  RNAcousticMobilePushInbox,
+	RNAcousticMobilePush,
+	RNAcousticMobilePushActionHandler,
+	RNAcousticMobilePushLocation,
+	RNAcousticMobilePushBeacon,
+	RNAcousticMobilePushGeofence,
+	RNAcousticMobilePushInbox,
 } = NativeModules;
 
 export const RNAcousticMobilePushEmitter = new NativeEventEmitter(RNAcousticMobilePush);

@@ -132,9 +132,13 @@ android {
     applicationId "co.acoustic.mobile.push.sample"
     minSdkVersion rootProject.ext.minSdkVersion
     targetSdkVersion rootProject.ext.targetSdkVersion
+    compileSdkVersion rootProject.ext.compileSdkVersion
     versionCode 1
     versionName "1.0"
     multiDexEnabled true
+
+    testBuildType System.getProperty('testBuildType', 'debug')
+    testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
   }
   splits {
     abi {
@@ -190,6 +194,8 @@ dependencies {
   implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 
   implementation "androidx.legacy:legacy-support-core-utils:1.0.0"
+  androidTestImplementation('com.wix:detox:+')
+
 
   if (enableHermes) {
     def hermesPath = "../../node_modules/hermes-engine/android/";
@@ -211,3 +217,5 @@ apply plugin: "com.google.gms.google-services"
 googleServices { disableVersionCheck = true }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
+

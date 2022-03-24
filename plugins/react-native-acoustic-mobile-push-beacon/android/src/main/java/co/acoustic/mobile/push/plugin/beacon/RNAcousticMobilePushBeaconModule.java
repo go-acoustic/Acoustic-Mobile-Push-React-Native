@@ -76,6 +76,7 @@ public class RNAcousticMobilePushBeaconModule extends ReactContextBaseJavaModule
 			IBeacon beaconLocation = (IBeacon)location;
 			WritableNativeMap beacon = new WritableNativeMap();
 			beacon.putInt("major", beaconLocation.getMajor());
+      beacon.putInt("minor", beaconLocation.getMinor());
 			beacon.putString("id", beaconLocation.getId());
 			beaconList.pushMap(beacon);
 		}

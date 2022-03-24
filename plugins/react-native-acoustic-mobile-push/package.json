@@ -1,6 +1,6 @@
 {
   "name": "react-native-acoustic-mobile-push",
-  "version": "3.8.4",
+  "version": "3.8.5",
   "description": "Acoustic Mobile Push Plugin",
   "main": "index.js",
   "scripts": {

@@ -311,7 +311,6 @@ public class RNAcousticMobilePushModule extends ReactContextBaseJavaModule imple
         try {
             if (Logger.initLogPersistence(reactContext, mceSdkConfiguration)) {
                 Logger.writeToProfile("appKey", mceSdkConfiguration.getAppKey());
-                Logger.writeToProfile("senderId", mceSdkConfiguration.getSenderId());
                 Logger.writeToProfile("sessionEnabled", String.valueOf(mceSdkConfiguration.isSessionsEnabled()));
                 Logger.writeToProfile("sessionDurationInMinutes", String.valueOf(mceSdkConfiguration.getSessionTimeout()));
                 Logger.writeToProfile("metricsTimeInterval", String.valueOf(mceSdkConfiguration.getMetricTimeInterval()));
@@ -325,8 +324,7 @@ public class RNAcousticMobilePushModule extends ReactContextBaseJavaModule imple
     public static void parseJsonConfiguration(String configurationJSON) throws JSONException{
         JSONObject mceJSONConfiguration = new JSONObject(configurationJSON);
         String appKey = mceJSONConfiguration.getJSONObject("appKey").getString("prod");
-        String senderId = mceJSONConfiguration.getString("senderId");
-        mceSdkConfiguration = new MceSdkConfiguration(appKey, senderId);
+        mceSdkConfiguration = new MceSdkConfiguration(appKey);
         mceSdkConfiguration.setInvalidateExistingUser(mceJSONConfiguration.optBoolean("invalidateExistingUser", mceSdkConfiguration.isInvalidateExistingUser()));
         mceSdkConfiguration.setAutoReinitialize(mceJSONConfiguration.optBoolean("autoReinitialize", mceSdkConfiguration.isAutoReinitialize()));
         mceSdkConfiguration.setBaseUrl(mceJSONConfiguration.optString("baseUrl"));
@@ -472,7 +470,7 @@ public class RNAcousticMobilePushModule extends ReactContextBaseJavaModule imple
 
 		final Map<String, Object> constants = new HashMap<>();
 		constants.put("sdkVersion", MceSdk.getSdkVerNumber());
-        constants.put("pluginVersion", "3.8.4");
+        constants.put("pluginVersion", "3.8.5");
 		constants.put("appKey", appKey );
 		return constants;
 	}

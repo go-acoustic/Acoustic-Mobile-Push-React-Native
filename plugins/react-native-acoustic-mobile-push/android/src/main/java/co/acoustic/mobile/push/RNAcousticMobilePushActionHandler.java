@@ -125,7 +125,9 @@ public class RNAcousticMobilePushActionHandler extends ReactContextBaseJavaModul
                     payloadMap.putMap("mce", mce);
                     map.putMap("payload", payloadMap);
 
-                    reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(type, map);
+                    if (type != null) {
+                      RNAcousticMobilePushModule.sendEvent(type, map);
+                    }
                 }
 
                 @Override

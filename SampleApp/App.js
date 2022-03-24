@@ -11,24 +11,24 @@
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 
-import { HomeScreen } from './screens/home-screen';
-import { RegistrationScreen } from './screens/registration-screen';
-import { InboxScreen } from './screens/inbox-screen';
-import { InAppScreen } from './screens/inapp-screen';
-import { SendTestEventScreen } from './screens/send-test-event-screen';
-import { SendUserAttributeScreen } from './screens/send-user-attirbutes-screen';
-import { CustomActionScreen } from './screens/custom-action-screen';
-import { GeofenceScreen } from './screens/geofence-screen';
-import { iBeaconScreen } from './screens/ibeacon-screen';
-import { InboxMessageScreen } from './screens/inbox-message-screen';
+import { HomeScreen } from './screens/Home/home-screen.component';
+import { RegistrationScreen } from './screens/Registration/registration-screen.component';
+import { InboxScreen } from './screens/Inbox/inbox-screen.component';
+import { InAppScreen } from './screens/InApp/inapp-screen.component';
+import { SendTestEventScreen } from './screens/SendTestEvent/send-test-event-screen.component';
+import { SendUserAttributeScreen } from './screens/SendUserAttributes/send-user-attirbutes-screen.component';
+import { CustomActionScreen } from './screens/CustomAction/custom-action-screen.component';
+import { GeofenceScreen } from './screens/Geofence/geofence-screen.component';
+import { iBeaconScreen } from './screens/iBeacon/ibeacon-screen.component';
+import { InboxMessageScreen } from './screens/Inbox/Message/inbox-message-screen.component';
 
 // InApp Actions/Templates modules must be imported in order to register with the system
-import './in-app/in-app-banner';
-import './in-app/in-app-media';
+import './components/in-app/in-app-banner';
+import './components/in-app/in-app-media';
 import './custom-actions/send-email-action';
-import './inbox/default-inbox-template';
-import './inbox/post-inbox-template';
-import './inbox/inbox-action';
+import './components/inbox/default-inbox-template';
+import './components/inbox/post-inbox-template';
+import './components/inbox/inbox-action';
 
 const MainNavigator = createStackNavigator({
   Home: HomeScreen,

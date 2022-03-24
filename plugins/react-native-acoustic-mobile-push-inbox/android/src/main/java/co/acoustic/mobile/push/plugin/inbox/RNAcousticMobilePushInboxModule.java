@@ -58,6 +58,7 @@ import co.acoustic.mobile.push.sdk.plugin.inbox.RichContentDatabaseHelper;
 import co.acoustic.mobile.push.sdk.util.Logger;
 import co.acoustic.mobile.push.sdk.api.message.MessageSync;
 import co.acoustic.mobile.push.sdk.plugin.inbox.InboxMessageProcessor;
+import co.acoustic.mobile.push.sdk.plugin.inbox.InboxEvents;
 import co.acoustic.mobile.push.sdk.api.message.MessageProcessor;
 
 import org.json.JSONArray;
@@ -306,6 +307,10 @@ public class RNAcousticMobilePushInboxModule extends ReactContextBaseJavaModule 
 
 	@ReactMethod
 	public void readInboxMessage(String inboxMessageId) {
+    RichContentDatabaseHelper.MessageCursor messageCursor = RichContentDatabaseHelper.getRichContentDatabaseHelper(reactContext).getMessagesByMessageId(inboxMessageId);
+		messageCursor.moveToFirst();
+		RichContent message = messageCursor.getRichContent();
+    InboxEvents.sendInboxMessageOpenedEvent(reactContext, message);
 		InboxMessagesClient.setMessageReadById(reactContext, inboxMessageId);
 	}
 
@@ -432,7 +437,7 @@ public class RNAcousticMobilePushInboxModule extends ReactContextBaseJavaModule 
 				}
 			}
 
-			Event event = new Event("inboxMessage", name, new Date(), eventAttributes, attribution, null);
+      Event event = new Event("inboxMessage", name, new Date(), eventAttributes, attribution, null);
 
 			MceSdk.getEventsClient(false).sendEvent(reactContext, event, new OperationCallback<Event>() {
 				@Override
@@ -445,7 +450,6 @@ public class RNAcousticMobilePushInboxModule extends ReactContextBaseJavaModule 
 					MceSdk.getQueuedEventsClient().sendEvent(reactContext, event);
 				}
 			});
-
 		}
 	}
 

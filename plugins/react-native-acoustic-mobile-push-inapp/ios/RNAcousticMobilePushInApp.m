@@ -78,6 +78,11 @@ extern NSString * const InAppSource;
 @property (nonatomic) MCEConfig* config;
 @end
 
+@interface MCEEventService
+@property(class, nonatomic, readonly) MCEEventService * sharedInstance NS_SWIFT_NAME(shared);
+-(void)recordViewForInAppMessage:(MCEInAppMessage * _Nonnull)inAppMessage attribution: (NSString * _Nullable)attribution mailingId: (NSNumber * _Nullable)mailingId;
+@end
+
 @interface RNAcousticMobilePushInApp ()
 @property UIViewController * inAppViewController;
 @property UIWindow * inAppWindow;
@@ -270,6 +275,10 @@ RCT_EXPORT_METHOD(registerInApp: (NSString*) template module: (NSString*) module
     NSMutableDictionary * properties = [ @{ @"message": message } mutableCopy];
     properties[@"contentHeight"] = @(contentHeight);
     properties[@"containerHeight"] = @(containerHeight);
+
+    if (inAppMessage.attribution != nil) {
+        [[MCEEventService sharedInstance] recordViewForInAppMessage:inAppMessage attribution:inAppMessage.attribution mailingId:inAppMessage.mailingId];
+    }
     
     rect.origin = CGPointZero;
     self.inAppView = [[RCTRootView alloc] initWithBridge:self.bridge moduleName:module[@"module"] initialProperties: properties];

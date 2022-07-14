@@ -46,7 +46,6 @@ import co.acoustic.mobile.push.sdk.api.OperationResult;
 import co.acoustic.mobile.push.sdk.api.attribute.Attribute;
 import co.acoustic.mobile.push.sdk.api.attribute.StringAttribute;
 import co.acoustic.mobile.push.sdk.api.event.Event;
-import co.acoustic.mobile.push.sdk.api.notification.DelayedNotificationAction;
 import co.acoustic.mobile.push.sdk.api.notification.MceNotificationAction;
 import co.acoustic.mobile.push.sdk.api.notification.MceNotificationActionRegistry;
 import co.acoustic.mobile.push.sdk.api.notification.NotificationDetails;
@@ -55,6 +54,7 @@ import co.acoustic.mobile.push.sdk.plugin.inbox.InboxMessageReference;
 import co.acoustic.mobile.push.sdk.plugin.inbox.InboxMessagesClient;
 import co.acoustic.mobile.push.sdk.plugin.inbox.RichContent;
 import co.acoustic.mobile.push.sdk.plugin.inbox.RichContentDatabaseHelper;
+import co.acoustic.mobile.push.sdk.notification.ActionImpl;
 import co.acoustic.mobile.push.sdk.util.Logger;
 import co.acoustic.mobile.push.sdk.api.message.MessageSync;
 import co.acoustic.mobile.push.sdk.plugin.inbox.InboxMessageProcessor;
@@ -109,7 +109,7 @@ public class RNAcousticMobilePushInboxModule extends ReactContextBaseJavaModule 
 		MceNotificationActionRegistry.registerNotificationAction(reactContext, TYPE, new MceNotificationAction() {
 
 			@Override
-			public void handleAction(Context context, String type, String name, String attribution, String mailingId, Map<String, String> payload, boolean fromNotification) {
+			public void handleAction(final Context context, final String type, final String name, final String attribution, final String mailingId, final Map<String, String> payload, final boolean fromNotification) {
 
 				Activity currentActivity = getCurrentActivity();
 				if(currentActivity == null) {
@@ -150,9 +150,13 @@ public class RNAcousticMobilePushInboxModule extends ReactContextBaseJavaModule 
 											@Override
 											public void run() {
 												internalHideInbox();
+                        
 												showInboxMessage(msg, activity);
 											}
 										});
+                    if (fromNotification) {
+                      InboxEvents.sendInboxNotificationOpenedEvent(context, new ActionImpl(type, name, payload), attribution, mailingId);
+                    }
 										return;
 									}
 								}
@@ -172,6 +176,9 @@ public class RNAcousticMobilePushInboxModule extends ReactContextBaseJavaModule 
 								showInboxMessage(inboxMessage, activity);
 							}
 						});
+            if (fromNotification) {
+              InboxEvents.sendInboxNotificationOpenedEvent(context, new ActionImpl(type, name, payload), attribution, mailingId);
+            }
 					}
 				}
 			}
@@ -601,11 +608,20 @@ public class RNAcousticMobilePushInboxModule extends ReactContextBaseJavaModule 
 
 	@Override
 	public void onHostPause() {
-		MceNotificationActionRegistry.registerNotificationAction(reactContext, TYPE, new DelayedNotificationAction());
 	}
 
 	@Override
 	public void onHostDestroy() {
 
 	}
+
+  @ReactMethod
+  public void addListener(String eventName) {
+
+  }
+
+  @ReactMethod
+  public void removeListeners(Integer count) {
+
+  }
 }

@@ -79,4 +79,14 @@ public class RNAcousticMobilePushGeofenceModule extends ReactContextBaseJavaModu
 
 		promise.resolve(geofenceList);
 	}
+
+  @ReactMethod
+  public void addListener(String eventName) {
+
+  }
+
+  @ReactMethod
+  public void removeListeners(Integer count) {
+
+  }
 }

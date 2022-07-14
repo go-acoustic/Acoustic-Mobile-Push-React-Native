@@ -14,7 +14,6 @@ import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 
-import co.acoustic.mobile.push.sdk.api.notification.DelayedNotificationAction;
 import co.acoustic.mobile.push.sdk.api.notification.MceNotificationActionRegistry;
 
 public class RNAcousticMobilePushDisplayWebModule extends ReactContextBaseJavaModule implements LifecycleEventListener {
@@ -36,12 +35,11 @@ public class RNAcousticMobilePushDisplayWebModule extends ReactContextBaseJavaMo
 
 	@Override
 	public void onHostResume() {
-		MceNotificationActionRegistry.registerNotificationAction(reactContext, TYPE, new DisplayWebViewAction());
+    MceNotificationActionRegistry.registerNotificationAction(reactContext, TYPE, new DisplayWebViewAction());
 	}
 
 	@Override
 	public void onHostPause() {
-		MceNotificationActionRegistry.registerNotificationAction(reactContext, TYPE, new DelayedNotificationAction());
 	}
 
 	@Override

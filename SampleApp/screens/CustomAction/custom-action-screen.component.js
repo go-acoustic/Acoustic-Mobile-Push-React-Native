@@ -73,16 +73,16 @@ export class CustomActionScreen extends React.Component {
     const { registeredActions, type } = this.state;
 
     if (registeredActions.some(action => action.type === type)) {
-      let action = registeredActions.find(item => item.type === type);
-      registeredActions.delete(action);
+      let actionIndex = registeredActions.findIndex(item => item.type === type);
+      let deletedAction = registeredActions.splice(actionIndex, 1);
       this.setState({
         registeredActions,
         statusText: `Unregistering Custom Action: ${type}`,
         statusColor: colors.success,
       });
 
-      RNAcousticMobilePushActionHandler.unregisterAction(action.type);
-      action.listenerSubscription.remove();
+      deletedAction[0].listenerSubscription.remove();
+      RNAcousticMobilePushActionHandler.unregisterAction(deletedAction.type);
     } else {
       this.setState({
         statusText: `Custom action type ${type} is not registered`,

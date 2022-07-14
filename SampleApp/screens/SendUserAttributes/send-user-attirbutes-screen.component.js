@@ -197,10 +197,10 @@ export class SendUserAttributeScreen extends React.Component {
             onPress={() => {
               this.setState({ datePicker: true });
             }}>
-            <Text style={{ color: colors.blue }}>{dateValue.toISOString()}</Text>
+            <Text style={{ color: colors.blue }}>{this.convertDateToAcousticDate(dateValue)}</Text>
           </Touchable>
           <DateTimePicker
-            mode="datetime"
+            mode="date"
             date={dateValue}
             isVisible={datePicker}
             onConfirm={(date) => this.setState({ datePicker: false, dateValue: date })}
@@ -258,7 +258,8 @@ export class SendUserAttributeScreen extends React.Component {
       if (typeSelectedIndex === typeOptions.boolean.index) {
         attributes[name] = booleanValue;
       } else if (typeSelectedIndex === typeOptions.date.index) {
-        attributes[name] = dateValue;
+        attributes[name] = this.convertDateToAcousticDate(dateValue);
+        console.log(attributes);
       } else if (typeSelectedIndex === typeOptions.number.index) {
         const parsedValue = parseFloat(value);
         if (!Number.isNaN(parsedValue)) {
@@ -274,6 +275,14 @@ export class SendUserAttributeScreen extends React.Component {
       RNAcousticMobilePush.deleteUserAttributes([name]);
       this.setState({ statusColor: colors.queued, statusText: `Queued Delete ${name}` });
     }
+  }
+
+  convertDateToAcousticDate(date) {
+    var raw = (!isNaN(Date.parse(date))) ? new Date(date) : new Date();
+    console.log("RAW", raw, raw.getFullYear(), raw.getMonth(), raw.getDate());
+    return (raw.getFullYear()
+      + "-" + ((raw.getMonth() + 1) < 10 ? ("0" + (raw.getMonth() + 1)) : raw.getMonth())
+      + "-" + ((raw.getDate() < 10) ? ("0" + raw.getDate()) : raw.getDate()));
   }
 
   sendAttribute() {

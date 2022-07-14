@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="Mocha Tests" time="14.5140" tests="1" failures="0">
-  <testsuite name="Root Suite" timestamp="2022-03-24T20:44:23" tests="0" time="0.0000" failures="0">
+<testsuites name="Mocha Tests" time="12.5210" tests="1" failures="0">
+  <testsuite name="Root Suite" timestamp="2022-07-14T20:37:57" tests="0" time="0.0000" failures="0">
   </testsuite>
-  <testsuite name="Example" timestamp="2022-03-24T20:44:35" tests="1" file="/Users/automation/.jenkins/workspace/campaign-mobile/campaign-push/ca-mce-sdk/react-native-sdk-release/SampleApp/e2e/firstTest.spec.js" time="3.2580" failures="0">
-    <testcase name="Example should be able to do math" time="0.0010" classname="should be able to do math">
+  <testsuite name="Example" timestamp="2022-07-14T20:38:06" tests="1" file="/Users/automation/.jenkins/workspace/campaign-mobile/campaign-push/ca-mce-sdk/react-native-sdk-release/SampleApp/e2e/firstTest.spec.js" time="3.4810" failures="0">
+    <testcase name="Example should be able to do math" time="0.0000" classname="should be able to do math">
     </testcase>
   </testsuite>
 </testsuites>

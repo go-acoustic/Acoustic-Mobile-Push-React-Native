@@ -165,7 +165,6 @@ function updateAndroidConfigFile(installDirectory) {
 
 if (process.env.MCE_RN_NOCONFIG) {
   console.log(chalk.yellow.bold("Acoustic Mobile Push Beacon Plugin installed, but will not be auto configured because MCE_RN_NOCONFIG environment flag detected."));
-  return;
 }
 
 console.log(chalk.green.bold("Setting up Acoustic Mobile Push Beacon Plugin"));

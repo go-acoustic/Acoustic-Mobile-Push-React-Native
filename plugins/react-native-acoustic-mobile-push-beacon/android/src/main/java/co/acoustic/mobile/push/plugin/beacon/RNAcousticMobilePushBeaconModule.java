@@ -83,4 +83,14 @@ public class RNAcousticMobilePushBeaconModule extends ReactContextBaseJavaModule
 
 		promise.resolve(beaconList);
 	}
+
+  @ReactMethod
+  public void addListener(String eventName) {
+
+  }
+
+  @ReactMethod
+  public void removeListeners(Integer count) {
+
+  }
 }

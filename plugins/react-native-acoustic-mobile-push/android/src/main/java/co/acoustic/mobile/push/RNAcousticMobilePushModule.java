@@ -470,7 +470,7 @@ public class RNAcousticMobilePushModule extends ReactContextBaseJavaModule imple
 
 		final Map<String, Object> constants = new HashMap<>();
 		constants.put("sdkVersion", MceSdk.getSdkVerNumber());
-        constants.put("pluginVersion", "3.8.5");
+        constants.put("pluginVersion", "3.8.6");
 		constants.put("appKey", appKey );
 		return constants;
 	}
@@ -845,6 +845,22 @@ public class RNAcousticMobilePushModule extends ReactContextBaseJavaModule imple
 
     @Override
     public void onHostDestroy() {
+
+    }
+
+    @ReactMethod
+    public void setIcon(Integer iconId) {
+      MceSdk.getNotificationsClient().getNotificationsPreference().setIcon(
+        reactContext, iconId);
+    }
+
+    @ReactMethod
+    public void addListener(String eventName) {
+
+    }
+
+    @ReactMethod
+    public void removeListeners(Integer count) {
 
     }
 }

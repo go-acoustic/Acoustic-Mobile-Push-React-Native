@@ -19,7 +19,7 @@
       "type": "ios.simulator",
       "device": {
         "type": "iPhone 13",
-        "os": "iOS 15.4"
+        "os": "iOS 15.5"
       }
     },
     "ios-14": {

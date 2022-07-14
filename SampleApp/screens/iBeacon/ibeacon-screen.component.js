@@ -9,7 +9,7 @@
  */
 
 import React from 'react';
-import { Text, ScrollView, NativeModules } from 'react-native';
+import { Text, Platform, ScrollView, NativeModules, PermissionsAndroid } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -18,6 +18,7 @@ import { RNAcousticMobilePushLocationEmitter, RNAcousticMobilePushBeaconEmitter 
 import { Touchable } from '../../helpers/Touchable';
 import { ALWAYS, DELAYED, DENIED, DISABLED, ENABLED, RESTRICTED, UNKNOWN } from '../../enums/status';
 import { DOWNLOADED_LOCATIONS, ENTERED_BEACON, EXITED_BEACON } from '../../enums/events';
+import { IOS } from '../../enums/os';
 
 const { RNAcousticMobilePushBeacon, RNAcousticMobilePushLocation } = NativeModules;
 
@@ -45,7 +46,11 @@ export class iBeaconScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.checkStatus();
+    if (Platform.OS === IOS) {
+      this.checkStatus();
+    } else {
+      this.requestLocationPermissions();
+    }
 
     this.setState({
       subscriptions: [
@@ -70,6 +75,60 @@ export class iBeaconScreen extends React.Component {
     RNAcousticMobilePushBeacon.beaconRegions().then((regions) => {
       this.setState({ regions });
     });
+  }
+
+  async requestLocationPermissions() {
+    try {
+
+      await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
+        {
+          title: "Permission Required",
+          message: "This app requires your permission to access your general location to detect iBeacons.",
+          buttonPositive: "Grant Permission",
+          buttonNegative: "Cancel"
+        }
+      );
+
+      const fineLocationGranted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          title: "Permission Required",
+          message: "This app requires your permission to access your location in more detail to detect iBeacons more accurately.",
+          buttonPositive: "Grant Permission",
+          buttonNegative: "Cancel"
+        }
+      );
+
+      if (Platform.Version >= 31) {
+        await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN,
+          {
+            title: "Permission Required",
+            message: "This app requires your permission to access your bluetooth scanner to detect iBeacons.",
+            buttonPositive: "Grant Permission",
+            buttonNegative: "Cancel"
+          }
+        )
+      }
+
+      if (Platform.Version >= 29 && fineLocationGranted) {
+        await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_BACKGROUND_LOCATION,
+          {
+            title: "Permission Required",
+            message: "This app requires your permission to access your location in the background to detect iBeacons when you are not actively using the app.",
+            buttonPositive: "Grant Permission",
+            buttonNegative: "Cancel"
+          }
+        );
+      }
+
+      this.checkStatus();
+
+    } catch (err) {
+      console.warn(err);
+    }
   }
 
   componentWillUnmount() {

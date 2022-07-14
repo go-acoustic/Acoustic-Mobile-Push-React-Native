@@ -27,7 +27,7 @@
 /** sessionTimeout specifies how long sessions last. It can be specified in the MceConfig.json file. If it is not specified, it is 20 minutes by default. */
 @property NSInteger sessionTimeout;
 
-/** baseUrl specifies where the SDK connects to. It can be specified in the MceConfig.json file. If it is not specified, it is https://api.ibm.com by default. */
+/** baseUrl specifies where the SDK connects to. It can be specified in the MceConfig.json file. If it is not specified, it is https://api.acoustic.com by default. */
 @property NSURL* _Nullable baseUrl;
 
 /** appKey specifies the appKey that is currently in use. A devAppKey and prodAppKey can be specified in the MceConfig.json file and are automatically determined on launch, depending on the environment the app is running in.

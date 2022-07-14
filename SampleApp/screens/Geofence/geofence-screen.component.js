@@ -80,7 +80,7 @@ export class GeofenceScreen extends React.Component {
         }
       );
 
-      await PermissionsAndroid.request(
+      const fineLocationGranted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
         {
           title: "Permission Required",
@@ -90,7 +90,7 @@ export class GeofenceScreen extends React.Component {
         }
       );
 
-      if (Platform.Version >= 29) {
+      if (Platform.Version >= 29 && fineLocationGranted) {
         await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.ACCESS_BACKGROUND_LOCATION,
           {

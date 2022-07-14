@@ -1,5 +1,5 @@
 {
-  "Please note: if you are in Europe, you may need to change the value in 'baseUrl' below to": "https://sdk6.ibm.xtify.com",
+  "Please note": "you will need to update your baseUrl to the one supplied to you",
   "baseUrl": "https://mobile-sdk-lib-XX-Y.brilliantcollector.com",
   "appKey": {
     "prod": "INSERT YOUR DEV APPKEY HERE"
@@ -31,7 +31,7 @@
     "verbose"
   ],
   "loglevel": "error",
-  "Please note, the log iteration files will be stored under": "<application cache folder on sdcard>/ibm-mce-android-sdk/logs/<installation time folder, format: yyyy-MM-dd-HH-mm-ss>",
+  "Please note, the log iteration files will be stored under": "<application cache folder on sdcard>/mce-react-native-sdk/logs/<installation time folder, format: yyyy-MM-dd-HH-mm-ss>",
   "logfile": false,
   "The number of log iteration files": "After reaching this number, the log files will be overwritten in order",
   "logIterations": 1,

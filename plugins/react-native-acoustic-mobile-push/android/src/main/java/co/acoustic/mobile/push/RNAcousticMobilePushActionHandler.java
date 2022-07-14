@@ -22,10 +22,10 @@ import org.json.JSONObject;
 import org.json.JSONException;
 import org.json.JSONArray;
 
-import co.acoustic.mobile.push.sdk.api.notification.DelayedNotificationAction;
 import co.acoustic.mobile.push.sdk.api.notification.MceNotificationAction;
 import co.acoustic.mobile.push.sdk.api.notification.MceNotificationActionRegistry;
 import co.acoustic.mobile.push.sdk.api.notification.NotificationDetails;
+import co.acoustic.mobile.push.sdk.util.Logger;
 
 import android.os.Bundle;
 import android.content.Context;
@@ -94,11 +94,11 @@ public class RNAcousticMobilePushActionHandler extends ReactContextBaseJavaModul
 
 
     @ReactMethod
-    void registerAction(String name, final Callback callback) {
+    void registerAction(final String name, final Callback callback) {
         registeredActions.put(name, callback);
         MceNotificationActionRegistry.registerNotificationAction(reactContext, name, new MceNotificationAction() {
                 @Override
-    public void handleAction(Context context, String type, String name, String attribution, String mailingId, Map<String, String> payload, boolean fromNotification) {
+                public void handleAction(Context context, String type, String name, String attribution, String mailingId, Map<String, String> payload, boolean fromNotification) {
                     WritableNativeMap actionMap = RNAcousticMobilePushActionHandler.convertPayloadToWritableMap(type, name, payload);
 
                     WritableNativeMap map = new WritableNativeMap();
@@ -124,7 +124,6 @@ public class RNAcousticMobilePushActionHandler extends ReactContextBaseJavaModul
 
                     payloadMap.putMap("mce", mce);
                     map.putMap("payload", payloadMap);
-
                     if (type != null) {
                       RNAcousticMobilePushModule.sendEvent(type, map);
                     }
@@ -159,21 +158,24 @@ public class RNAcousticMobilePushActionHandler extends ReactContextBaseJavaModul
 
     @Override
     public void onHostResume() {
-        for (String name : registeredActions.keySet()) {
-            Callback callback = registeredActions.get(name);
-            registerAction(name, callback);
-        }
     }
 
     @Override
     public void onHostPause() {
-        for (String name : registeredActions.keySet()) {
-            MceNotificationActionRegistry.registerNotificationAction(reactContext, name, new DelayedNotificationAction());
-        }
     }
 
     @Override
     public void onHostDestroy() {
+
+    }
+
+    @ReactMethod
+    public void addListener(String eventName) {
+
+    }
+
+    @ReactMethod
+    public void removeListeners(Integer count) {
 
     }
 }

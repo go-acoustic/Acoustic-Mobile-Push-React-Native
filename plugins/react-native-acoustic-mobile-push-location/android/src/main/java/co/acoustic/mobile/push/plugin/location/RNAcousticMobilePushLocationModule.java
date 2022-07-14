@@ -83,7 +83,7 @@ public class RNAcousticMobilePushLocationModule extends ReactContextBaseJavaModu
 			activity.runOnUiThread(new Runnable() {
 				public void run() {
 					if (ContextCompat.checkSelfPermission(activity, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-						ActivityCompat.requestPermissions(activity, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.BLUETOOTH, android.Manifest.permission.BLUETOOTH_ADMIN}, 0);
+            ActivityCompat.requestPermissions(activity, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.BLUETOOTH, android.Manifest.permission.BLUETOOTH_ADMIN}, 0);
 					} else {
 						LocationManager.enableLocationSupport(reactContext);
 						RNAcousticMobilePushBroadcastReceiver.onLocationAuthorization(reactContext);
@@ -93,4 +93,13 @@ public class RNAcousticMobilePushLocationModule extends ReactContextBaseJavaModu
 		}
 	}
 
+  @ReactMethod
+  public void addListener(String eventName) {
+
+  }
+
+  @ReactMethod
+  public void removeListeners(Integer count) {
+
+  }
 }

@@ -12,12 +12,12 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		318B02A59086E2A8CD9576B6 /* libPods-SampleApp-SampleAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C3B3F87599339312DA8E54A /* libPods-SampleApp-SampleAppTests.a */; };
+		343C0797287DBF2D00CE4B83 /* MceConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = 8AAD13222684EB8300F07686 /* MceConfig.json */; };
 		3446B52B2796037C0007922D /* SampleAppBridgingHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3446B52A2796037C0007922D /* SampleAppBridgingHeader.swift */; };
 		346453D0278F82790097090E /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 346453CF278F82790097090E /* NotificationService.swift */; };
 		346453D4278F82790097090E /* SampleAppNotificationService.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 346453CD278F82790097090E /* SampleAppNotificationService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		346453DC278F828C0097090E /* AcousticMobilePushNotification.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 346453DB278F828C0097090E /* AcousticMobilePushNotification.xcframework */; };
 		346453DD278F828C0097090E /* AcousticMobilePushNotification.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 346453DB278F828C0097090E /* AcousticMobilePushNotification.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		346453E2278F831A0097090E /* MceConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = 346453E1278F831A0097090E /* MceConfig.json */; };
 		34EDB1A72796176500831387 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34EDB1A62796176500831387 /* libRNVectorIcons.a */; };
 		5A759FC09CD47A4DE2D32634 /* libPods-SampleApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 72F2A2397A030F38CF031CF5 /* libPods-SampleApp.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
@@ -93,7 +93,6 @@
 		346453CF278F82790097090E /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		346453D1278F82790097090E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		346453DB278F828C0097090E /* AcousticMobilePushNotification.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = AcousticMobilePushNotification.xcframework; path = "../node_modules/react-native-ios-notification-service/AcousticMobilePushNotification.xcframework"; sourceTree = "<group>"; };
-		346453E1278F831A0097090E /* MceConfig.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MceConfig.json; sourceTree = "<group>"; };
 		346453E3278F83450097090E /* SampleAppNotificationService.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SampleAppNotificationService.entitlements; sourceTree = "<group>"; };
 		34A581E326F4F461001E72A5 /* SampleApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = SampleApp.entitlements; path = SampleApp/SampleApp.entitlements; sourceTree = "<group>"; };
 		34EDB1A62796176500831387 /* libRNVectorIcons.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRNVectorIcons.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -237,7 +236,6 @@
 			isa = PBXGroup;
 			children = (
 				346453E3278F83450097090E /* SampleAppNotificationService.entitlements */,
-				346453E1278F831A0097090E /* MceConfig.json */,
 				346453CF278F82790097090E /* NotificationService.swift */,
 				346453D1278F82790097090E /* Info.plist */,
 			);
@@ -504,7 +502,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				346453E2278F831A0097090E /* MceConfig.json in Resources */,
+				343C0797287DBF2D00CE4B83 /* MceConfig.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -902,6 +900,7 @@
 				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = SampleApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -909,7 +908,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/CocoaAsyncSocket\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/DoubleConversion\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FBReactNativeSpec\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Flipper-Boost-iOSX\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/Flipper\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/Flipper-DoubleConversion\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/Flipper-Folly\"",
@@ -962,6 +961,11 @@
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-safe-area-context\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-video\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-webview\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FBReactNativeSpec\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/FBReactNativeSpec\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Flipper-Fmt\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-logger\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/fmt\"",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -991,6 +995,7 @@
 				DEVELOPMENT_TEAM = FGNAM5PJD7;
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = SampleApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1044,6 +1049,9 @@
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-safe-area-context\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-video\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-webview\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-logger\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Flipper-Fmt\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/fmt\"",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1073,7 +1081,7 @@
 				DEVELOPMENT_TEAM = FGNAM5PJD7;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = SampleAppNotificationService/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1108,7 +1116,7 @@
 				DEVELOPMENT_TEAM = FGNAM5PJD7;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = SampleAppNotificationService/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

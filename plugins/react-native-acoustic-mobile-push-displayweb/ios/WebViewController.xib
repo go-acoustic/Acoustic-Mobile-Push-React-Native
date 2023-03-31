@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14854.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment version="2304" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14806.4"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WebViewController">
+            <connections>
+                <outlet property="progressView" destination="va1-zt-AHt" id="0XV-4e-HTs"/>
+                <outlet property="toolbar" destination="r0F-Sb-d5z" id="eRh-Ao-fop"/>
+                <outlet property="view" destination="XPg-zk-9ks" id="0cJ-ct-e94"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="XPg-zk-9ks">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r0F-Sb-d5z">
+                    <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                    <items>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="F3M-Ys-Vh1"/>
+                        <barButtonItem title="Dismiss" id="51X-C8-JKr">
+                            <connections>
+                                <action selector="dismiss:" destination="-1" id="t1Z-ox-Gor"/>
+                            </connections>
+                        </barButtonItem>
+                    </items>
+                </toolbar>
+                <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="va1-zt-AHt">
+                    <rect key="frame" x="0.0" y="88" width="414" height="2"/>
+                </progressView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="va1-zt-AHt" secondAttribute="trailing" id="Ifq-BE-WsS"/>
+                <constraint firstItem="r0F-Sb-d5z" firstAttribute="trailing" secondItem="x6q-Eh-2ME" secondAttribute="trailing" id="J2W-rB-Rma"/>
+                <constraint firstItem="r0F-Sb-d5z" firstAttribute="leading" secondItem="x6q-Eh-2ME" secondAttribute="leading" id="PCo-wn-c8F"/>
+                <constraint firstItem="va1-zt-AHt" firstAttribute="leading" secondItem="XPg-zk-9ks" secondAttribute="leading" id="Ruo-08-qha"/>
+                <constraint firstItem="r0F-Sb-d5z" firstAttribute="top" secondItem="x6q-Eh-2ME" secondAttribute="top" id="RxE-4m-Mgw"/>
+                <constraint firstItem="va1-zt-AHt" firstAttribute="top" secondItem="r0F-Sb-d5z" secondAttribute="bottom" id="rlf-Is-DGv"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="x6q-Eh-2ME"/>
+            <point key="canvasLocation" x="-110.14492753623189" y="-276.5625"/>
+        </view>
+    </objects>
+</document>

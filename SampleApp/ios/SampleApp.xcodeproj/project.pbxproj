@@ -19,9 +19,15 @@
 		346453DC278F828C0097090E /* AcousticMobilePushNotification.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 346453DB278F828C0097090E /* AcousticMobilePushNotification.xcframework */; };
 		346453DD278F828C0097090E /* AcousticMobilePushNotification.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 346453DB278F828C0097090E /* AcousticMobilePushNotification.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		34EDB1A72796176500831387 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34EDB1A62796176500831387 /* libRNVectorIcons.a */; };
-		5A759FC09CD47A4DE2D32634 /* libPods-SampleApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 72F2A2397A030F38CF031CF5 /* libPods-SampleApp.a */; };
+		5A759FC09CD47A4DE2D32634 /* libPods-SampleApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 72F2A2397A030F38CF031CF5 /* libPods-SampleApp.a */; settings = {ATTRIBUTES = (Required, ); }; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		8AAD13262684EB8300F07686 /* MceConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = 8AAD13222684EB8300F07686 /* MceConfig.json */; };
+		C30E658D2964B5AA00CBD140 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C30E658C2964B5AA00CBD140 /* UserNotifications.framework */; };
+		C30E658F2964B5AA00CBD140 /* UserNotificationsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C30E658E2964B5AA00CBD140 /* UserNotificationsUI.framework */; };
+		C30E65932964B5AA00CBD140 /* NotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C30E65922964B5AA00CBD140 /* NotificationViewController.m */; };
+		C30E65962964B5AA00CBD140 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C30E65942964B5AA00CBD140 /* MainInterface.storyboard */; };
+		C30E659A2964B5AA00CBD140 /* Carousel.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C30E658B2964B5AA00CBD140 /* Carousel.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		C39713C62927F1C200336844 /* WebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C39713C42927F1C200336844 /* WebViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +52,13 @@
 			remoteGlobalIDString = 346453CC278F82790097090E;
 			remoteInfo = SampleAppNotificationService;
 		};
+		C30E65982964B5AA00CBD140 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C30E658A2964B5AA00CBD140;
+			remoteInfo = Carousel;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -55,6 +68,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				C30E659A2964B5AA00CBD140 /* Carousel.appex in Embed App Extensions */,
 				346453D4278F82790097090E /* SampleAppNotificationService.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
@@ -144,6 +158,14 @@
 		BC0CCCF706124A78963D8370 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		BF4745FE5462F43D90802B9C /* Pods-SampleApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SampleApp.release.xcconfig"; path = "Target Support Files/Pods-SampleApp/Pods-SampleApp.release.xcconfig"; sourceTree = "<group>"; };
 		C2B087AA380F46DB9B1C1EEB /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
+		C30E658B2964B5AA00CBD140 /* Carousel.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Carousel.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		C30E658C2964B5AA00CBD140 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
+		C30E658E2964B5AA00CBD140 /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
+		C30E65912964B5AA00CBD140 /* NotificationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationViewController.h; sourceTree = "<group>"; };
+		C30E65922964B5AA00CBD140 /* NotificationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotificationViewController.m; sourceTree = "<group>"; };
+		C30E65952964B5AA00CBD140 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		C30E65972964B5AA00CBD140 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C39713C42927F1C200336844 /* WebViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = WebViewController.xib; path = "../../plugins/react-native-acoustic-mobile-push-displayweb/ios/WebViewController.xib"; sourceTree = "<group>"; };
 		E05D6EC2ED884855AAA72C58 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED41BE3E5E4E4B7A8D6475C6 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
@@ -172,6 +194,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				346453DC278F828C0097090E /* AcousticMobilePushNotification.xcframework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C30E65882964B5AA00CBD140 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C30E658F2964B5AA00CBD140 /* UserNotificationsUI.framework in Frameworks */,
+				C30E658D2964B5AA00CBD140 /* UserNotifications.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -228,6 +259,8 @@
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				72F2A2397A030F38CF031CF5 /* libPods-SampleApp.a */,
 				1C3B3F87599339312DA8E54A /* libPods-SampleApp-SampleAppTests.a */,
+				C30E658C2964B5AA00CBD140 /* UserNotifications.framework */,
+				C30E658E2964B5AA00CBD140 /* UserNotificationsUI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -254,11 +287,13 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				C39713C42927F1C200336844 /* WebViewController.xib */,
 				8A3A58222685E4C600BFDCCB /* Fonts */,
 				13B07FAE1A68108700A75B9A /* SampleApp */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* SampleAppTests */,
 				346453CE278F82790097090E /* SampleAppNotificationService */,
+				C30E65902964B5AA00CBD140 /* Carousel */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				C6A364E993D121C9130F53B2 /* Pods */,
@@ -275,6 +310,7 @@
 				13B07F961A680F5B00A75B9A /* SampleApp.app */,
 				00E356EE1AD99517003FC87E /* SampleAppTests.xctest */,
 				346453CD278F82790097090E /* SampleAppNotificationService.appex */,
+				C30E658B2964B5AA00CBD140 /* Carousel.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -346,6 +382,17 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
+		C30E65902964B5AA00CBD140 /* Carousel */ = {
+			isa = PBXGroup;
+			children = (
+				C30E65912964B5AA00CBD140 /* NotificationViewController.h */,
+				C30E65922964B5AA00CBD140 /* NotificationViewController.m */,
+				C30E65942964B5AA00CBD140 /* MainInterface.storyboard */,
+				C30E65972964B5AA00CBD140 /* Info.plist */,
+			);
+			path = Carousel;
+			sourceTree = "<group>";
+		};
 		C6A364E993D121C9130F53B2 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -399,6 +446,7 @@
 			);
 			dependencies = (
 				346453D3278F82790097090E /* PBXTargetDependency */,
+				C30E65992964B5AA00CBD140 /* PBXTargetDependency */,
 			);
 			name = SampleApp;
 			productName = SampleApp;
@@ -423,6 +471,23 @@
 			productReference = 346453CD278F82790097090E /* SampleAppNotificationService.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		C30E658A2964B5AA00CBD140 /* Carousel */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C30E659E2964B5AA00CBD140 /* Build configuration list for PBXNativeTarget "Carousel" */;
+			buildPhases = (
+				C30E65872964B5AA00CBD140 /* Sources */,
+				C30E65882964B5AA00CBD140 /* Frameworks */,
+				C30E65892964B5AA00CBD140 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Carousel;
+			productName = Carousel;
+			productReference = C30E658B2964B5AA00CBD140 /* Carousel.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -441,6 +506,9 @@
 					};
 					346453CC278F82790097090E = {
 						CreatedOnToolsVersion = 12.5.1;
+					};
+					C30E658A2964B5AA00CBD140 = {
+						CreatedOnToolsVersion = 14.1;
 					};
 				};
 			};
@@ -466,6 +534,7 @@
 				13B07F861A680F5B00A75B9A /* SampleApp */,
 				00E356ED1AD99517003FC87E /* SampleAppTests */,
 				346453CC278F82790097090E /* SampleAppNotificationService */,
+				C30E658A2964B5AA00CBD140 /* Carousel */,
 			);
 		};
 /* End PBXProject section */
@@ -492,6 +561,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C39713C62927F1C200336844 /* WebViewController.xib in Resources */,
 				8AAD13262684EB8300F07686 /* MceConfig.json in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
@@ -503,6 +573,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				343C0797287DBF2D00CE4B83 /* MceConfig.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C30E65892964B5AA00CBD140 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C30E65962964B5AA00CBD140 /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -683,6 +761,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C30E65872964B5AA00CBD140 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C30E65932964B5AA00CBD140 /* NotificationViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -695,6 +781,11 @@
 			isa = PBXTargetDependency;
 			target = 346453CC278F82790097090E /* SampleAppNotificationService */;
 			targetProxy = 346453D2278F82790097090E /* PBXContainerItemProxy */;
+		};
+		C30E65992964B5AA00CBD140 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C30E658A2964B5AA00CBD140 /* Carousel */;
+			targetProxy = C30E65982964B5AA00CBD140 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -827,6 +918,14 @@
 			name = Feather.ttf;
 			sourceTree = "<group>";
 		};
+		C30E65942964B5AA00CBD140 /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C30E65952964B5AA00CBD140 /* Base */,
+			);
+			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -896,8 +995,19 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = FGNAM5PJD7;
+				DEVELOPMENT_TEAM = VL2YHK9CW3;
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/../../node_modules/react-native-ios-notification-service\"",
+					"\"${PODS_ROOT}/Flipper-DoubleConversion/Frameworks\"",
+					"\"${PODS_ROOT}/GoogleMaps/Base/Frameworks\"",
+					"\"${PODS_ROOT}/GoogleMaps/Maps/Frameworks\"",
+					"\"${PODS_ROOT}/OpenSSL-Universal/Frameworks\"",
+					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/Flipper-DoubleConversion\"",
+					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL-Universal\"",
+					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/react-native-ios-notification-service\"",
+				);
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = SampleApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -906,72 +1016,75 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = (
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/CocoaAsyncSocket\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/DoubleConversion\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/Flipper-Boost-iOSX\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/Flipper\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/Flipper-DoubleConversion\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/Flipper-Folly\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/Flipper-Glog\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/Flipper-PeerTalk\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/Flipper-RSocket\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FlipperKit\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/Google-Maps-iOS-Utils\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/RCT-Folly\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/RCTTypeSafety\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNCMaskedView\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNDateTimePicker\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNGestureHandler\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNScreens\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNVectorIcons\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-Core\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-CoreModules\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTAnimation\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTBlob\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTImage\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTLinking\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTNetwork\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTSettings\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTText\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTVibration\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-cxxreact\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-jsi\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-jsiexecutor\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-jsinspector\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-perflogger\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/Yoga\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/YogaKit\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/glog\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/libevent\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-acoustic-mobile-push\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-acoustic-mobile-push-beacon\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-acoustic-mobile-push-calendar\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-acoustic-mobile-push-displayweb\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-acoustic-mobile-push-geofence\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-acoustic-mobile-push-inapp\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-acoustic-mobile-push-inbox\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-acoustic-mobile-push-location\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-acoustic-mobile-push-snooze\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-geolocation\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-google-maps\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-ios-notification-service\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-mail\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-maps\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-safe-area-context\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-video\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-webview\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FBReactNativeSpec\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FBReactNativeSpec\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/Flipper-Fmt\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-logger\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/fmt\"",
+					"${PODS_CONFIGURATION_BUILD_DIR}/CocoaAsyncSocket",
+					"${PODS_CONFIGURATION_BUILD_DIR}/DoubleConversion",
+					"${PODS_CONFIGURATION_BUILD_DIR}/Flipper-Boost-iOSX",
+					"${PODS_CONFIGURATION_BUILD_DIR}/Flipper",
+					"${PODS_CONFIGURATION_BUILD_DIR}/Flipper-DoubleConversion",
+					"${PODS_CONFIGURATION_BUILD_DIR}/Flipper-Folly",
+					"${PODS_CONFIGURATION_BUILD_DIR}/Flipper-Glog",
+					"${PODS_CONFIGURATION_BUILD_DIR}/Flipper-PeerTalk",
+					"${PODS_CONFIGURATION_BUILD_DIR}/Flipper-RSocket",
+					"${PODS_CONFIGURATION_BUILD_DIR}/FlipperKit",
+					"${PODS_CONFIGURATION_BUILD_DIR}/Google-Maps-iOS-Utils",
+					"${PODS_CONFIGURATION_BUILD_DIR}/RCT-Folly",
+					"${PODS_CONFIGURATION_BUILD_DIR}/RCTTypeSafety",
+					"${PODS_CONFIGURATION_BUILD_DIR}/RNCMaskedView",
+					"${PODS_CONFIGURATION_BUILD_DIR}/RNDateTimePicker",
+					"${PODS_CONFIGURATION_BUILD_DIR}/RNGestureHandler",
+					"${PODS_CONFIGURATION_BUILD_DIR}/RNScreens",
+					"${PODS_CONFIGURATION_BUILD_DIR}/RNVectorIcons",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-Core",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-CoreModules",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTAnimation",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTBlob",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTImage",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTLinking",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTNetwork",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTSettings",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTText",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTVibration",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-cxxreact",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-jsi",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-jsiexecutor",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-jsinspector",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-perflogger",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon",
+					"${PODS_CONFIGURATION_BUILD_DIR}/Yoga",
+					"${PODS_CONFIGURATION_BUILD_DIR}/YogaKit",
+					"${PODS_CONFIGURATION_BUILD_DIR}/glog",
+					"${PODS_CONFIGURATION_BUILD_DIR}/libevent",
+					"${PODS_CONFIGURATION_BUILD_DIR}/react-native-acoustic-mobile-push",
+					"${PODS_CONFIGURATION_BUILD_DIR}/react-native-acoustic-mobile-push-beacon",
+					"${PODS_CONFIGURATION_BUILD_DIR}/react-native-acoustic-mobile-push-calendar",
+					"${PODS_CONFIGURATION_BUILD_DIR}/react-native-acoustic-mobile-push-displayweb",
+					"${PODS_CONFIGURATION_BUILD_DIR}/react-native-acoustic-mobile-push-geofence",
+					"${PODS_CONFIGURATION_BUILD_DIR}/react-native-acoustic-mobile-push-inapp",
+					"${PODS_CONFIGURATION_BUILD_DIR}/react-native-acoustic-mobile-push-inbox",
+					"${PODS_CONFIGURATION_BUILD_DIR}/react-native-acoustic-mobile-push-location",
+					"${PODS_CONFIGURATION_BUILD_DIR}/react-native-acoustic-mobile-push-snooze",
+					"${PODS_CONFIGURATION_BUILD_DIR}/react-native-geolocation",
+					"${PODS_CONFIGURATION_BUILD_DIR}/react-native-google-maps",
+					"${PODS_CONFIGURATION_BUILD_DIR}/react-native-ios-notification-service",
+					"${PODS_CONFIGURATION_BUILD_DIR}/react-native-mail",
+					"${PODS_CONFIGURATION_BUILD_DIR}/react-native-maps",
+					"${PODS_CONFIGURATION_BUILD_DIR}/react-native-safe-area-context",
+					"${PODS_CONFIGURATION_BUILD_DIR}/react-native-video",
+					"${PODS_CONFIGURATION_BUILD_DIR}/react-native-webview",
+					"${PODS_CONFIGURATION_BUILD_DIR}/FBReactNativeSpec",
+					"${PODS_CONFIGURATION_BUILD_DIR}/FBReactNativeSpec",
+					"${PODS_CONFIGURATION_BUILD_DIR}/Flipper-Fmt",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-logger",
+					"${PODS_CONFIGURATION_BUILD_DIR}/fmt",
+					"${PODS_CONFIGURATION_BUILD_DIR}/react-native-acoustic-mobile-push-imagecarousel",
+					"${PODS_CONFIGURATION_BUILD_DIR}/react-native-acoustic-mobile-push-action-menu",
+					"${PODS_CONFIGURATION_BUILD_DIR}/react-native-acoustic-mobile-push-wallet",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.metova.acousticSamplePushApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.metova.acousticSampleV1;
 				PRODUCT_NAME = SampleApp;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "SampleApp-Bridging-Header.h";
@@ -992,7 +1105,16 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = FGNAM5PJD7;
+				DEVELOPMENT_TEAM = VL2YHK9CW3;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/../../node_modules/react-native-ios-notification-service\"",
+					"\"${PODS_ROOT}/GoogleMaps/Base/Frameworks\"",
+					"\"${PODS_ROOT}/GoogleMaps/Maps/Frameworks\"",
+					"\"${PODS_ROOT}/OpenSSL-Universal/Frameworks\"",
+					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL-Universal\"",
+					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/react-native-ios-notification-service\"",
+				);
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = SampleApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -1001,63 +1123,66 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = (
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/CocoaAsyncSocket\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/DoubleConversion\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/FBReactNativeSpec\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/Google-Maps-iOS-Utils\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/RCT-Folly\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/RCTTypeSafety\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNCMaskedView\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNDateTimePicker\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNGestureHandler\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNScreens\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/RNVectorIcons\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-Core\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-CoreModules\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTAnimation\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTBlob\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTImage\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTLinking\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTNetwork\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTSettings\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTText\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTVibration\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-cxxreact\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-jsi\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-jsiexecutor\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-jsinspector\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-perflogger\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/Yoga\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/YogaKit\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/glog\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/libevent\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-acoustic-mobile-push\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-acoustic-mobile-push-beacon\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-acoustic-mobile-push-calendar\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-acoustic-mobile-push-displayweb\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-acoustic-mobile-push-geofence\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-acoustic-mobile-push-inapp\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-acoustic-mobile-push-inbox\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-acoustic-mobile-push-location\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-acoustic-mobile-push-snooze\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-geolocation\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-google-maps\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-ios-notification-service\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-mail\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-maps\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-safe-area-context\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-video\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/react-native-webview\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/React-logger\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/Flipper-Fmt\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/fmt\"",
+					"${PODS_CONFIGURATION_BUILD_DIR}/CocoaAsyncSocket",
+					"${PODS_CONFIGURATION_BUILD_DIR}/DoubleConversion",
+					"${PODS_CONFIGURATION_BUILD_DIR}/FBReactNativeSpec",
+					"${PODS_CONFIGURATION_BUILD_DIR}/Google-Maps-iOS-Utils",
+					"${PODS_CONFIGURATION_BUILD_DIR}/RCT-Folly",
+					"${PODS_CONFIGURATION_BUILD_DIR}/RCTTypeSafety",
+					"${PODS_CONFIGURATION_BUILD_DIR}/RNCMaskedView",
+					"${PODS_CONFIGURATION_BUILD_DIR}/RNDateTimePicker",
+					"${PODS_CONFIGURATION_BUILD_DIR}/RNGestureHandler",
+					"${PODS_CONFIGURATION_BUILD_DIR}/RNScreens",
+					"${PODS_CONFIGURATION_BUILD_DIR}/RNVectorIcons",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-Core",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-CoreModules",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTAnimation",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTBlob",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTImage",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTLinking",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTNetwork",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTSettings",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTText",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-RCTVibration",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-cxxreact",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-jsi",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-jsiexecutor",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-jsinspector",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-perflogger",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon",
+					"${PODS_CONFIGURATION_BUILD_DIR}/Yoga",
+					"${PODS_CONFIGURATION_BUILD_DIR}/YogaKit",
+					"${PODS_CONFIGURATION_BUILD_DIR}/glog",
+					"${PODS_CONFIGURATION_BUILD_DIR}/libevent",
+					"${PODS_CONFIGURATION_BUILD_DIR}/react-native-acoustic-mobile-push",
+					"${PODS_CONFIGURATION_BUILD_DIR}/react-native-acoustic-mobile-push-beacon",
+					"${PODS_CONFIGURATION_BUILD_DIR}/react-native-acoustic-mobile-push-calendar",
+					"${PODS_CONFIGURATION_BUILD_DIR}/react-native-acoustic-mobile-push-displayweb",
+					"${PODS_CONFIGURATION_BUILD_DIR}/react-native-acoustic-mobile-push-geofence",
+					"${PODS_CONFIGURATION_BUILD_DIR}/react-native-acoustic-mobile-push-inapp",
+					"${PODS_CONFIGURATION_BUILD_DIR}/react-native-acoustic-mobile-push-inbox",
+					"${PODS_CONFIGURATION_BUILD_DIR}/react-native-acoustic-mobile-push-location",
+					"${PODS_CONFIGURATION_BUILD_DIR}/react-native-acoustic-mobile-push-snooze",
+					"${PODS_CONFIGURATION_BUILD_DIR}/react-native-geolocation",
+					"${PODS_CONFIGURATION_BUILD_DIR}/react-native-google-maps",
+					"${PODS_CONFIGURATION_BUILD_DIR}/react-native-ios-notification-service",
+					"${PODS_CONFIGURATION_BUILD_DIR}/react-native-mail",
+					"${PODS_CONFIGURATION_BUILD_DIR}/react-native-maps",
+					"${PODS_CONFIGURATION_BUILD_DIR}/react-native-safe-area-context",
+					"${PODS_CONFIGURATION_BUILD_DIR}/react-native-video",
+					"${PODS_CONFIGURATION_BUILD_DIR}/react-native-webview",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-logger",
+					"${PODS_CONFIGURATION_BUILD_DIR}/Flipper-Fmt",
+					"${PODS_CONFIGURATION_BUILD_DIR}/fmt",
+					"${PODS_CONFIGURATION_BUILD_DIR}/react-native-acoustic-mobile-push-imagecarousel",
+					"${PODS_CONFIGURATION_BUILD_DIR}/react-native-acoustic-mobile-push-action-menu",
+					"${PODS_CONFIGURATION_BUILD_DIR}/react-native-acoustic-mobile-push-wallet",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.metova.acousticSamplePushApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.metova.acousticSampleV1;
 				PRODUCT_NAME = SampleApp;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "SampleApp-Bridging-Header.h";
@@ -1078,7 +1203,7 @@
 				CODE_SIGN_ENTITLEMENTS = SampleAppNotificationService/SampleAppNotificationService.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = FGNAM5PJD7;
+				DEVELOPMENT_TEAM = VL2YHK9CW3;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = SampleAppNotificationService/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -1090,7 +1215,7 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = com.metova.acousticSamplePushApp.SampleAppNotificationService;
+				PRODUCT_BUNDLE_IDENTIFIER = com.metova.acousticSampleV1.notification;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -1113,7 +1238,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = FGNAM5PJD7;
+				DEVELOPMENT_TEAM = VL2YHK9CW3;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = SampleAppNotificationService/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -1124,7 +1249,7 @@
 				);
 				MTL_FAST_MATH = YES;
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = com.metova.acousticSamplePushApp.SampleAppNotificationService;
+				PRODUCT_BUNDLE_IDENTIFIER = com.metova.acousticSampleV1.notification;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -1257,6 +1382,78 @@
 			};
 			name = Release;
 		};
+		C30E659B2964B5AA00CBD140 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = VL2YHK9CW3;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Carousel/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Carousel;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.metova.acousticSampleV1.Carousel;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C30E659C2964B5AA00CBD140 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = VL2YHK9CW3;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Carousel/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Carousel;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.metova.acousticSampleV1.Carousel;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1292,6 +1489,15 @@
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
 				83CBBA211A601CBA00E9B192 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C30E659E2964B5AA00CBD140 /* Build configuration list for PBXNativeTarget "Carousel" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C30E659B2964B5AA00CBD140 /* Debug */,
+				C30E659C2964B5AA00CBD140 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

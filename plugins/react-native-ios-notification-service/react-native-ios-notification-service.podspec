@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
   s.homepage     = "https://github.com/Acoustic-Mobile-Push/React-Native"
   s.license      = "Copyright (c) 2019. Acoustic, L.P. All rights reserved"
   s.authors      = { "Support" => "support@acoustic.co" }
-  s.platforms    = { :ios => "9.0" }
+  s.platforms    = { :ios => "12.0" }
   s.source       = { :git => "https://github.com/Acoustic-Mobile-Push/React-Native.git", :tag => "#{s.version}" }
 
   s.source_files = "ios/*.{h,m,swift}"

@@ -1,5 +1,5 @@
 /*
- * Copyright © 2019 Acoustic, L.P. All rights reserved.
+ * Copyright © 2019, 2023 Acoustic, L.P. All rights reserved.
  *
  * NOTICE: This file contains material that is confidential and proprietary to
  * Acoustic, L.P. and/or other developers. No license is granted under any intellectual or
@@ -75,7 +75,7 @@ function modifyManifest(installDirectory) {
 		var receivers = document.manifest.application[0].receiver;
 		[
 			'<receiver android:name="co.acoustic.mobile.push.sdk.wi.AlarmReceiver" ><intent-filter><action android:name="android.intent.action.BOOT_COMPLETED" /></intent-filter><intent-filter><action android:name="android.intent.action.TIMEZONE_CHANGED" /></intent-filter><intent-filter><action android:name="android.intent.action.PACKAGE_REPLACED" /><data android:scheme="package" /></intent-filter><intent-filter><action android:name="android.intent.action.LOCALE_CHANGED" /></intent-filter></receiver>',
-			'<receiver android:name="co.acoustic.mobile.push.RNAcousticMobilePushBroadcastReceiver"><intent-filter><action android:name="co.acoustic.mobile.push.sdk.NOTIFIER" /></intent-filter></receiver>',
+			'<receiver android:name="co.acoustic.mobile.push.RNAcousticMobilePushBroadcastReceiver" android:exported="true"><intent-filter><action android:name="co.acoustic.mobile.push.sdk.NOTIFIER" /></intent-filter></receiver>',
 			'<receiver android:name="co.acoustic.mobile.push.sdk.notification.NotifActionReceiver" />'
 		].forEach((receiver) => {
 			receivers = verifyStanza(receivers, receiver);

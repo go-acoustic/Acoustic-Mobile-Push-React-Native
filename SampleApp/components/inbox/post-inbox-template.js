@@ -1,5 +1,5 @@
 /*
- * Copyright © 2019 Acoustic, L.P. All rights reserved.
+ * Copyright © 2019, 2023 Acoustic, L.P. All rights reserved.
  *
  * NOTICE: This file contains material that is confidential and proprietary to
  * Acoustic, L.P. and/or other developers. No license is granted under any intellectual or
@@ -38,14 +38,14 @@ function render(inboxMessage, full) {
 
   let contentActions = (<View />);
 
-  function action(action) {
+  function action(action, index) {
     const parsedAction = typeof (action) === 'string' ? JSON.parse(action) : action;
 
     return (
       <Button onPress={() => {
         RNAcousticMobilePushInbox.clickInboxAction(parsedAction, inboxMessage.inboxMessageId);
       }}
-        key={action.name}
+        key={`${action.name} - ${index}`}
         title={action.name}
       />
     );
@@ -55,7 +55,7 @@ function render(inboxMessage, full) {
     const actions = [];
 
     for (let i = 0; i < inboxMessage.content.actions.length; i++) {
-      actions.push(action(inboxMessage.content.actions[i]));
+      actions.push(action(inboxMessage.content.actions[i], i));
     }
 
     contentActions = (<View style={{ paddingTop: 8, flex: 1, flexDirection: 'row', justifyContent: 'space-evenly' }}>{actions}</View>);

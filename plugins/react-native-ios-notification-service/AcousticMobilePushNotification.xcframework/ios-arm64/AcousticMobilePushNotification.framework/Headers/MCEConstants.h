@@ -115,3 +115,11 @@ extern MCENotificationName const MCECustomPushNotRegistered;
 
 /** Called when a custom action is opened by a user but is not registered in the application, but was previously registered in the application */
 extern MCENotificationName const MCECustomPushNotYetRegistered;
+
+/** The MCECustomRegisteredCompleteNotification message is sent via NSNotificationCenter when the SDK registers with the Acoustic servers */
+extern MCENotificationName const MCECustomRegisteredCompleteNotification;
+
+/** The MCECustomRegisteredIncompleteNotification message is sent via NSNotificationCenter when the SDK fails to register with the Acoustic servers */
+extern MCENotificationName const MCECustomRegisteredIncompleteNotification;
+
+

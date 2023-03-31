@@ -61,6 +61,7 @@
     <service android:name="co.acoustic.mobile.push.sdk.location.LocationSyncAlarmListener"/>
     <service android:name="co.acoustic.mobile.push.sdk.location.LocationRetrieveService"/>
     <service android:name="co.acoustic.mobile.push.plugin.snooze.SnoozeIntentService"/>
+    <service android:name="co.acoustic.mobile.push.plugin.imagecarousel.imagecarouselIntentService"/>
   </application>
   <queries>
     <intent>

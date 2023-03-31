@@ -1,5 +1,5 @@
 /*
- * Copyright © 2019 Acoustic, L.P. All rights reserved.
+ * Copyright © 2019, 2023 Acoustic, L.P. All rights reserved.
  *
  * NOTICE: This file contains material that is confidential and proprietary to
  * Acoustic, L.P. and/or other developers. No license is granted under any intellectual or
@@ -143,14 +143,12 @@ RCT_EXPORT_METHOD(deleteInApp: (NSString*)inAppMessageId) {
 
 
 // This method is largely for testing the display of InApp messages
-RCT_EXPORT_METHOD(createInApp: (NSDictionary*)content template:(NSString*)template rules: (NSArray*)rules maxViews:(NSInteger)maxViews attribution: (NSString*)attribution mailingId: (NSString*)mailingId ) {
+RCT_EXPORT_METHOD(createInApp: (NSDictionary*)content template:(NSString*)template rules: (NSArray*)rules maxViews:(NSInteger)maxViews mailingId: (NSString*)mailingId ) {
     NSMutableDictionary * mce = [NSMutableDictionary dictionary];
     if(mailingId && [mailingId respondsToSelector:@selector(isEqualToString:)]) {
         mce[@"mailingId"] = mailingId;
     }
-    if(attribution && [attribution respondsToSelector:@selector(isEqualToString:)]) {
-        mce[@"attribution"] = attribution;
-    }
+    
     NSMutableDictionary * inApp = [NSMutableDictionary dictionary];
     if(maxViews) {
         inApp[@"maxViews"] = @(maxViews);
@@ -188,6 +186,7 @@ RCT_EXPORT_METHOD(executeInApp: (NSArray*) rules) {
             return;
         }
     }
+  
     [MCEInAppManager.sharedInstance fetchInAppMessagesForRules:rules completion:^(NSMutableArray *inAppMessages, NSError *error) {
         for(MCEInAppMessage * inAppMessage in inAppMessages) {
             if([self showInAppMessage: inAppMessage]) {
@@ -226,33 +225,31 @@ RCT_EXPORT_METHOD(registerInApp: (NSString*) template module: (NSString*) module
     [self hideInApp];
     UIWindow * currentWindow = UIApplication.sharedApplication.keyWindow;
     CGRect rect = currentWindow.frame;
-    
-    NSString * orientation = inAppMessage.content[@"orientation"];
+    NSArray * rules = inAppMessage.rules;
     NSNumber * height = module[@"height"];
     CGFloat contentHeight = 0;
     CGFloat containerHeight = 0;
-    if(height && [height respondsToSelector:@selector(floatValue)] && orientation && [orientation respondsToSelector:@selector(isEqualToString:)]) {
+
+    if (height && [height respondsToSelector:@selector(floatValue)] && rules && [height intValue] > 0) {
         contentHeight = [height floatValue];
         containerHeight = contentHeight;
-        if (@available(iOS 11.0, *)) {
-            if([[orientation lowercaseString] isEqual: @"bottom"]) {
-                containerHeight += currentWindow.safeAreaInsets.bottom;
-            } else {
-                containerHeight += currentWindow.safeAreaInsets.top;
-            }
+        if ([rules containsObject:@"bottomBanner"]) {
+            containerHeight += currentWindow.safeAreaInsets.bottom;
+            rect.origin.y = rect.size.height - containerHeight;
+        } else {
+            containerHeight += currentWindow.safeAreaInsets.top;
         }
-        
-        if([[orientation lowercaseString] isEqual: @"bottom"]) {
-            rect.origin.y = rect.size.height - containerHeight;;
-        }
-        
         rect.size.height = containerHeight;
+    } else {
+        CGFloat statusHeight = UIApplication.sharedApplication.statusBarFrame.size.height;
+        rect.origin = CGPointMake(0, statusHeight);
+        rect.size.height -= statusHeight;
     }
-    
+
     self.inAppViewController = [[UIViewController alloc] init];
     self.inAppWindow = [[UIWindow alloc] initWithFrame:rect];
     self.inAppWindow.rootViewController = self.inAppViewController;
-    
+
     NSMutableDictionary * message = [@{
                                        @"inAppMessageId": inAppMessage.inAppMessageId,
                                        @"rules": inAppMessage.rules,
@@ -263,7 +260,7 @@ RCT_EXPORT_METHOD(registerInApp: (NSString*) template module: (NSString*) module
                                        @"maxViews": @(inAppMessage.maxViews),
                                        @"content": inAppMessage.content
                                        } mutableCopy];
-    
+
     if(inAppMessage.mailingId) {
         message[@"mailingId"] = inAppMessage.mailingId;
     }
@@ -271,19 +268,23 @@ RCT_EXPORT_METHOD(registerInApp: (NSString*) template module: (NSString*) module
     if(inAppMessage.attribution) {
         message[@"attribution"] = inAppMessage.attribution;
     }
-    
+
     NSMutableDictionary * properties = [ @{ @"message": message } mutableCopy];
+
     properties[@"contentHeight"] = @(contentHeight);
+
     properties[@"containerHeight"] = @(containerHeight);
 
     if (inAppMessage.attribution != nil) {
         [[MCEEventService sharedInstance] recordViewForInAppMessage:inAppMessage attribution:inAppMessage.attribution mailingId:inAppMessage.mailingId];
     }
-    
+
     rect.origin = CGPointZero;
+
     self.inAppView = [[RCTRootView alloc] initWithBridge:self.bridge moduleName:module[@"module"] initialProperties: properties];
+
     self.inAppViewController.view = self.inAppView;
-    
+
     self.inAppView.frame = rect;
     self.inAppWindow.windowLevel = UIWindowLevelAlert;
     self.inAppWindow.hidden = false;

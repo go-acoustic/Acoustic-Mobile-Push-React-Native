@@ -1,5 +1,5 @@
 /*
- * Copyright © 2019 Acoustic, L.P. All rights reserved.
+ * Copyright © 2019, 2023 Acoustic, L.P. All rights reserved.
  *
  * NOTICE: This file contains material that is confidential and proprietary to
  * Acoustic, L.P. and/or other developers. No license is granted under any intellectual or
@@ -37,26 +37,26 @@ export class InAppScreen extends React.Component {
 
   createTopBanner = () => {
     const content = this.bannerTemplateBase();
-    RNAcousticMobilePushInApp.createInApp(content, 'default', ['all', 'topBanner'], 4, '123', '123ABC');
+    RNAcousticMobilePushInApp.createInApp(content, 'default', ['all', 'topBanner'], 4, '123ABC');
   }
 
   createBottomBanner = () => {
     const content = this.bannerTemplateBase();
-    RNAcousticMobilePushInApp.createInApp(content, 'default', ['all', 'bottomBanner'], 4, '123', '123ABC');
+    RNAcousticMobilePushInApp.createInApp(content, 'default', ['all', 'bottomBanner'], 4, '123ABC');
   }
 
   createImageTemplate = () => {
     const content = this.mediaTemplateBase();
     content.image = 'https://picsum.photos/600/600';
     content.duration = 5;
-    RNAcousticMobilePushInApp.createInApp(content, 'image', ['all', 'image'], 4, '123', '123ABC');
+    RNAcousticMobilePushInApp.createInApp(content, 'image', ['all', 'image'], 4, '123ABC');
   }
 
   createVideoTemplate = () => {
     const content = this.mediaTemplateBase();
     content.duration = 0;
     content.video = 'http://techslides.com/demos/sample-videos/small.mp4';
-    RNAcousticMobilePushInApp.createInApp(content, 'video', ['all', 'video'], 4, '123', '123ABC');
+    RNAcousticMobilePushInApp.createInApp(content, 'video', ['all', 'video'], 4, '123ABC');
   }
 
   bannerTemplateBase() {

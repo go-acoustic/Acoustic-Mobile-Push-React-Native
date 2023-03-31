@@ -1,5 +1,5 @@
 /*
- * Copyright © 2019 Acoustic, L.P. All rights reserved.
+ * Copyright © 2019, 2023 Acoustic, L.P. All rights reserved.
  *
  * NOTICE: This file contains material that is confidential and proprietary to
  * Acoustic, L.P. and/or other developers. No license is granted under any intellectual or
@@ -62,6 +62,8 @@ export class InAppMedia extends InAppTemplate {
     } else {
       content = (
         <Video onEnd={this.onEnd}
+          poster={Image.resolveAssetSource(require('./images/loading.gif')).uri}
+          posterResizeMode='center'
           resizeMode="contain"
           style={contentStyle}
           source={{ uri: this.content().video }}
@@ -85,7 +87,7 @@ export class InAppMedia extends InAppTemplate {
               </Touchable>
             </View>
 
-            <View style={{ position: 'absolute', bottom: 10, left: 0, right: 0, maxHeight }}>
+            <View style={{ position: 'absolute', bottom: 40, left: 0, right: 0, maxHeight }}>
               <Touchable onPressIn={() => { this.expand(); }}>
                 <View style={{ height: '100%', width: '100%' }}>
                   <Text style={{ color: '#ffffff', fontWeight: 'bold', paddingLeft: 10, paddingRight: 10 }}>{this.content().title}</Text>

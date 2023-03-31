@@ -18,7 +18,7 @@
 		</data>
 		<key>Headers/MCEAppDelegate.h</key>
 		<data>
-		AdPVQ6V1iSUMgP3Tkyzh4gcIRtg=
+		00qOzUiZhSUc3OBUk7pbLuWJeL4=
 		</data>
 		<key>Headers/MCEArea.h</key>
 		<data>
@@ -46,7 +46,7 @@
 		</data>
 		<key>Headers/MCEConstants.h</key>
 		<data>
-		/4uN6ZgjDJxgX0zWeXFqezy2j8k=
+		jksaoz4T2eUVCf0WuUJXaU3BxRo=
 		</data>
 		<key>Headers/MCEDeliveryActionPayload.h</key>
 		<data>
@@ -58,7 +58,7 @@
 		</data>
 		<key>Headers/MCEEventService.h</key>
 		<data>
-		7nd7QZ/4ke7RU4CbIbL6NyyXmW4=
+		5f1mCjymiGDniXTtcWMyYzyQZLg=
 		</data>
 		<key>Headers/MCEGeofence.h</key>
 		<data>
@@ -67,6 +67,10 @@
 		<key>Headers/MCEGeofenceManager.h</key>
 		<data>
 		IL7fMmMVcMtWEeNA7XqpV6JAhNo=
+		</data>
+		<key>Headers/MCEHelper.h</key>
+		<data>
+		rDHoNruK+t1X0EYJ0NnQnIyBMIU=
 		</data>
 		<key>Headers/MCEInAppManager.h</key>
 		<data>
@@ -126,11 +130,11 @@
 		</data>
 		<key>Headers/MCERegistrationDetails.h</key>
 		<data>
-		Nz+bWaB0ZrD1z/J0hR/sPy5q0rc=
+		GXBkq7uMBRqx1OyHALDLUiHSVFc=
 		</data>
 		<key>Headers/MCESdk.h</key>
 		<data>
-		ASo5wQMBKexFkG89qNMqOsMnPEE=
+		FHJtzB3gR1PN1MPWkMKoX+QmCYU=
 		</data>
 		<key>Headers/MCETemplate.h</key>
 		<data>
@@ -146,7 +150,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		czl/mkmfdEfvmGS0eUyxNn2RDiw=
+		IAopLtUMz/E85ZEZwbyHxCfZi34=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -180,7 +184,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			gjR8Y1HhdYl8pj+gZWecTr2i7KcufCZHd+OKLp4Gkgg=
+			vnODfblK7L/Iqh3HggzybzuZvvQC/tjRtyG84kw1Duo=
 			</data>
 		</dict>
 		<key>Headers/MCEArea.h</key>
@@ -229,7 +233,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			KL9FYgSt23bzJR9p+GrdMTxMkcW9lj2QQ73BC9G2lyo=
+			87TFPeGbptKgLMs2VZVlabAqcrsjxZ7l8mkTDjOLv+I=
 			</data>
 		</dict>
 		<key>Headers/MCEDeliveryActionPayload.h</key>
@@ -250,7 +254,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			1JQuT08OkRvhmu9AoqWPZt/fVWkxCDnbSPlBJ+esgpM=
+			opp+C9jRj0S0RDJVcVO7zp+4GHz66tK71CsT/LUnGwY=
 			</data>
 		</dict>
 		<key>Headers/MCEGeofence.h</key>
@@ -265,6 +269,13 @@
 			<key>hash2</key>
 			<data>
 			N5w2OrYBxf4kfCRR113u/KoSOlf0KTP3+vxR4ca0RCY=
+			</data>
+		</dict>
+		<key>Headers/MCEHelper.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			Yv67FwU09xBmLVbJ//B0IusoGU6cV4F+x101LAuY5E4=
 			</data>
 		</dict>
 		<key>Headers/MCEInAppManager.h</key>
@@ -369,14 +380,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			CRckFta4W0w0eyKLm3fqCvgriLU+ZQkB6tHnsZaDGxg=
+			OA2myi3IU4Hu/A3g+BVPmCydZkloEPDn/V1qgkgit2A=
 			</data>
 		</dict>
 		<key>Headers/MCESdk.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			OJtEnV91VusvWvTNI3CfatafTcnMnraMa0gy9YP3d/4=
+			vQ8XSeJ5YIP53v+VfLq4eyI9Lhj3n/AaL9AIw6vczpQ=
 			</data>
 		</dict>
 		<key>Headers/MCETemplate.h</key>

@@ -1,5 +1,5 @@
 /*
- * Copyright © 2019 Acoustic, L.P. All rights reserved.
+ * Copyright © 2019, 2023 Acoustic, L.P. All rights reserved.
  *
  * NOTICE: This file contains material that is confidential and proprietary to
  * Acoustic, L.P. and/or other developers. No license is granted under any intellectual or
@@ -24,6 +24,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Build;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.Window;
@@ -115,8 +116,10 @@ public class RNAcousticMobilePushInboxModule extends ReactContextBaseJavaModule 
 				if(currentActivity == null) {
 					Logger.i(TAG, "Can't find activity, starting");
 
-					Intent it = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
-					context.sendBroadcast(it);
+					if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+						Intent it = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
+						context.sendBroadcast(it);
+					}
 
 					Intent intent = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
 					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -1,6 +1,6 @@
 {
   "name": "react-native-ios-notification-service",
-  "version": "3.8.6",
+  "version": "3.8.7",
   "main": "index.js",
   "description": "Acoustic iOS Notification Plugin",
   "scripts": {

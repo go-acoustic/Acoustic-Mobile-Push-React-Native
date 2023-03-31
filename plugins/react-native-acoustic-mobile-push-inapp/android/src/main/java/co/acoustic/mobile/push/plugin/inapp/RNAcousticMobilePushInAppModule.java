@@ -1,5 +1,5 @@
 /*
- * Copyright © 2019 Acoustic, L.P. All rights reserved.
+ * Copyright © 2019, 2023 Acoustic, L.P. All rights reserved.
  *
  * NOTICE: This file contains material that is confidential and proprietary to
  * Acoustic, L.P. and/or other developers. No license is granted under any intellectual or
@@ -129,7 +129,7 @@ public class RNAcousticMobilePushInAppModule extends ReactContextBaseJavaModule 
 	}
 
 	@ReactMethod
-	public void createInApp(ReadableMap content, String template, ReadableArray rules, int maxViews, String attribution, String mailingId) {
+	public void createInApp(ReadableMap content, String template, ReadableArray rules, int maxViews, String mailingId) {
 
 		JSONArray rulesJson = new JSONArray();
 		for(int i=0;i<rules.size();i++) {
@@ -146,7 +146,6 @@ public class RNAcousticMobilePushInAppModule extends ReactContextBaseJavaModule 
 			inAppMessage.put("rules", rulesJson);
 
 			inAppMessage.put("maxViews", maxViews);
-			inAppMessage.put("attribution", attribution);
 			inAppMessage.put("mailingId", mailingId);
 			inAppMessage.put("content",  convertReadableMap(content));
 		} catch (Exception ex) {
@@ -180,8 +179,9 @@ public class RNAcousticMobilePushInAppModule extends ReactContextBaseJavaModule 
 			viewLayout = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.FILL_PARENT);
 		}
 
-		String orientation = inAppMessage.getTemplateContent().optString("orientation");
-		if(orientation != null && orientation.toLowerCase().equals("bottom")) {
+    List<String> rules = inAppMessage.getRules();
+    
+		if(rules != null && rules.contains("bottomBanner")) {
 			viewLayout.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 		} else {
 			viewLayout.addRule(RelativeLayout.ALIGN_PARENT_TOP);

@@ -53,9 +53,8 @@
 -(void)recordViewForInboxMessage:(MCEInboxMessage * _Nonnull)inboxMessage attribution: (NSString * _Nullable)attribution mailingId: (NSNumber * _Nullable)mailingId;
 
 /** Record a view of an inApp message
- @param inboxMessage An MCEInAppMessage object to record view for
  @param attribution A string representing the campaign name or attribution of the push message associated with the view event.
- 
+ @param inAppMessage An MCEInAppMessage object to record view for
  Please note that recordViewForInboxMessage:attribution: is deprecated, please use recordViewForInboxMessage:attribution:mailingId: instaed.
  */
 -(void)recordViewForInAppMessage:(MCEInAppMessage * _Nonnull)inAppMessage attribution: (NSString * _Nullable)attribution __attribute__ ((deprecated));

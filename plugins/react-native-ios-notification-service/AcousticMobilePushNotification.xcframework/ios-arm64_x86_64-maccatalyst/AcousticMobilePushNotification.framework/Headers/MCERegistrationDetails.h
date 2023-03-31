@@ -52,5 +52,9 @@
 
 @property NSString * _Nullable appKey;
 
++ (BOOL)isSharedInstanceInitialized;
+
+@property BOOL sdkIsStopped;
+
 @end
 

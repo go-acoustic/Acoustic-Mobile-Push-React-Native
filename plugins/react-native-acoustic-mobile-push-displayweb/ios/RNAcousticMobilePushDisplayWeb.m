@@ -1,5 +1,5 @@
 /*
- * Copyright © 2019 Acoustic, L.P. All rights reserved.
+ * Copyright © 2019, 2023 Acoustic, L.P. All rights reserved.
  *
  * NOTICE: This file contains material that is confidential and proprietary to
  * Acoustic, L.P. and/or other developers. No license is granted under any intellectual or
@@ -32,12 +32,18 @@
 -(BOOL)registerTarget:(NSObject <MCEActionProtocol> *)target withSelector:(SEL)selector forAction:(NSString*)type;
 @end
 
+@interface RNAcousticMobilePushDisplayWeb()
+@property NSString * displayWebActionModule;
+@end
+
 @implementation RNAcousticMobilePushDisplayWeb
 
-+(void)initialize {
-    [NSNotificationCenter.defaultCenter addObserverForName:UIApplicationDidFinishLaunchingNotification object:nil queue: NSOperationQueue.mainQueue usingBlock:^(NSNotification * _Nonnull note) {
-        [MCEActionRegistry.sharedInstance registerTarget:[[self alloc] init] withSelector:@selector(performAction:payload:) forAction:@"displayWebView"];
-    }];
+
+RCT_EXPORT_METHOD(registerPlugin:(NSString*)module)
+{
+    self.displayWebActionModule = module;
+    MCEActionRegistry * registry = [MCEActionRegistry sharedInstance];
+    [registry registerTarget: self withSelector:@selector(performAction:payload:) forAction: @"displayWebView"];
 }
 
 RCT_EXPORT_MODULE();
@@ -60,10 +66,17 @@ RCT_EXPORT_MODULE();
 
 -(void)performAction:(NSDictionary*)action payload:(NSDictionary*)payload
 {
-    WebViewController * viewController = [[WebViewController alloc] initWithURL:[NSURL URLWithString:action[@"value"]]];
-    UIViewController * controller = MCESdk.sharedInstance.findCurrentViewController;
-    if(controller) {
-        [controller presentViewController:viewController animated:TRUE completion:nil];
+
+    if(!self.displayWebActionModule) {
+        NSLog(@"Display Web Action Module is not registered, can not show Display Web interface!");
+        return;
+    }
+
+    WebViewController * viewController = [[WebViewController alloc] initWithNibName:@"WebViewController" bundle:nil url: [NSURL URLWithString:action[@"value"][@"url"]]];
+    UIWindow * window = [[UIApplication sharedApplication] keyWindow];
+                
+    if(window.rootViewController) {
+        [window.rootViewController presentViewController:viewController animated:TRUE completion:nil];
     } else {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.25 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self performAction:action payload: payload];

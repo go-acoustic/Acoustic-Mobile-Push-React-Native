@@ -13,6 +13,7 @@ package co.acoustic.mobile.push.plugin.calendar;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Build;
 import android.provider.CalendarContract;
 
 import co.acoustic.mobile.push.sdk.api.notification.MceNotificationAction;
@@ -91,8 +92,10 @@ public class AddToCalendarAction implements MceNotificationAction{
     @Override
     public void handleAction(Context context, String type, String name, String attribution, String mailingId, Map<String, String> payload, boolean fromNotification) {
 
-        Intent it = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
-        context.sendBroadcast(it);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+            Intent it = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
+            context.sendBroadcast(it);
+        }
         Intent intent = new Intent(Intent.ACTION_INSERT);
         intent.setType("vnd.android.cursor.item/event");
 

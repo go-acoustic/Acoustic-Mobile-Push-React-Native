@@ -1,5 +1,5 @@
 /*
- * Copyright © 2019 Acoustic, L.P. All rights reserved.
+ * Copyright © 2019, 2023 Acoustic, L.P. All rights reserved.
  *
  * NOTICE: This file contains material that is confidential and proprietary to
  * Acoustic, L.P. and/or other developers. No license is granted under any intellectual or
@@ -197,9 +197,9 @@ export class GeofenceScreen extends React.Component {
           onRegionChangeComplete={this.onRegionChange}
           followUserLocation
           showsUserLocation>
-          {geofences.map((circle) => (
+          {geofences.map((circle, i) => (
             <MapView.Circle
-              key={circle.id}
+              key={`${circle.id} - ${i}`}
               center={{ latitude: circle.latitude, longitude: circle.longitude }}
               radius={circle.radius}
               fillColor={circle.active ? 'rgba(255, 0, 0, 0.1)' : 'rgba(0, 122, 255, 0.1)'}

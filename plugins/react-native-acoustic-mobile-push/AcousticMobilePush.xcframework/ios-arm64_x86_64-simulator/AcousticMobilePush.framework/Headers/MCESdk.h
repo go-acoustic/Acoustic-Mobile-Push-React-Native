@@ -16,7 +16,15 @@
 #else
 #import <UIKit/UIKit.h>
 #import <UserNotifications/UserNotifications.h>
+#import <Foundation/Foundation.h>
 #endif
+
+typedef NS_ENUM(NSInteger, MCESdkState) {
+    NotInitialized,
+    Initializing,
+    Running,
+    Stopped    
+};
 
 /** The MCESdk class is the central integration point for the SDK as a whole. */
 
@@ -109,4 +117,16 @@ Please note, this method is deprecated, please use MCERegistrationDetails.shared
  */
 -(BOOL)gdprState __attribute__ ((deprecated));
 
+/** This property returns the date the last time the inbox was synced. */
+-(NSDate *_Nullable)lastInboxSync;
+
+/** This method returns current state of the sdk (Not Initialized, Initializing, Running, Stopped). */
+- (enum MCESdkState) sdkState;
+
+/** This method notifies when the caller when the sdk state has been set to Running or Stopped. If the error variable in the completion handler is set to nil then the sdk is ready to be used. If the error is not nil, the sdk has errored.
+ @param completionBlock
+ */
+- (void)sdkStateIsRunning: (void (^_Nonnull)(NSError * _Nullable error))completionBlock;
+
+typedef void (^SdkStateCompletionHandler)(NSError* _Nullable error);
 @end

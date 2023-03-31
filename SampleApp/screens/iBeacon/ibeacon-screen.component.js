@@ -1,5 +1,5 @@
 /*
- * Copyright © 2019 Acoustic, L.P. All rights reserved.
+ * Copyright © 2019, 2023 Acoustic, L.P. All rights reserved.
  *
  * NOTICE: This file contains material that is confidential and proprietary to
  * Acoustic, L.P. and/or other developers. No license is granted under any intellectual or
@@ -180,9 +180,9 @@ export class iBeaconScreen extends React.Component {
         </ListItem>
 
         <Text style={styles.tableHeader}>iBeacon Major Regions</Text>
-        {regions.map((region) => {
+        {regions.map((region, i) => {
           return (
-            <ListItem key={region.id}>
+            <ListItem key={`${region.id} - ${i}`}>
               <ListItem.Content>
                 <ListItem.Title>{`${region.major}`}</ListItem.Title>
                 {statusDetail && <ListItem.Subtitle>{statusDetail[region.id]}</ListItem.Subtitle>}

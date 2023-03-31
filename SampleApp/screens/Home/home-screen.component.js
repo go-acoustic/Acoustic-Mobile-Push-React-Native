@@ -1,5 +1,5 @@
 /*
- * Copyright © 2019 Acoustic, L.P. All rights reserved.
+ * Copyright © 2019, 2023 Acoustic, L.P. All rights reserved.
  *
  * NOTICE: This file contains material that is confidential and proprietary to
  * Acoustic, L.P. and/or other developers. No license is granted under any intellectual or
@@ -9,15 +9,21 @@
  */
 
 import React from 'react';
-import { Text, View, Image, ScrollView, NativeModules } from 'react-native';
+import { Text, View, Image, ScrollView, NativeModules, Platform, Alert } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { styles } from '../../styles';
-import { RNAcousticMobilePushEmitter, RNAcousticMobilePushInboxEmitter } from '../../helpers/eventEmitters';
-import { INBOX_COUNT_UPDATE, REGISTERED } from '../../enums/events';
+import { RNAcousticMobilePushEmitter, RNAcousticMobilePushInboxEmitter, RNAcousticMobilePushImageCarouselEmitter, RNAcousticMobilePushBeaconEmitter } from '../../helpers/eventEmitters';
+import { INBOX_COUNT_UPDATE, REGISTERED, CAROUSEL_CLICK_EVENT, ENTERED_BEACON, EXITED_BEACON } from '../../enums/events';
 
 const {
   RNAcousticMobilePush,
   RNAcousticMobilePushInbox,
+  RNAcousticMobilePushSnooze,
+  RNAcousticMobilePushDisplayWeb,
+  RNAcousticMobilePushCalendar,
+  RNAcousticMobilePushActionMenu,
+  RNAcousticMobilePushWallet,
+  RNAcousticMobilePushImageCarousel,
 } = NativeModules;
 
 export class HomeScreen extends React.Component {
@@ -36,6 +42,15 @@ export class HomeScreen extends React.Component {
   componentDidMount() {
     RNAcousticMobilePush.requestPushPermission();
 
+    if (Platform.OS == 'ios') {
+      RNAcousticMobilePushSnooze.registerPlugin("SnoozeAction");
+      RNAcousticMobilePushDisplayWeb.registerPlugin("DisplayWebAction");
+      RNAcousticMobilePushCalendar.registerPlugin("CalendarAction");
+      RNAcousticMobilePushActionMenu.registerPlugin("ActionMenuAction");
+      RNAcousticMobilePushWallet.registerPlugin("WalletAction");
+      RNAcousticMobilePushImageCarousel.registerPlugin("CarouselAction");
+    }
+
     this.update();
 
     this.setState({
@@ -45,7 +60,18 @@ export class HomeScreen extends React.Component {
         }),
         RNAcousticMobilePushInboxEmitter.addListener(INBOX_COUNT_UPDATE, () => {
           this.update();
-        })
+        }),
+        RNAcousticMobilePushImageCarouselEmitter.addListener(CAROUSEL_CLICK_EVENT, (e) => {
+          Alert.alert(
+            e.dialogTitle,
+            e.dialogMsg,
+            [
+              { text: "Okay", onPress: () => {} }
+            ]
+          );
+        }),
+        RNAcousticMobilePushBeaconEmitter.addListener(ENTERED_BEACON, (detail) => { /*NO-OP*/ }),
+        RNAcousticMobilePushBeaconEmitter.addListener(EXITED_BEACON, (detail) => { /*NO-OP*/ })
       ]
     });
   }

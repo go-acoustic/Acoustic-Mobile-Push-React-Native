@@ -10,11 +10,16 @@
 
 #if __has_feature(modules)
 @import UIKit;
+@import WebKit;
 #else
 #import <UIKit/UIKit.h>
+#import <WebKit/WebKit.h>
 #endif
 
-@interface WebViewController : UIViewController <UIWebViewDelegate>
--(instancetype)initWithURL:(NSURL*)url;
+@interface WebViewController : UIViewController <WKUIDelegate, WKNavigationDelegate>
+@property (weak, nonatomic) IBOutlet UIProgressView *progressView;
+@property (nonatomic) WKWebView *webView;
+@property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
 
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil url: (NSURL*)url;
 @end

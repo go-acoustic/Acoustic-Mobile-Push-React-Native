@@ -1,6 +1,6 @@
 {
   "name": "react-native-acoustic-mobile-push-beacon",
-  "version": "3.8.6",
+  "version": "3.8.7",
   "description": "Acoustic Mobile Push Beacon Location Plugin",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -12,8 +12,8 @@
   "author": "Acoustic",
   "license": "Copyright (c) 2019. Acoustic, L.P. All rights reserved.",
   "peerDependencies": {
-    "react-native-acoustic-mobile-push": "3.8.6",
-    "react-native-acoustic-mobile-push-location": "3.8.6"
+    "react-native-acoustic-mobile-push": "3.8.7",
+    "react-native-acoustic-mobile-push-location": "3.8.7"
   },
   "dependencies": {
     "chalk": "^2.4.2",

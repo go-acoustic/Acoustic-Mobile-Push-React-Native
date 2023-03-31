@@ -190,8 +190,10 @@ dependencies {
   implementation fileTree(dir: "libs", include: ["*.jar","*.aar"])
   //noinspection GradleDynamicVersion
   implementation "com.facebook.react:react-native:+"  // From node_modules
-  implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
-
+  // react-native-video
+  compile project(':react-native-video')
+  implementation "androidx.appcompat:appcompat:1.0.0"
+  
   implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 
   implementation "androidx.legacy:legacy-support-core-utils:1.0.0"

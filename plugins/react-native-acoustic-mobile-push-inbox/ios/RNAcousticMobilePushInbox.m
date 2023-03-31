@@ -1,5 +1,5 @@
 /*
- * Copyright © 2019 Acoustic, L.P. All rights reserved.
+ * Copyright © 2019, 2023 Acoustic, L.P. All rights reserved.
  *
  * NOTICE: This file contains material that is confidential and proprietary to
  * Acoustic, L.P. and/or other developers. No license is granted under any intellectual or
@@ -65,6 +65,11 @@ typedef void (^MCEMessageCallback)(MCEInboxMessage *message, NSError* error);
 @interface MCESdk : NSObject
 @property(class, nonatomic, readonly) MCESdk * sharedInstance NS_SWIFT_NAME(shared);
 @property (nonatomic) MCEConfig* config;
+@end
+
+@interface MCEEventService
+@property(class, nonatomic, readonly) MCEEventService * sharedInstance NS_SWIFT_NAME(shared);
+-(void)recordViewForInboxMessage:(MCEInboxMessage * _Nonnull)inboxMessage attribution: (NSString * _Nullable)attribution mailingId: (NSNumber * _Nullable)mailingId;
 @end
 
 @interface RNAcousticMobilePushInbox()
@@ -211,6 +216,7 @@ RCT_EXPORT_METHOD(readInboxMessage: (NSString*)inboxMessageId) {
     MCEInboxMessage * inboxMessage = [[MCEInboxDatabase sharedInstance] inboxMessageWithInboxMessageId:inboxMessageId];
     if(inboxMessage) {
         inboxMessage.isRead=TRUE;
+        [[MCEEventService sharedInstance] recordViewForInboxMessage:inboxMessage attribution:inboxMessage.attribution mailingId:inboxMessage.mailingId];
     }
 }
 

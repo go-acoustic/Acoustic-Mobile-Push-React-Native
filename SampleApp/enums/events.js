@@ -20,3 +20,5 @@ export const SYNC_INBOX = 'SyncInbox';
 
 export const UPDATE_USER_ATTRIBUTES_SUCCESS = 'UpdateUserAttributesSuccess';
 export const UPDATE_USER_ATTRIBUTES_ERROR = 'UpdateUserAttributesError';
+
+export const CAROUSEL_CLICK_EVENT = 'CarouselClickEvent';

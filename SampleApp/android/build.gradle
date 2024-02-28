@@ -7,7 +7,7 @@ buildscript {
         compileSdkVersion = 31
         targetSdkVersion = 31
         supportLibVersion = "29.0.0"
-	      googlePlayServicesVersion = "16.0.5" // or set latest version
+        googlePlayServicesVersion = "16.0.5" // or set latest version
         androidMapsUtilsVersion = "0.5+"
         kotlinVersion = "1.6.10"
     }
@@ -43,5 +43,8 @@ allprojects {
         maven {
             url "$rootDir/../node_modules/detox/Detox-android"
         }
+
+        mavenCentral()
+        maven { url "https://s01.oss.sonatype.org/content/groups/staging" }
     }
 }

@@ -20,12 +20,20 @@ dependencies {
   compileOnly('com.facebook.react:react-native:+') {
     exclude group: 'com.android.support'
   }
-  implementation fileTree(dir: 'libs', include: ['*.aar'])
+  // implementation fileTree(dir: 'libs', include: ['*.aar'])
+
   implementation 'com.google.android.gms:play-services-base:16.0.1'
   implementation 'com.google.firebase:firebase-messaging:22.0.0'
   implementation "androidx.core:core:1.8.0"
+
+      implementation "io.github.acoustic-analytics:acoustic-mobile-push-android-sdk:+"
+    implementation "io.github.acoustic-analytics:acoustic-mobile-push-android-sdk-plugin-inapp:+"
+    implementation "io.github.acoustic-analytics:acoustic-mobile-push-android-sdk-plugin-inbox:+"
+
 }
 
 repositories {
   google()
+  mavenCentral()
+  maven { url "https://s01.oss.sonatype.org/content/groups/staging" }
 }

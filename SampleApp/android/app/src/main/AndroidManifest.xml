@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools" package="co.acoustic.mobile.push.sample">
-  <application android:name=".MainApplication" android:label="@string/app_name" android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round" android:allowBackup="false" android:theme="@style/AppTheme" tools:replace="android:name" tools:ignore="GoogleAppIndexingWarning" android:networkSecurityConfig="@xml/network_security_config">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="co.acoustic.mobile.push.sample" xmlns:tools="http://schemas.android.com/tools">
+  <uses-permission android:name="android.permission.INTERNET"/>
+  <uses-permission android:name="android.permission.WAKE_LOCK"/>
+  <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+  <uses-permission android:name="android.permission.VIBRATE"/>
+  <uses-permission android:name="android.permission.CALL_PHONE"/>
+  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+  <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
+  <uses-permission android:name="android.permission.BLUETOOTH"/>
+  <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+  <uses-permission android:name="android.permission.BLUETOOTH_SCAN"/>
+  <application android:name=".MainApplication" android:label="@string/app_name" android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round" android:allowBackup="false" android:theme="@style/AppTheme" tools:ignore="GoogleAppIndexingWarning" android:networkSecurityConfig="@xml/network_security_config" tools:replace="android:name">
     <meta-data android:name="com.google.android.geo.API_KEY" android:value="@string/google_maps_key"/>
-    <activity android:exported="true" android:name=".MainActivity" android:label="@string/app_name" android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode" android:windowSoftInputMode="adjustResize" android:launchMode="singleTask">
+    <activity android:name=".MainActivity" android:label="@string/app_name" android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode" android:launchMode="singleTask" android:windowSoftInputMode="adjustResize" android:exported="true">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
         <category android:name="android.intent.category.LAUNCHER"/>
@@ -12,7 +23,7 @@
     <activity android:name="co.acoustic.mobile.push.plugin.displayweb.DisplayWebViewActivity"/>
     <activity android:name="co.acoustic.mobile.push.sdk.plugin.inbox.RichInboxActivity" android:configChanges="orientation"/>
     <activity android:name="co.acoustic.mobile.push.sdk.plugin.inbox.InboxMessageDisplayActivity" android:configChanges="orientation"/>
-    <receiver android:name="co.acoustic.mobile.push.sdk.wi.AlarmReceiver">
+    <receiver android:name="co.acoustic.mobile.push.sdk.wi.AlarmReceiver" tools:replace="android:exported" android:exported="true">
       <intent-filter>
         <action android:name="android.intent.action.BOOT_COMPLETED"/>
       </intent-filter>
@@ -27,19 +38,19 @@
         <action android:name="android.intent.action.LOCALE_CHANGED"/>
       </intent-filter>
     </receiver>
-    <receiver android:exported="true" android:name="co.acoustic.mobile.push.RNAcousticMobilePushBroadcastReceiver">
+    <receiver android:name="co.acoustic.mobile.push.RNAcousticMobilePushBroadcastReceiver" android:exported="true">
       <intent-filter>
         <action android:name="co.acoustic.mobile.push.sdk.NOTIFIER"/>
       </intent-filter>
     </receiver>
     <receiver android:name="co.acoustic.mobile.push.sdk.notification.NotifActionReceiver"/>
+    <receiver android:name="co.acoustic.mobile.push.sdk.location.LocationBroadcastReceiver"/>
     <receiver android:name="co.acoustic.mobile.push.sdk.location.LocationUpdateCaller"/>
-    <receiver android:exported="true" android:name="co.acoustic.mobile.push.plugin.location.RNAcousticMobilePushBroadcastReceiver">
+    <receiver android:name="co.acoustic.mobile.push.plugin.location.RNAcousticMobilePushBroadcastReceiver" android:exported="true">
       <intent-filter>
         <action android:name="co.acoustic.mobile.push.sdk.NOTIFIER"/>
       </intent-filter>
     </receiver>
-    <receiver android:name="co.acoustic.mobile.push.sdk.location.LocationBroadcastReceiver"/>
     <receiver android:name="co.acoustic.mobile.push.sdk.location.GeofenceBroadcastReceiver" android:enabled="true" android:exported="true"/>
     <provider android:name="co.acoustic.mobile.push.sdk.db.Provider" android:authorities="${applicationId}.MCE_PROVIDER" android:exported="false"/>
     <service android:name="co.acoustic.mobile.push.sdk.session.SessionTrackingIntentService"/>
@@ -48,7 +59,7 @@
     <service android:name="co.acoustic.mobile.push.sdk.registration.RegistrationIntentService"/>
     <service android:name="co.acoustic.mobile.push.sdk.attributes.AttributesQueueConsumer"/>
     <service android:name="co.acoustic.mobile.push.sdk.job.MceJobService" android:permission="android.permission.BIND_JOB_SERVICE"/>
-    <service android:name="co.acoustic.mobile.push.sdk.messaging.fcm.FcmMessagingService">
+    <service android:name="co.acoustic.mobile.push.sdk.messaging.fcm.FcmMessagingService" tools:replace="android:exported" android:exported="true">
       <intent-filter>
         <action android:name="com.google.firebase.MESSAGING_EVENT"/>
       </intent-filter>
@@ -72,15 +83,4 @@
       <data android:scheme="https"/>
     </intent>
   </queries>
-  <uses-permission android:name="android.permission.INTERNET"/>
-  <uses-permission android:name="android.permission.WAKE_LOCK"/>
-  <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-  <uses-permission android:name="android.permission.VIBRATE"/>
-  <uses-permission android:name="android.permission.CALL_PHONE"/>
-  <uses-permission android:name="android.permission.BLUETOOTH"/>
-  <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
-  <uses-permission android:name="android.permission.BLUETOOTH_SCAN"/>
-  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-  <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
 </manifest>

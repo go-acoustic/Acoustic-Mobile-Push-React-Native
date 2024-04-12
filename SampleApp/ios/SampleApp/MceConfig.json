@@ -44,18 +44,10 @@
       "interfaceController": "handoff"
     }
   },
-  "Please note, the existince of the location key is not required, if it is not present though, iBeacon and Geofence support will be disabled.": "",
   "location": {
-    "The location autoInitialize flag can be set to false to delay turning on the location services until desired.": "",
-    "autoInitialize": true,
-    "The sync key is only used to customize the iBeacon and Geofence syncing sevice, it is not required for those features": "",
-    "sync": {
-      "Location Sync radius is in meters, default 100km": "",
-      "syncRadius": 100000,
-      "Specify how long to wait before syncing again on significant location change in seconds, default 5 minutes": "",
-      "syncInterval": 30
+    "ibeacon": {
+      "UUID": "SET YOUR IBEACON UUID HERE"
     },
-    "Please note, the existince of the location key will enable geofence location support, if geofence support is not desired, remove the key": "",
     "geofence": {
       "choose one of the following values for accuracy: ": [
         "best",
@@ -66,9 +58,6 @@
       ],
       "accuracy": "3km"
     },
-    "Please note, the existince of the ibeacon key will enable iBeacon support, if iBeacon support is not desired, remove the key": "",
-    "ibeacon": {
-      "UUID": "SET YOUR IBEACON UUID HERE"
-    }
+    "Please note, the existince of the location key will enable geofence location support, if geofence support is not desired, remove the key": ""
   }
 }

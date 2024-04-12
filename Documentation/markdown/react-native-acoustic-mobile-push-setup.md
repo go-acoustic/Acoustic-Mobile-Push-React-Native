@@ -104,13 +104,13 @@ The iOS notification service requires separate provisioning. This plug-in is req
 
 1. Copy `react-native-ios-notification-service` folder from the *SampleApp* project.
 ```sh
-cp -r ../ca-mce-react-native/plugins/react-native-ios-notification-service plugins/react-native-ios-notification-service
+cp -r ../ca-mce-react-native/plugins/react-native-acoustic-mobile-push-ios-notification-service plugins/react-native-acoustic-mobile-push-ios-notification-service
 ```
 
-2. Add `react-native-ios-notification-service` to the `package.json` file in your application under dependencies.
+2. Add `react-native-acoustic-mobile-push-ios-notification-service` to the `package.json` file in your application under dependencies.
 ```
 "dependencies": {
-	"react-native-ios-notification-service": "file:plugins/react-native-ios-notification-service",
+	"react-native-acoustic-mobile-push-ios-notification-service": "file:plugins/react-native-acoustic-mobile-push-ios-notification-service",
 	//Other dependencies...
 },
 ```

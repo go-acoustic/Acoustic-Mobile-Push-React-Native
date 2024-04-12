@@ -1,0 +1,59 @@
+
+# OSX
+#
+.DS_Store
+
+# node.js
+#
+node_modules/
+npm-debug.log
+yarn-error.log
+  
+
+# Xcode
+#
+build/
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata
+*.xccheckout
+*.moved-aside
+DerivedData
+*.hmap
+*.ipa
+*.xcuserstate
+project.xcworkspace
+      
+
+# Android/IntelliJ
+#
+build/
+.idea
+.gradle
+local.properties
+*.iml
+
+# BUCK
+buck-out/
+\.buckd/
+*.keystore
+      
+/Example/NativeBase-KitchenSink/yarn.lock
+/Example/NativeBase-KitchenSink/ios/Podfile.lock
+/ios/Pods/IBMTealeafReactNativeDebug
+/ios/Pods/EOCoreDebug
+/Example/NativeBase-KitchenSink/ios/Pods/Headers
+/Example/NativeBase-KitchenSink/ios/Pods/EOCoreDebug
+/Example/NativeBase-KitchenSink/ios/Pods/IBMTealeafReactNativeDebug
+/Example/NativeBase-KitchenSink/android/captures
+/ios/yarn.lock
+/ios/Podfile.lock
+/ios/Pods
+/Example/NativeBase-KitchenSink/package-lock.json
+/Example/NativeBase-KitchenSink/android/app/build

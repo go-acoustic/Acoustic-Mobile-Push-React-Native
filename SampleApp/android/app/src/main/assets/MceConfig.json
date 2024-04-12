@@ -47,7 +47,6 @@
   "inMemoryImageCacheCapacityInMB": 20,
   "The size of the inbox images file based cache in MB": "",
   "fileImageCacheCapacityInMB": 100,
-  "Please note, the existince of the location key is not required, if it is not present though, iBeacon and Geofence support will be disabled.": "",
   "location": {
     "The location autoInitialize flag can be set to false to delay turning on the location services until desired.": "",
     "autoInitialize": true,
@@ -69,7 +68,6 @@
         "network"
       ]
     },
-    "Please note, unlike iOS, the existence of the ibeacon key does not enable iBeacon support, iBeacon support is enabled only if iBeacons are nearby": "",
     "ibeacon": {
       "Please note: if this is not set, iBeacon events will not be sent": "This value should never be empty. Leave the default value if you don't want to use iBeacons",
       "uuid": "YOUR-IBEACONS-UUID",
@@ -80,7 +78,7 @@
       "Specify how much time the sdk will scan for iBeacons in every scan session while the application is in the background, default is 30 seconds": "",
       "beaconBackgroundScanDuration": 30,
       "Specify how much time the sdk will wait between iBeacons scan sessions while the application is in the background, default is 5 minutes": "",
-      "beaconBackgroundScanInterval": 30
+      "beaconBackgroundScanInterval": 300
     }
   }
 }

@@ -2,4 +2,5 @@ include ':app'
 include ':react-native-video'
 rootProject.name = 'SampleApp'
 apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)
+includeBuild('../node_modules/@react-native/gradle-plugin')
 project(':react-native-video').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-video/android')

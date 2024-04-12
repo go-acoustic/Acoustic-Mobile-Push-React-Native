@@ -1,0 +1,219 @@
+pipeline
+{
+  agent {  label 'mac'  }
+
+  parameters
+  {
+    string(name: 'VERSION', defaultValue: '0.0.0')
+  }
+
+  environment
+  {
+    PUBLIC_REPOSITORY_ORG = 'Acoustic-Mobile-Push'
+    PUBLIC_REPOSITORY_NAME = 'React-Native'
+    PUBLIC_REPOSITORY_URL = 'https://github.com/Acoustic-Mobile-Push/React-Native'
+    SLACK_URL = 'https://acoustic-workspace.slack.com/services/hooks/jenkins-ci/'
+    SLACK_CHANNEL = '#ca-sdk-github'
+  }
+
+  options
+  {
+    disableConcurrentBuilds()
+  }
+
+  stages
+  {
+    stage('Verify environment configuration')
+    {
+      steps
+      {
+        sh """
+          source scripts/setup_jenkins_env.sh
+          npm install -g react-native-cli mocha mocha-junit-reporter yarn detox eslint
+          cp ~/Secrets/google-services.json SampleApp/android/app
+          cp ~/Secrets/iOSMceConfig.json SampleApp/ios/SampleApp/MceConfig.json
+          cp ~/Secrets/iOSMceConfig.json SampleApp/ios/SampleAppNotificationService/MceConfig.json
+        """
+      }
+    }
+
+    stage('Verify sample app Android build')
+    {
+      steps
+      {
+        sh """
+          source scripts/setup_jenkins_env.sh
+          sh scripts/launch_android_emulator.sh android-31
+          cd SampleApp
+          yarn install
+          detox build -c android-31
+          sh ../scripts/kill_devices.sh
+        """
+      }
+    }
+
+    // stage('Android 12 / API 31')
+    // {
+    //   steps
+    //   {
+    //     sh """
+    //       sh scripts/run_tests.sh android-31
+    //     """
+    //   }
+    // }
+
+    // stage('Android 11 / API 30')
+    // {
+    //   steps
+    //   {
+    //     sh """
+    //       sh scripts/run_tests.sh android-30
+    //     """
+    //   }
+    // }
+
+    // stage('Android 10 / API 29')
+    // {
+    //   steps
+    //   {
+    //     sh """
+    //       sh scripts/run_tests.sh android-29
+    //     """
+    //   }
+    // }
+
+    // stage('Android 9 / API 28')
+    // {
+    //   steps
+    //   {
+    //     sh """
+    //       sh scripts/run_tests.sh android-28
+    //     """
+    //   }
+    // }
+
+    // stage('Android 8.1 / API 27')
+    // {
+    //   steps
+    //   {
+    //     sh """
+    //       sh scripts/run_tests.sh android-27
+    //     """
+    //   }
+    // }
+
+    // stage('Android 7.1.1 / API 25')
+    // {
+    //   steps
+    //   {
+    //     sh """
+    //       sh scripts/run_tests.sh android-25
+    //     """
+    //   }
+    // }
+
+    stage('Verify sample app iOS build')
+    {
+      steps
+      {
+        sh """
+          source scripts/setup_jenkins_env.sh
+          cd SampleApp
+          yarn install
+          detox build -c ios-15
+          sh ../scripts/kill_devices.sh
+        """
+      }
+    }
+
+    // stage('iOS 15')
+    // {
+    //   steps
+    //   {
+    //     sh """
+    //       sh scripts/run_tests.sh ios-15
+    //     """
+    //   }
+    // }
+
+    // stage('iOS 14')
+    // {
+    //   steps
+    //   {
+    //     sh """
+    //       sh scripts/run_tests.sh ios-14
+    //     """
+    //   }
+    // }
+
+    // stage('iOS 13')
+    // {
+    //   steps
+    //   {
+    //     sh """
+    //       sh scripts/run_tests.sh ios-13
+    //     """
+    //   }
+    // }
+
+    stage('Upload to public repository')
+    {
+      steps
+      {
+        withCredentials([gitUsernamePassword(credentialsId: 'github-wcasmpp-https', gitToolName: 'git-tool')]) {
+          sh "sh scripts/release.sh ${env.PUBLIC_REPOSITORY_URL} ${params.VERSION}"
+        }
+      }
+    }
+
+    stage('Create GitHub release')
+    {
+      steps
+      {
+        withCredentials([string(credentialsId: 'github-wcasmpp-apikey', variable: 'OAUTH_TOKEN')]) {
+          sh """
+            curl \
+              -X POST \
+              -H "Accept: application/vnd.github.v3+json" \
+              -H "Authorization: token $OAUTH_TOKEN" \
+              https://api.github.com/repos/${env.PUBLIC_REPOSITORY_ORG}/${env.PUBLIC_REPOSITORY_NAME}/releases \
+              -d '{"tag_name":"${params.VERSION}", "name": "Release ${params.VERSION}", "body": "Acoustic React Native Plugin ${params.VERSION} Release"}'
+          """
+        }
+      }
+    }
+  }
+
+  post
+  {
+    always
+    {
+      // sh """
+      //   if [ ! -d "SampleApp/test-results" ]; then
+      //     mkdir -p SampleApp/test-results && touch SampleApp/test-results/blank.xml
+      //   fi
+      // """
+
+      // junit 'SampleApp/test-results/*.xml'
+      notifyBuildStatus()
+    }
+  }
+}
+
+def notifyBuildStatus() {
+  def COLOR_MAP = ['SUCCESS': 'good', 'UNSTABLE': 'warning', 'FAILURE': 'danger', 'ABORTED': '#808080']
+  def status = currentBuild.currentResult
+  def buildLink = env.BUILD_URL
+
+  if (status == 'FAILURE') {
+    buildLink = buildLink + '/console'
+  }
+
+  def message = "React Native release ${params.VERSION} Build ${status} (<${buildLink}|Open>)"
+
+  if (COLOR_MAP[status] != null) {
+    slackSend channel: SLACK_CHANNEL, color: COLOR_MAP[status], message: message, botUser: false, baseUrl: SLACK_URL, tokenCredentialId: '452be0da-e9f7-4e08-a158-4c3badef928a'
+  } else {
+    echo "Build ended with non-notifiable result"
+  }
+}

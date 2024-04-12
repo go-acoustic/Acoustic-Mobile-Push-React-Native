@@ -1,0 +1,39 @@
+
+buildscript {
+    repositories {
+        jcenter()
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:4.1.0'
+    }
+}
+
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 31
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 31
+        versionCode 1
+        versionName "1.0"
+    }
+    lintOptions {
+        abortOnError false
+    }
+}
+
+dependencies {
+    compileOnly('com.facebook.react:react-native:+') {
+        exclude group: 'com.android.support'
+    }
+
+    implementation "androidx.core:core:1.8.0"
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation "io.github.go-acoustic:acoustic-mobile-push-android-sdk:$campaignSDKVersion"
+}
+

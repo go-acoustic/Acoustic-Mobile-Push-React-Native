@@ -31,7 +31,7 @@ export default function sendEmailAction(details) {
 
 // The registerAction call tells the SDK that you intend to handle actions of this type.
 // In addition the function passed will be called for any missed actions received while your code was not running.
-RNAcousticMobilePushActionHandler.registerAction(SEND_EMAIL, sendEmailAction);
+// RNAcousticMobilePushActionHandler.registerAction(SEND_EMAIL, sendEmailAction);
 
 // The listener call allows this function to be called when actions arrive
-RNAcousticMobilePushActionHandlerEmitter.addListener(SEND_EMAIL, sendEmailAction);
+// RNAcousticMobilePushActionHandlerEmitter.addListener(SEND_EMAIL, sendEmailAction);

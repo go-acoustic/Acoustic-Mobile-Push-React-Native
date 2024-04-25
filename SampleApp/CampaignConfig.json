@@ -1,10 +1,10 @@
 {
   "Please note": "<true/false>, for native SDK build.  True for release build, false for beta build",
   "useRelease": false,
-  "iOS Version": "<x.xx.xxx>, native iOS SDK version",
-  "iOSVersion": "3.9.18",
-  "Android Version": "<x.xx.xxx>, native Android SDK version",
-  "androidVersion": "3.9.18",
+  "iOS Version": "<x.xx.xxx>, native iOS SDK version, empty defaults to latest",
+  "iOSVersion": "",
+  "Android Version": "<x.xx.xxx>, native Android SDK version, empty defaults to latest",
+  "androidVersion": "",
   "plugins": {
     "Required Mobile-Push plugins": "<true/false>, enable or disable plugin",
     "react-native-acoustic-mobile-push-beta": true,

@@ -65,11 +65,11 @@ Then install as normal
 
 ## Installation
 ```sh
-yarn add file:<sdk folder>/plugins/react-native-acoustic-mobile-push-location
+yarn add react-native-acoustic-mobile-push-location
 ```
 or 
 ```sh
-npm install --save <sdk folder>/plugins/react-native-acoustic-mobile-push-location
+npm install --save react-native-acoustic-mobile-push-location
 ```
 
 ### Post Installation Steps

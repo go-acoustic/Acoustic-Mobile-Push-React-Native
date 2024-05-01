@@ -44,11 +44,11 @@ This action plugin provides a way to show a notification again at a later time.
 
 ### Installation
 ```sh
-yarn add file:<sdk folder>/plugins/react-native-acoustic-mobile-push-snooze
+yarn add react-native-acoustic-mobile-push-snooze
 ```
 or 
 ```sh
-npm install --save <sdk folder>/plugins/react-native-acoustic-mobile-push-snooze
+npm install --save react-native-acoustic-mobile-push-snooze
 ```
 
 ### Post Installation Steps

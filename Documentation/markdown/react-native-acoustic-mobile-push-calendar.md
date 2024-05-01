@@ -44,11 +44,11 @@ This action plugin provides a way for push message actions to add events to the 
 
 ## Installation
 ```sh
-yarn add file:<sdk folder>/plugins/react-native-acoustic-mobile-push-calendar
+yarn add react-native-acoustic-mobile-push-calendar
 ```
 or 
 ```sh
-npm install --save <sdk folder>/plugins/react-native-acoustic-mobile-push-calendar
+npm install --save react-native-acoustic-mobile-push-calendar
 ```
 
 ### Post Installation Steps

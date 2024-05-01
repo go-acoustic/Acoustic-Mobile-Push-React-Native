@@ -38,11 +38,21 @@ export class InAppScreen extends React.Component {
   createTopBanner = () => {
     const content = this.bannerTemplateBase();
     RNAcousticMobilePushInApp.createInApp(content, 'default', ['all', 'topBanner'], 4, '123ABC');
+  
+    // Set a timeout to hide the in-app banner after the specified duration
+    setTimeout(() => {
+      RNAcousticMobilePushInApp.hideInApp();
+    }, content.duration * 1000);
   }
 
   createBottomBanner = () => {
     const content = this.bannerTemplateBase();
     RNAcousticMobilePushInApp.createInApp(content, 'default', ['all', 'bottomBanner'], 4, '123ABC');
+
+    // Set a timeout to hide the in-app banner after the specified duration
+    setTimeout(() => {
+      RNAcousticMobilePushInApp.hideInApp();
+    }, content.duration * 1000);
   }
 
   createImageTemplate = () => {

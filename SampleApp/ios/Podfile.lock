@@ -946,43 +946,43 @@ PODS:
   - React-Mapbuffer (0.73.6):
     - glog
     - React-debug
-  - react-native-acoustic-mobile-push-action-menu-beta (3.9.20):
+  - react-native-acoustic-mobile-push-action-menu-beta (3.9.21):
     - AcousticMobilePushDebug
     - React
-  - react-native-acoustic-mobile-push-beacon-beta (3.9.20):
+  - react-native-acoustic-mobile-push-beacon-beta (3.9.21):
     - AcousticMobilePushDebug
     - React
-  - react-native-acoustic-mobile-push-beta (3.9.20):
+  - react-native-acoustic-mobile-push-beta (3.9.21):
     - AcousticMobilePushDebug
     - React
-  - react-native-acoustic-mobile-push-calendar-beta (3.9.20):
+  - react-native-acoustic-mobile-push-calendar-beta (3.9.21):
     - AcousticMobilePushDebug
     - React
-  - react-native-acoustic-mobile-push-displayweb-beta (3.9.20):
+  - react-native-acoustic-mobile-push-displayweb-beta (3.9.21):
     - AcousticMobilePushDebug
     - React
-  - react-native-acoustic-mobile-push-geofence-beta (3.9.20):
+  - react-native-acoustic-mobile-push-geofence-beta (3.9.21):
     - AcousticMobilePushNotificationDebug
     - React
-  - react-native-acoustic-mobile-push-imagecarousel-beta (3.9.20):
+  - react-native-acoustic-mobile-push-imagecarousel-beta (3.9.21):
     - AcousticMobilePushDebug
     - React
-  - react-native-acoustic-mobile-push-inapp-beta (3.9.20):
+  - react-native-acoustic-mobile-push-inapp-beta (3.9.21):
     - AcousticMobilePushDebug
     - React
-  - react-native-acoustic-mobile-push-inbox-beta (3.9.20):
+  - react-native-acoustic-mobile-push-inbox-beta (3.9.21):
     - AcousticMobilePushDebug
     - React
-  - react-native-acoustic-mobile-push-ios-notification-service-beta (3.9.20):
+  - react-native-acoustic-mobile-push-ios-notification-service-beta (3.9.21):
     - AcousticMobilePushNotificationDebug
     - React
-  - react-native-acoustic-mobile-push-location-beta (3.9.20):
+  - react-native-acoustic-mobile-push-location-beta (3.9.21):
     - AcousticMobilePushDebug
     - React
-  - react-native-acoustic-mobile-push-snooze-beta (3.9.20):
+  - react-native-acoustic-mobile-push-snooze-beta (3.9.21):
     - AcousticMobilePushDebug
     - React
-  - react-native-acoustic-mobile-push-wallet-beta (3.9.20):
+  - react-native-acoustic-mobile-push-wallet-beta (3.9.21):
     - AcousticMobilePushDebug
     - React
   - react-native-geolocation (2.1.0):
@@ -1499,19 +1499,19 @@ SPEC CHECKSUMS:
   React-jsinspector: 85583ef014ce53d731a98c66a0e24496f7a83066
   React-logger: 3eb80a977f0d9669468ef641a5e1fabbc50a09ec
   React-Mapbuffer: 84ea43c6c6232049135b1550b8c60b2faac19fab
-  react-native-acoustic-mobile-push-action-menu-beta: f3d1a5e3c178bbcf404cd606c69f576621f1f541
-  react-native-acoustic-mobile-push-beacon-beta: 08d89444d46a98c30f916427fbc5fcaeccc48b27
-  react-native-acoustic-mobile-push-beta: 74c20a7fbaea8281cec915b930c1c47972e21407
-  react-native-acoustic-mobile-push-calendar-beta: 44ee27e3ed6d2b91447ec51f08dfb0c1c9ba7a39
-  react-native-acoustic-mobile-push-displayweb-beta: dc8cb617eabba1039ec442fb34cdff5cbc8b1d81
-  react-native-acoustic-mobile-push-geofence-beta: 7893ac082e989a45811b162658bd5bddb2f5d487
-  react-native-acoustic-mobile-push-imagecarousel-beta: 2be94f6909bfaef60d20acc0f1331e26c30dde3c
-  react-native-acoustic-mobile-push-inapp-beta: 0c78e99fc26f9e011ab92d9f4ff1d504f1772dd3
-  react-native-acoustic-mobile-push-inbox-beta: c7ff5a6bf65ef680b5567d67c63672dc542d8bac
-  react-native-acoustic-mobile-push-ios-notification-service-beta: d6a73376f5334e2b8e4b8ff160221e8d56f60b23
-  react-native-acoustic-mobile-push-location-beta: daa236473c2cd5042da09feecc4dc5a90d720bcc
-  react-native-acoustic-mobile-push-snooze-beta: a92d335be9979e5f3a6786425f9b68f3f2e93032
-  react-native-acoustic-mobile-push-wallet-beta: 393758def9ab007911b2a2703b0221409396ed26
+  react-native-acoustic-mobile-push-action-menu-beta: 438541ce26371310a8c6c1c3769dc13dd0939589
+  react-native-acoustic-mobile-push-beacon-beta: 24d413b1d693ab3c7a1d313870bc00107fc12479
+  react-native-acoustic-mobile-push-beta: b79ced680244eff35aab0f15a14565af2636b81e
+  react-native-acoustic-mobile-push-calendar-beta: 372e096e15314f44fd3fb30d54ea3f9302aa7d3c
+  react-native-acoustic-mobile-push-displayweb-beta: 2549e243ae01eccd340288d44a4b603013e23022
+  react-native-acoustic-mobile-push-geofence-beta: 1ff06d1fb6b1f033dcef001db404f6a4a5f91626
+  react-native-acoustic-mobile-push-imagecarousel-beta: ecaf72295c5bafd819623abe7e77e4267277c02e
+  react-native-acoustic-mobile-push-inapp-beta: 4ef1d92b004cc1e889f17a30148f5ec37b05429b
+  react-native-acoustic-mobile-push-inbox-beta: f61e537b3a915875fb8a1de8d818d3150001c16c
+  react-native-acoustic-mobile-push-ios-notification-service-beta: 44733850890b85e3f5b27d4f77497c4968a28793
+  react-native-acoustic-mobile-push-location-beta: 1236cdaef259dac7d7a83cd27f97dfa3e54b3109
+  react-native-acoustic-mobile-push-snooze-beta: 3f440f1b74b9eca1fc82667d777bf6f94e8c453a
+  react-native-acoustic-mobile-push-wallet-beta: 2f8559229a065ea457f6ab08af667f9cdce03358
   react-native-geolocation: 69f4fd37650b8e7fee91816d395e62dd16f5ab8d
   react-native-mail: 8fdcd3aef007c33a6877a18eb4cf7447a1d4ce4a
   react-native-maps: 8b8bfada2c86205a7f5a07dd1f92f29b33ea83aa

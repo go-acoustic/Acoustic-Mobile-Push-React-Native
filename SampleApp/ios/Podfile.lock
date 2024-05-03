@@ -1,6 +1,6 @@
 PODS:
-  - AcousticMobilePushDebug (3.9.18)
-  - AcousticMobilePushNotificationDebug (3.9.18)
+  - AcousticMobilePushDebug (3.9.25)
+  - AcousticMobilePushNotificationDebug (3.9.25)
   - boost (1.83.0)
   - CocoaAsyncSocket (7.6.5)
   - DoubleConversion (1.1.6)
@@ -1458,8 +1458,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  AcousticMobilePushDebug: 08f7d700b7f29d6c2018363e8e11fa43334ba1f5
-  AcousticMobilePushNotificationDebug: 98b5c52c1dc2b5fd70af04d40117f8e44b3d0d94
+  AcousticMobilePushDebug: 6da3fbe4f0654d889e14c80383d99451927e2116
+  AcousticMobilePushNotificationDebug: a0186124dd41a650197fe15b7ae58b1889349cf8
   boost: d3f49c53809116a5d38da093a8aa78bf551aed09
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: fea03f2699887d960129cc54bba7e52542b6f953

@@ -1,6 +1,6 @@
 PODS:
-  - AcousticMobilePushDebug (3.9.25)
-  - AcousticMobilePushNotificationDebug (3.9.25)
+  - AcousticMobilePush (3.9.24)
+  - AcousticMobilePushNotification (3.9.24)
   - boost (1.83.0)
   - CocoaAsyncSocket (7.6.5)
   - DoubleConversion (1.1.6)
@@ -946,44 +946,44 @@ PODS:
   - React-Mapbuffer (0.73.6):
     - glog
     - React-debug
-  - react-native-acoustic-mobile-push-action-menu-beta (3.9.21):
-    - AcousticMobilePushDebug
+  - react-native-acoustic-mobile-push (3.9.23):
+    - AcousticMobilePush
     - React
-  - react-native-acoustic-mobile-push-beacon-beta (3.9.21):
-    - AcousticMobilePushDebug
+  - react-native-acoustic-mobile-push-action-menu (3.9.23):
+    - AcousticMobilePush
     - React
-  - react-native-acoustic-mobile-push-beta (3.9.21):
-    - AcousticMobilePushDebug
+  - react-native-acoustic-mobile-push-beacon (3.9.23):
+    - AcousticMobilePush
     - React
-  - react-native-acoustic-mobile-push-calendar-beta (3.9.21):
-    - AcousticMobilePushDebug
+  - react-native-acoustic-mobile-push-calendar (3.9.23):
+    - AcousticMobilePush
     - React
-  - react-native-acoustic-mobile-push-displayweb-beta (3.9.21):
-    - AcousticMobilePushDebug
+  - react-native-acoustic-mobile-push-displayweb (3.9.23):
+    - AcousticMobilePush
     - React
-  - react-native-acoustic-mobile-push-geofence-beta (3.9.21):
-    - AcousticMobilePushNotificationDebug
+  - react-native-acoustic-mobile-push-geofence (3.9.23):
+    - AcousticMobilePushNotification
     - React
-  - react-native-acoustic-mobile-push-imagecarousel-beta (3.9.21):
-    - AcousticMobilePushDebug
+  - react-native-acoustic-mobile-push-imagecarousel (3.9.23):
+    - AcousticMobilePush
     - React
-  - react-native-acoustic-mobile-push-inapp-beta (3.9.21):
-    - AcousticMobilePushDebug
+  - react-native-acoustic-mobile-push-inapp (3.9.23):
+    - AcousticMobilePush
     - React
-  - react-native-acoustic-mobile-push-inbox-beta (3.9.21):
-    - AcousticMobilePushDebug
+  - react-native-acoustic-mobile-push-inbox (3.9.23):
+    - AcousticMobilePush
     - React
-  - react-native-acoustic-mobile-push-ios-notification-service-beta (3.9.21):
-    - AcousticMobilePushNotificationDebug
+  - react-native-acoustic-mobile-push-ios-notification-service (3.9.23):
+    - AcousticMobilePushNotification
     - React
-  - react-native-acoustic-mobile-push-location-beta (3.9.21):
-    - AcousticMobilePushDebug
+  - react-native-acoustic-mobile-push-location (3.9.23):
+    - AcousticMobilePush
     - React
-  - react-native-acoustic-mobile-push-snooze-beta (3.9.21):
-    - AcousticMobilePushDebug
+  - react-native-acoustic-mobile-push-snooze (3.9.23):
+    - AcousticMobilePush
     - React
-  - react-native-acoustic-mobile-push-wallet-beta (3.9.21):
-    - AcousticMobilePushDebug
+  - react-native-acoustic-mobile-push-wallet (3.9.23):
+    - AcousticMobilePush
     - React
   - react-native-geolocation (2.1.0):
     - React-Core
@@ -1243,19 +1243,19 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector-modern`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - React-Mapbuffer (from `../node_modules/react-native/ReactCommon`)
-  - react-native-acoustic-mobile-push-action-menu-beta (from `../node_modules/react-native-acoustic-mobile-push-action-menu-beta`)
-  - react-native-acoustic-mobile-push-beacon-beta (from `../node_modules/react-native-acoustic-mobile-push-beacon-beta`)
-  - react-native-acoustic-mobile-push-beta (from `../node_modules/react-native-acoustic-mobile-push-beta`)
-  - react-native-acoustic-mobile-push-calendar-beta (from `../node_modules/react-native-acoustic-mobile-push-calendar-beta`)
-  - react-native-acoustic-mobile-push-displayweb-beta (from `../node_modules/react-native-acoustic-mobile-push-displayweb-beta`)
-  - react-native-acoustic-mobile-push-geofence-beta (from `../node_modules/react-native-acoustic-mobile-push-geofence-beta`)
-  - react-native-acoustic-mobile-push-imagecarousel-beta (from `../node_modules/react-native-acoustic-mobile-push-imagecarousel-beta`)
-  - react-native-acoustic-mobile-push-inapp-beta (from `../node_modules/react-native-acoustic-mobile-push-inapp-beta`)
-  - react-native-acoustic-mobile-push-inbox-beta (from `../node_modules/react-native-acoustic-mobile-push-inbox-beta`)
-  - react-native-acoustic-mobile-push-ios-notification-service-beta (from `../node_modules/react-native-acoustic-mobile-push-ios-notification-service-beta`)
-  - react-native-acoustic-mobile-push-location-beta (from `../node_modules/react-native-acoustic-mobile-push-location-beta`)
-  - react-native-acoustic-mobile-push-snooze-beta (from `../node_modules/react-native-acoustic-mobile-push-snooze-beta`)
-  - react-native-acoustic-mobile-push-wallet-beta (from `../node_modules/react-native-acoustic-mobile-push-wallet-beta`)
+  - react-native-acoustic-mobile-push (from `../node_modules/react-native-acoustic-mobile-push`)
+  - react-native-acoustic-mobile-push-action-menu (from `../node_modules/react-native-acoustic-mobile-push-action-menu`)
+  - react-native-acoustic-mobile-push-beacon (from `../node_modules/react-native-acoustic-mobile-push-beacon`)
+  - react-native-acoustic-mobile-push-calendar (from `../node_modules/react-native-acoustic-mobile-push-calendar`)
+  - react-native-acoustic-mobile-push-displayweb (from `../node_modules/react-native-acoustic-mobile-push-displayweb`)
+  - react-native-acoustic-mobile-push-geofence (from `../node_modules/react-native-acoustic-mobile-push-geofence`)
+  - react-native-acoustic-mobile-push-imagecarousel (from `../node_modules/react-native-acoustic-mobile-push-imagecarousel`)
+  - react-native-acoustic-mobile-push-inapp (from `../node_modules/react-native-acoustic-mobile-push-inapp`)
+  - react-native-acoustic-mobile-push-inbox (from `../node_modules/react-native-acoustic-mobile-push-inbox`)
+  - react-native-acoustic-mobile-push-ios-notification-service (from `../node_modules/react-native-acoustic-mobile-push-ios-notification-service`)
+  - react-native-acoustic-mobile-push-location (from `../node_modules/react-native-acoustic-mobile-push-location`)
+  - react-native-acoustic-mobile-push-snooze (from `../node_modules/react-native-acoustic-mobile-push-snooze`)
+  - react-native-acoustic-mobile-push-wallet (from `../node_modules/react-native-acoustic-mobile-push-wallet`)
   - "react-native-geolocation (from `../node_modules/@react-native-community/geolocation`)"
   - react-native-mail (from `../node_modules/react-native-mail`)
   - react-native-maps (from `../node_modules/react-native-maps`)
@@ -1292,8 +1292,8 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
-    - AcousticMobilePushDebug
-    - AcousticMobilePushNotificationDebug
+    - AcousticMobilePush
+    - AcousticMobilePushNotification
     - CocoaAsyncSocket
     - Flipper
     - Flipper-Boost-iOSX
@@ -1364,32 +1364,32 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/logger"
   React-Mapbuffer:
     :path: "../node_modules/react-native/ReactCommon"
-  react-native-acoustic-mobile-push-action-menu-beta:
-    :path: "../node_modules/react-native-acoustic-mobile-push-action-menu-beta"
-  react-native-acoustic-mobile-push-beacon-beta:
-    :path: "../node_modules/react-native-acoustic-mobile-push-beacon-beta"
-  react-native-acoustic-mobile-push-beta:
-    :path: "../node_modules/react-native-acoustic-mobile-push-beta"
-  react-native-acoustic-mobile-push-calendar-beta:
-    :path: "../node_modules/react-native-acoustic-mobile-push-calendar-beta"
-  react-native-acoustic-mobile-push-displayweb-beta:
-    :path: "../node_modules/react-native-acoustic-mobile-push-displayweb-beta"
-  react-native-acoustic-mobile-push-geofence-beta:
-    :path: "../node_modules/react-native-acoustic-mobile-push-geofence-beta"
-  react-native-acoustic-mobile-push-imagecarousel-beta:
-    :path: "../node_modules/react-native-acoustic-mobile-push-imagecarousel-beta"
-  react-native-acoustic-mobile-push-inapp-beta:
-    :path: "../node_modules/react-native-acoustic-mobile-push-inapp-beta"
-  react-native-acoustic-mobile-push-inbox-beta:
-    :path: "../node_modules/react-native-acoustic-mobile-push-inbox-beta"
-  react-native-acoustic-mobile-push-ios-notification-service-beta:
-    :path: "../node_modules/react-native-acoustic-mobile-push-ios-notification-service-beta"
-  react-native-acoustic-mobile-push-location-beta:
-    :path: "../node_modules/react-native-acoustic-mobile-push-location-beta"
-  react-native-acoustic-mobile-push-snooze-beta:
-    :path: "../node_modules/react-native-acoustic-mobile-push-snooze-beta"
-  react-native-acoustic-mobile-push-wallet-beta:
-    :path: "../node_modules/react-native-acoustic-mobile-push-wallet-beta"
+  react-native-acoustic-mobile-push:
+    :path: "../node_modules/react-native-acoustic-mobile-push"
+  react-native-acoustic-mobile-push-action-menu:
+    :path: "../node_modules/react-native-acoustic-mobile-push-action-menu"
+  react-native-acoustic-mobile-push-beacon:
+    :path: "../node_modules/react-native-acoustic-mobile-push-beacon"
+  react-native-acoustic-mobile-push-calendar:
+    :path: "../node_modules/react-native-acoustic-mobile-push-calendar"
+  react-native-acoustic-mobile-push-displayweb:
+    :path: "../node_modules/react-native-acoustic-mobile-push-displayweb"
+  react-native-acoustic-mobile-push-geofence:
+    :path: "../node_modules/react-native-acoustic-mobile-push-geofence"
+  react-native-acoustic-mobile-push-imagecarousel:
+    :path: "../node_modules/react-native-acoustic-mobile-push-imagecarousel"
+  react-native-acoustic-mobile-push-inapp:
+    :path: "../node_modules/react-native-acoustic-mobile-push-inapp"
+  react-native-acoustic-mobile-push-inbox:
+    :path: "../node_modules/react-native-acoustic-mobile-push-inbox"
+  react-native-acoustic-mobile-push-ios-notification-service:
+    :path: "../node_modules/react-native-acoustic-mobile-push-ios-notification-service"
+  react-native-acoustic-mobile-push-location:
+    :path: "../node_modules/react-native-acoustic-mobile-push-location"
+  react-native-acoustic-mobile-push-snooze:
+    :path: "../node_modules/react-native-acoustic-mobile-push-snooze"
+  react-native-acoustic-mobile-push-wallet:
+    :path: "../node_modules/react-native-acoustic-mobile-push-wallet"
   react-native-geolocation:
     :path: "../node_modules/@react-native-community/geolocation"
   react-native-mail:
@@ -1458,8 +1458,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  AcousticMobilePushDebug: 6da3fbe4f0654d889e14c80383d99451927e2116
-  AcousticMobilePushNotificationDebug: a0186124dd41a650197fe15b7ae58b1889349cf8
+  AcousticMobilePush: 86a1eff307c12ce537617f92d19fcca76db888d4
+  AcousticMobilePushNotification: 52d2cfef3de19d6305ebae945737c1d22132612d
   boost: d3f49c53809116a5d38da093a8aa78bf551aed09
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: fea03f2699887d960129cc54bba7e52542b6f953
@@ -1499,19 +1499,19 @@ SPEC CHECKSUMS:
   React-jsinspector: 85583ef014ce53d731a98c66a0e24496f7a83066
   React-logger: 3eb80a977f0d9669468ef641a5e1fabbc50a09ec
   React-Mapbuffer: 84ea43c6c6232049135b1550b8c60b2faac19fab
-  react-native-acoustic-mobile-push-action-menu-beta: 438541ce26371310a8c6c1c3769dc13dd0939589
-  react-native-acoustic-mobile-push-beacon-beta: 24d413b1d693ab3c7a1d313870bc00107fc12479
-  react-native-acoustic-mobile-push-beta: b79ced680244eff35aab0f15a14565af2636b81e
-  react-native-acoustic-mobile-push-calendar-beta: 372e096e15314f44fd3fb30d54ea3f9302aa7d3c
-  react-native-acoustic-mobile-push-displayweb-beta: 2549e243ae01eccd340288d44a4b603013e23022
-  react-native-acoustic-mobile-push-geofence-beta: 1ff06d1fb6b1f033dcef001db404f6a4a5f91626
-  react-native-acoustic-mobile-push-imagecarousel-beta: ecaf72295c5bafd819623abe7e77e4267277c02e
-  react-native-acoustic-mobile-push-inapp-beta: 4ef1d92b004cc1e889f17a30148f5ec37b05429b
-  react-native-acoustic-mobile-push-inbox-beta: f61e537b3a915875fb8a1de8d818d3150001c16c
-  react-native-acoustic-mobile-push-ios-notification-service-beta: 44733850890b85e3f5b27d4f77497c4968a28793
-  react-native-acoustic-mobile-push-location-beta: 1236cdaef259dac7d7a83cd27f97dfa3e54b3109
-  react-native-acoustic-mobile-push-snooze-beta: 3f440f1b74b9eca1fc82667d777bf6f94e8c453a
-  react-native-acoustic-mobile-push-wallet-beta: 2f8559229a065ea457f6ab08af667f9cdce03358
+  react-native-acoustic-mobile-push: 12dfd4af85ec24b7c41c0c6af3f94862c1a62952
+  react-native-acoustic-mobile-push-action-menu: 825cf9e234aa36156f42e5ed521b0b610bd4884b
+  react-native-acoustic-mobile-push-beacon: cc5d9359b87d528487851baae084b84f4944963a
+  react-native-acoustic-mobile-push-calendar: a0307afdcc2007b08f88d225bce64bcb7b86766b
+  react-native-acoustic-mobile-push-displayweb: 0631b69c5a77524d1127ed0ab8bb1c262ab69789
+  react-native-acoustic-mobile-push-geofence: d5555c714f5e91ca44d38300cce83bca7c03401c
+  react-native-acoustic-mobile-push-imagecarousel: b426a201e5f80ba7dd34aad0f22c4b373520c6da
+  react-native-acoustic-mobile-push-inapp: 6863c12edd253935eecdac15b81466d50f083271
+  react-native-acoustic-mobile-push-inbox: cd3b1b05c24c8f910a3e7864eb93a3318b025b37
+  react-native-acoustic-mobile-push-ios-notification-service: 576e29c758e7c1e1577f4a7bf4ea8fc2f45e458f
+  react-native-acoustic-mobile-push-location: ca1abc38c816119e6c1261c597679b6804c54f10
+  react-native-acoustic-mobile-push-snooze: 8bf5f66b11902f08305192c069fa320519334100
+  react-native-acoustic-mobile-push-wallet: fa197fe893608031007f90cdd828dbadbbca8136
   react-native-geolocation: 69f4fd37650b8e7fee91816d395e62dd16f5ab8d
   react-native-mail: 8fdcd3aef007c33a6877a18eb4cf7447a1d4ce4a
   react-native-maps: 8b8bfada2c86205a7f5a07dd1f92f29b33ea83aa

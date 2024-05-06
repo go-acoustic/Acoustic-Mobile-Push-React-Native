@@ -24,8 +24,8 @@
     "main": "index.js",
     "name": "react-native-acoustic-mobile-push-beacon",
     "peerDependencies": {
-        "react-native-acoustic-mobile-push": "^3.9.22",
-        "react-native-acoustic-mobile-push-location": "^3.9.22"
+        "react-native-acoustic-mobile-push": "3.9.22",
+        "react-native-acoustic-mobile-push-location": "3.9.22"
     },
     "repository": {
         "directory": "plugins/react-native-acoustic-mobile-push-inbox",
@@ -37,5 +37,5 @@
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "summary": "react-native ios android mobile push Campaign",
-    "version": "^3.9.22"
+    "version": "3.9.23"
 }

@@ -6,7 +6,7 @@ repository = package["repository"]["url"]
 useRelease = mobilePushConfig["useRelease"]
 dependencyName = useRelease ? 'AcousticMobilePush' : 'AcousticMobilePushDebug'
 iOSVersion = mobilePushConfig["iOSVersion"]
-dependencyVersion = iOSVersion.to_s.empty? ? "" : "#{iOSVersion}"
+dependencyVersion = iOSVersion.to_s.empty? ? "" : ", #{iOSVersion}"
 
 puts "*********react-native-acoustic-mobile-push-action-menu.podspec*********"
 puts "mobilePushConfig:"
@@ -34,6 +34,5 @@ Pod::Spec.new do |s|
   
   s.dependency       'React'
   s.xcconfig       = { 'HEADER_SEARCH_PATHS' => '../../../ios/Pods/** ' }
-  s.dependency       dependencyName, dependencyVersion
-
+  s.dependency       "#{dependencyName}#{dependencyVersion}"
 end

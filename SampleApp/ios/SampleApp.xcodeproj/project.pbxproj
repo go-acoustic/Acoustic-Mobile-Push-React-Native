@@ -12,8 +12,6 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		1B374CAA2BA760E50062F072 /* WebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B374CA92BA760E50062F072 /* WebViewController.xib */; };
-		1B6266112BAC01B600703D83 /* AcousticMobilePushNotification.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B6266102BAC01B600703D83 /* AcousticMobilePushNotification.xcframework */; };
-		1B6266122BAC01B600703D83 /* AcousticMobilePushNotification.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1B6266102BAC01B600703D83 /* AcousticMobilePushNotification.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		343C0797287DBF2D00CE4B83 /* MceConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = 8AAD13222684EB8300F07686 /* MceConfig.json */; };
 		3446B52B2796037C0007922D /* SampleAppBridgingHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3446B52A2796037C0007922D /* SampleAppBridgingHeader.swift */; };
 		346453D0278F82790097090E /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 346453CF278F82790097090E /* NotificationService.swift */; };
@@ -65,17 +63,6 @@
 				346453D4278F82790097090E /* SampleAppNotificationService.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		346453DE278F828C0097090E /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				1B6266122BAC01B600703D83 /* AcousticMobilePushNotification.xcframework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -185,7 +172,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1B6266112BAC01B600703D83 /* AcousticMobilePushNotification.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -443,7 +429,6 @@
 				346453C9278F82790097090E /* Sources */,
 				346453CA278F82790097090E /* Frameworks */,
 				346453CB278F82790097090E /* Resources */,
-				346453DE278F828C0097090E /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

@@ -280,19 +280,18 @@ if(process.env.MCE_RN_NOCONFIG) {
  * if it does not exist. It then reads this configuration file to apply specific configurations
  * for iOS and Android.
  */
-function addOrReplaceMobilePushConfigFile() {
+function addOrReplaceMobilePushConfigFile(installDirectory) {
 	const configName = 'CampaignConfig.json';
-	const currentAppWorkingDirectory = process.cwd();
 	const pluginPath = path.resolve(__dirname, '');
 	const configPath = path.join(pluginPath, configName);
-	const appConfigPath = path.join(currentAppWorkingDirectory, configName);
+	const appConfigPath = path.join(installDirectory, configName);
 	console.log("Add or Replace CampaignConfig.json file into the App - " + configPath);
 
 	if(!fs.existsSync(appConfigPath)) {
-		console.log("Copying CampaignConfig.json file into project - " + configPath);
-		fs.copyFileSync(configPath, configName);
+		console.log("Copying CampaignConfig.json file into project - " + appConfigPath);
+		fs.copyFileSync(configPath, appConfigPath);
 	} else {
-		console.log("CampaignConfig.json already exists at " + currentAppWorkingDirectory + "/" + configName);
+		console.log("CampaignConfig.json already exists at " + appConfigPath);
 	}
 
 	// Read and save cooresponding ios/android json sections to postinstall folders, in the plugin project
@@ -499,8 +498,8 @@ function updateCampaignSDKVersionInProperties(propertiesFilePath, version) {
 
 console.log(chalk.green.bold("Setting up Acoustic Campaign SDK"));
 const installDirectory = findInstallDirectory();
-addOrReplaceMobilePushConfigFile();
 const mainAppPath = findMainPath(installDirectory);
+addOrReplaceMobilePushConfigFile(installDirectory);
 replaceMain(mainAppPath);
 modifyInfoPlist(mainAppPath);
 addiOSConfigFile(mainAppPath);

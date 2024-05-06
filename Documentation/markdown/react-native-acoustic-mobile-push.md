@@ -81,11 +81,11 @@ export ANDROID_X=1
 
 Then install as normal
 ```sh
-yarn add file:<sdk folder>/plugins/react-native-acoustic-mobile-push
+yarn add react-native-acoustic-mobile-push
 ```
 or 
 ```sh
-npm install --save <sdk folder>/plugins/react-native-acoustic-mobile-push
+npm install --save react-native-acoustic-mobile-push
 ```
 
 ## Constants Exported

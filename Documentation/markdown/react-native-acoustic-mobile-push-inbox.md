@@ -64,11 +64,11 @@ This plugin is used to add inbox functionality to your application. The messages
 
 ## Installation
 ```sh
-yarn add file:<sdk folder>/plugins/react-native-acoustic-mobile-push-inbox
+yarn add react-native-acoustic-mobile-push-inbox
 ```
 or 
 ```sh
-npm install --save <sdk folder>/plugins/react-native-acoustic-mobile-push-inbox
+npm install --save react-native-acoustic-mobile-push-inbox
 ```
 
 ### Post Installation Steps

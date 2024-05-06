@@ -216,17 +216,38 @@ RCT_EXPORT_METHOD(registerInApp: (NSString*) template module: (NSString*) module
     self.inAppTemplateModules[template] = value;
 }
 
--(BOOL)showInAppMessage: (MCEInAppMessage *) inAppMessage {
-    NSDictionary * module = self.inAppTemplateModules[inAppMessage.templateName];
-    if(!module) {
+- (BOOL)showInAppMessage:(MCEInAppMessage *)inAppMessage {
+    NSDictionary *module = self.inAppTemplateModules[inAppMessage.templateName];
+    if (!module) {
         return false;
     }
-    
-    [self hideInApp];
-    UIWindow * currentWindow = UIApplication.sharedApplication.keyWindow;
+
+    [self hideInApp]; 
+
+    // Get current window reliably for iOS 13+
+    UIWindow *currentWindow = nil;
+    if (@available(iOS 13, *)) {
+        for (UIWindowScene* windowScene in [UIApplication sharedApplication].connectedScenes) {
+            if (windowScene.activationState == UISceneActivationStateForegroundActive) {
+                currentWindow = windowScene.windows.firstObject;
+                break;
+            }
+        }
+    } else {
+        currentWindow = [UIApplication sharedApplication].keyWindow;
+    }
+
+    // Calculate status bar height
+    CGFloat statusBarHeight = 0.0;
+    if (@available(iOS 13, *)) {
+        statusBarHeight = currentWindow.windowScene.statusBarManager.statusBarFrame.size.height;
+    } else {
+        statusBarHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
+    }
+
     CGRect rect = currentWindow.frame;
-    NSArray * rules = inAppMessage.rules;
-    NSNumber * height = module[@"height"];
+    NSArray *rules = inAppMessage.rules;
+    NSNumber *height = module[@"height"];
     CGFloat contentHeight = 0;
     CGFloat containerHeight = 0;
 
@@ -234,16 +255,15 @@ RCT_EXPORT_METHOD(registerInApp: (NSString*) template module: (NSString*) module
         contentHeight = [height floatValue];
         containerHeight = contentHeight;
         if ([rules containsObject:@"bottomBanner"]) {
-            containerHeight += currentWindow.safeAreaInsets.bottom;
-            rect.origin.y = rect.size.height - containerHeight;
+            rect.origin.y = rect.size.height - (containerHeight + currentWindow.safeAreaInsets.bottom);
         } else {
-            containerHeight += currentWindow.safeAreaInsets.top;
+            rect.origin.y = statusBarHeight; // Position below status bar
         }
         rect.size.height = containerHeight;
     } else {
-        CGFloat statusHeight = UIApplication.sharedApplication.statusBarFrame.size.height;
-        rect.origin = CGPointMake(0, statusHeight);
-        rect.size.height -= statusHeight;
+        UIEdgeInsets safeArea = currentWindow.safeAreaInsets;
+        rect.origin.y = statusBarHeight; 
+        rect.size.height -= (safeArea.top + safeArea.bottom);
     }
 
     self.inAppViewController = [[UIViewController alloc] init];
@@ -293,6 +313,7 @@ RCT_EXPORT_METHOD(registerInApp: (NSString*) template module: (NSString*) module
     
     return TRUE;
 }
+
 
 RCT_EXPORT_METHOD(clickInApp: (NSString*) inAppMessageById) {
     MCEInAppMessage * inAppMessage = [MCEInAppManager.sharedInstance inAppMessageById: inAppMessageById];

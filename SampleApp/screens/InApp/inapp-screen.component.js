@@ -79,7 +79,7 @@ export class InAppScreen extends React.Component {
       },
       text: 'Welcome to React Native!',
       icon: 'note',
-      duration: 5,
+      duration: 8,
       animationLength: 0.5,
 
       // to show the random background image instead of background color

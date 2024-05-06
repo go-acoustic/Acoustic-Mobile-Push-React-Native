@@ -55,11 +55,11 @@ This plugin is used to add InApp functionality to your application. The messages
 
 ## Installation
 ```sh
-yarn add file:<sdk folder>/plugins/react-native-acoustic-mobile-push-inapp
+yarn add react-native-acoustic-mobile-push-inapp
 ```
 or 
 ```sh
-npm install --save <sdk folder>/plugins/react-native-acoustic-mobile-push-inapp
+npm install --save react-native-acoustic-mobile-push-inapp
 ```
 
 ### Post Installation Steps

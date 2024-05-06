@@ -58,11 +58,11 @@ This plugin adds geofence support to your application. Geofences are created on 
 
 ## Installation
 ```sh
-yarn add file:<sdk folder>/plugins/react-native-acoustic-mobile-push-geofence
+yarn add react-native-acoustic-mobile-push-geofence
 ```
 or 
 ```sh
-npm install --save <sdk folder>/plugins/react-native-acoustic-mobile-push-geofence
+npm install --save react-native-acoustic-mobile-push-geofence
 ```
 
 ### Post Installation Steps

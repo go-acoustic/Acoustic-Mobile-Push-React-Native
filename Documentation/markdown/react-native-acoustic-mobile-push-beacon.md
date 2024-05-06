@@ -63,11 +63,11 @@ This plugin adds beacon support to your application. Beacons are defined on the 
 
 ## Installation
 ```sh
-yarn add file:<sdk folder>/plugins/react-native-acoustic-mobile-push-beacon
+yarn add react-native-acoustic-mobile-push-beacon
 ```
 or 
 ```sh
-npm install --save <sdk folder>/plugins/react-native-acoustic-mobile-push-beacon
+npm install --save react-native-acoustic-mobile-push-beacon
 ```
 
 ### Post Installation Steps

@@ -1,28 +1,31 @@
 {
   "Please note": "<true/false>, for native SDK build.  True for release build, false for beta build",
-  "useRelease": true,
-  "iOS Version": "<x.xx.xxx>, native iOS SDK version, empty defaults to latest",
-  "iOSVersion": "",
-  "Android Version": "<x.xx.xxx>, native Android SDK version, empty defaults to latest",
-  "androidVersion": "",
+  "useRelease": false,
+  "iOS Version": "<x.xx.xxx>, native iOS SDK version",
+  "iOSVersion": "3.9.18",
+  "Android Version": "<x.xx.xxx>, native Android SDK version",
+  "androidVersion": "3.9.18",
+
   "plugins": {
     "Required Mobile-Push plugins": "<true/false>, enable or disable plugin",
     "react-native-acoustic-mobile-push": true,
     "react-native-acoustic-mobile-push-ios-notification-service": true,
     "react-native-acoustic-mobile-push-inapp": true,
     "react-native-acoustic-mobile-push-inbox": true,
+
     "Optional Mobile-Push plugins": "<true/false>, enable or disable plugin",
-    "react-native-acoustic-mobile-push-action-menu": true,
-    "react-native-acoustic-mobile-push-location": true,
-    "react-native-acoustic-mobile-push-beacon": true,
-    "react-native-acoustic-mobile-push-geofence": true,
-    "react-native-acoustic-mobile-push-calendar": true,
-    "react-native-acoustic-mobile-push-displayweb": true,
-    "react-native-acoustic-mobile-push-imagecarousel": true,
-    "react-native-acoustic-mobile-push-snooze": true,
-    "react-native-acoustic-mobile-push-textinput": true,
-    "react-native-acoustic-mobile-push-wallet": true
+    "react-native-acoustic-mobile-push-action-menu": false,
+    "react-native-acoustic-mobile-push-location": false,
+    "react-native-acoustic-mobile-push-beacon": false,
+    "react-native-acoustic-mobile-push-geofence": false,
+    "react-native-acoustic-mobile-push-calendar": false,
+    "react-native-acoustic-mobile-push-displayweb": false,
+    "react-native-acoustic-mobile-push-imagecarousel": false,
+    "react-native-acoustic-mobile-push-snooze": false,
+    "react-native-acoustic-mobile-push-textinput": false,
+    "react-native-acoustic-mobile-push-wallet": false
   },
+
   "iOS": {
     "Please note: if you are using a Swift based Application Delegate you must include the product name and class name in AppDelegateClass, for example": "SwiftSample.AppDelegate",
     "appDelegateClass": "AppDelegate",
@@ -68,34 +71,9 @@
         "This is the name of the interface controller in the Watch storyboard": "",
         "interfaceController": "handoff"
       }
-    },
-    "location": {
-      "The location autoInitialize flag can be set to false to delay turning on the location services until desired.": "",
-      "autoInitialize": true,
-      "The sync key is only used to customize the iBeacon and Geofence syncing sevice, it is not required for those features": "",
-      "sync": {
-        "Location Sync radius is in meters, default 100km": "",
-        "syncRadius": 100000,
-        "Specify how long to wait before syncing again on significant location change in seconds, default 5 minutes": "",
-        "syncInterval": 300
-      },
-      "Please note, the existince of the location key will enable geofence location support, if geofence support is not desired, remove the key": "",
-      "geofence": {
-        "choose one of the following values for accuracy: ": [
-          "best",
-          "10m",
-          "100m",
-          "1km",
-          "3km"
-        ],
-        "accuracy": "3km"
-      },
-      "Please note, the existince of the ibeacon key will enable iBeacon support, if iBeacon support is not desired, remove the key": "",
-      "ibeacon": {
-        "UUID": "SET YOUR IBEACON UUID HERE"
-      }
     }
   },
+
   "android": {
     "Please note": "you will need to update your baseUrl to the one supplied to you",
     "baseUrl": "https://mobile-sdk-lib-XX-Y.brilliantcollector.com",
@@ -143,42 +121,6 @@
     "The size of the inbox images RAM cache in MB": "",
     "inMemoryImageCacheCapacityInMB": 20,
     "The size of the inbox images file based cache in MB": "",
-    "fileImageCacheCapacityInMB": 100,
-    "Please note, the existince of the location key is not required, if it is not present though, iBeacon and Geofence support will be disabled.": "",
-    "location": {
-      "The location autoInitialize flag can be set to false to delay turning on the location services until desired.": "",
-      "autoInitialize": true,
-      "The sync key is only used to customize the iBeacon and Geofence syncing service, it is not required for those features": "",
-      "sync": {
-        "Specify how long to wait before syncing again on significant location change in seconds, default 5 minutes": "",
-        "syncInterval": 300,
-        "Location Sync radius is in meters, default 100km": "",
-        "syncRadius": 100000,
-        "Specify how long to wait before retrieving a new location from the device, default 5 minutes": "",
-        "locationResponsiveness": 300,
-        "Specify the minimum results when looking for locations nearby, default is 1, minimum value is 1": "",
-        "minLocationsForSearch": 1,
-        "Specify the maximum results when looking for locations nearby, default is 20, minimum value is 1": "",
-        "maxLocationsForSearch": 20,
-        "Specify the location providers that will be used to retrieve the device location. 'gps' - gps location. 'network' - wifi + cellular, default is gps + network": "",
-        "providerPreferences": [
-          "gps",
-          "network"
-        ]
-      },
-      "Please note, unlike iOS, the existence of the ibeacon key does not enable iBeacon support, iBeacon support is enabled only if iBeacons are nearby": "",
-      "ibeacon": {
-        "Please note: if this is not set, iBeacon events will not be sent": "This value should never be empty. Leave the default value if you don't want to use iBeacons",
-        "uuid": "YOUR-IBEACONS-UUID",
-        "Specify how much time the sdk will scan for iBeacons in every scan session while the application is in the foreground, default is 5 seconds": "",
-        "beaconForegroundScanDuration": 5,
-        "Specify how much time the sdk will wait between iBeacons scan sessions while the application is in the foreground, default is 30 seconds": "",
-        "beaconForegroundScanInterval": 30,
-        "Specify how much time the sdk will scan for iBeacons in every scan session while the application is in the background, default is 30 seconds": "",
-        "beaconBackgroundScanDuration": 30,
-        "Specify how much time the sdk will wait between iBeacons scan sessions while the application is in the background, default is 5 minutes": "",
-        "beaconBackgroundScanInterval": 300
-      }
-    }
+    "fileImageCacheCapacityInMB": 100
   }
 }

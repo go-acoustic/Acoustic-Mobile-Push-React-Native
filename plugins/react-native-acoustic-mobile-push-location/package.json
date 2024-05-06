@@ -1,0 +1,40 @@
+{
+    "author": "Acoustic, L.P.",
+    "dependencies": {
+        "chalk": "^2.4.2",
+        "ncp": "^2.0.0",
+        "plist": "^3.0.1",
+        "xcode": "^2.0.0",
+        "xml2js": "^0.4.19"
+    },
+    "description": "BETA: Acoustic Mobile Push Location Plugin",
+    "devDependencies": {
+        "jetifier": "^1.6.3",
+        "react-native": "0.72.6"
+    },
+    "homepage": "https://github.com/aipoweredmarketer/ca-mce-react-native",
+    "keywords": [
+        "react-native",
+        "ios",
+        "android",
+        "mobile push location",
+        "Campaign"
+    ],
+    "license": "See license in ../../../license.txt",
+    "main": "index.js",
+    "name": "react-native-acoustic-mobile-push-location",
+    "peerDependencies": {
+        "react-native-acoustic-mobile-push": "^3.9.22"
+    },
+    "repository": {
+        "directory": "plugins/react-native-acoustic-mobile-push-location",
+        "type": "git",
+        "url": "https://github.com/aipoweredmarketer/ca-mce-react-native"
+    },
+    "scripts": {
+        "postinstall": "node postinstall.js $INIT_CWD",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "summary": "react-native ios android mobile push Campaign",
+    "version": "^3.9.22"
+}

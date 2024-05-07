@@ -157,57 +157,57 @@ public class RNAcousticMobilePushInAppModule extends ReactContextBaseJavaModule 
 	}
 
 	// Needs to be run on the main thread.
-	private void showInApp(InAppPayload inAppMessage, Activity activity) {
-		Bundle messageBundle = packageInAppMessage(inAppMessage);
-		String template = inAppMessage.getTemplateName();
-		ModuleHeight moduleHeight = inAppRegistry.get(template);
-		if(moduleHeight == null) {
-			Logger.e(TAG, "Can not find registered inapp template for " + template);
-			return;
-		}
+  private void showInApp(InAppPayload inAppMessage, Activity activity) {
+    Bundle messageBundle = packageInAppMessage(inAppMessage);
+    String template = inAppMessage.getTemplateName();
+    ModuleHeight moduleHeight = inAppRegistry.get(template);
+    if(moduleHeight == null) {
+      Logger.e(TAG, "Cannot find registered inapp template for " + template);
+      return;
+    }
 
-		this.relativeLayout = new RelativeLayout(reactContext);
-		relativeLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.FILL_PARENT));
+    this.relativeLayout = new RelativeLayout(reactContext);
+    relativeLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
 
-		float scale = reactContext.getResources().getDisplayMetrics().density;
-		int height = (int) scale * moduleHeight.height;
+    float scale = reactContext.getResources().getDisplayMetrics().density;
+    int height = (int) (scale * moduleHeight.height);
 
-		RelativeLayout.LayoutParams viewLayout;
-		if(height > 0) {
-			viewLayout = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, height);
-		} else {
-			viewLayout = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.FILL_PARENT);
-		}
+    RelativeLayout.LayoutParams viewLayout;
+    if(height > 0) {
+      viewLayout = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, height);
+    } else {
+      viewLayout = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+    }
 
     List<String> rules = inAppMessage.getRules();
-    
-		if(rules != null && rules.contains("bottomBanner")) {
-			viewLayout.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-		} else {
-			viewLayout.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-		}
 
-		ReactApplication application = (ReactApplication) activity.getApplication();
-		ReactNativeHost reactNativeHost = application.getReactNativeHost();
-		ReactInstanceManager reactInstanceManager = reactNativeHost.getReactInstanceManager();
+    if(rules != null && rules.contains("bottomBanner")) {
+      viewLayout.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+    } else {
+      viewLayout.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+    }
 
-		Bundle initialProperties = new Bundle();
-		initialProperties.putBundle("message", messageBundle);
-		// TODO take into account the Android notch here?
-		initialProperties.putFloat("containerHeight", moduleHeight.height);
-		initialProperties.putFloat("contentHeight", moduleHeight.height);
+    ReactApplication application = (ReactApplication) activity.getApplication();
+    ReactNativeHost reactNativeHost = application.getReactNativeHost();
+    ReactInstanceManager reactInstanceManager = reactNativeHost.getReactInstanceManager();
 
-		ReactRootView reactRootView = new ReactRootView(reactContext);
-		reactRootView.setLayoutParams(viewLayout);
-		reactRootView.startReactApplication(reactInstanceManager, moduleHeight.module, initialProperties);
-		relativeLayout.addView(reactRootView);
+    Bundle initialProperties = new Bundle();
+    initialProperties.putBundle("message", messageBundle);
+    initialProperties.putFloat("containerHeight", moduleHeight.height);
+    initialProperties.putFloat("contentHeight", moduleHeight.height);
 
-		Window window = activity.getWindow();
-		FrameLayout.LayoutParams relativeLayoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.FILL_PARENT, FrameLayout.LayoutParams.FILL_PARENT );
-		window.addContentView(relativeLayout, relativeLayoutParams);
-	}
+    ReactRootView reactRootView = new ReactRootView(reactContext);
+    reactRootView.setLayoutParams(viewLayout);
+    reactRootView.startReactApplication(reactInstanceManager, moduleHeight.module, initialProperties);
+    relativeLayout.addView(reactRootView);
 
-	@ReactMethod
+    Window window = activity.getWindow();
+    FrameLayout.LayoutParams relativeLayoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
+    window.addContentView(relativeLayout, relativeLayoutParams);
+  }
+
+
+  @ReactMethod
 	public void executeInApp(ReadableArray rules) {
 		final Activity activity = getCurrentActivity();
 		if(activity == null) {

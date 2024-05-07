@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 if (project.hasProperty('POM_ARTIFACT_ID')) {
   apply from: 'gradle-maven-push.gradle'
+    maven { url "https://s01.oss.sonatype.org/content/groups/staging" }
 }
 
 def safeExtGet(prop, fallback) {

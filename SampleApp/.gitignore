@@ -44,16 +44,11 @@ buck-out/
 \.buckd/
 *.keystore
       
-/Example/NativeBase-KitchenSink/yarn.lock
-/Example/NativeBase-KitchenSink/ios/Podfile.lock
-/ios/Pods/IBMTealeafReactNativeDebug
-/ios/Pods/EOCoreDebug
-/Example/NativeBase-KitchenSink/ios/Pods/Headers
-/Example/NativeBase-KitchenSink/ios/Pods/EOCoreDebug
-/Example/NativeBase-KitchenSink/ios/Pods/IBMTealeafReactNativeDebug
-/Example/NativeBase-KitchenSink/android/captures
-/ios/yarn.lock
-/ios/Podfile.lock
-/ios/Pods
-/Example/NativeBase-KitchenSink/package-lock.json
-/Example/NativeBase-KitchenSink/android/app/build
+# Bundle artifact
+*.jsbundle
+
+# CocoaPods
+/ios/Pods/
+
+google-services.json
+test-results.xml

@@ -4,10 +4,6 @@
         "chalk": "^2.4.2",
         "ncp": "^2.0.0",
         "plist": "^3.0.1",
-        "react-native-acoustic-mobile-push-beta": "^3.9.8",
-        "react-native-acoustic-mobile-push-inapp-beta": "^3.9.8",
-        "react-native-acoustic-mobile-push-inbox-beta": "^3.9.8",
-        "react-native-acoustic-mobile-push-ios-notification-service-beta": "^3.9.8",
         "xcode": "^2.0.0",
         "xml2js": "^0.4.19"
     },
@@ -40,5 +36,5 @@
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "summary": "react-native ios android mobile push Campaign",
-    "version": "3.9.24"
+    "version": "3.9.25"
 }

@@ -960,7 +960,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = VL2YHK9CW3;
+				DEVELOPMENT_TEAM = QXQ67VKX2B;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1072,7 +1072,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = VL2YHK9CW3;
+				DEVELOPMENT_TEAM = QXQ67VKX2B;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"${PODS_ROOT}/../../node_modules/react-native-ios-notification-service\"",
@@ -1172,7 +1172,7 @@
 				CODE_SIGN_ENTITLEMENTS = SampleAppNotificationService/SampleAppNotificationService.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = VL2YHK9CW3;
+				DEVELOPMENT_TEAM = QXQ67VKX2B;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = SampleAppNotificationService/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
@@ -1207,7 +1207,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = VL2YHK9CW3;
+				DEVELOPMENT_TEAM = QXQ67VKX2B;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = SampleAppNotificationService/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;

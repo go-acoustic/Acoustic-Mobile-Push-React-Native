@@ -24,7 +24,7 @@
     "main": "index.js",
     "name": "react-native-acoustic-mobile-push-displayweb-beta",
     "peerDependencies": {
-        "react-native-acoustic-mobile-push-beta": "3.9.25"
+        "react-native-acoustic-mobile-push-beta": "3.9.26"
     },
     "repository": {
         "directory": "plugins/react-native-acoustic-mobile-push-displayweb",
@@ -36,5 +36,5 @@
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "summary": "react-native ios android mobile push Campaign",
-    "version": "3.9.25"
+    "version": "3.9.26"
 }

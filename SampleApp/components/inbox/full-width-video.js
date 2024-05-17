@@ -57,7 +57,7 @@ export default class FullWidthVideo extends Component {
             resizeMode="cover"
             paused={videoPaused}
             onLoad={this.onLoad.bind(this)}
-            source={source}
+            source={source}   
           />
         </Touchable>
       </View>

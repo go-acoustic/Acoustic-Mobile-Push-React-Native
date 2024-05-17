@@ -35,5 +35,5 @@
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "summary": "react-native ios android mobile push Campaign",
-    "version": "3.9.23"
+    "version": "3.9.26"
 }

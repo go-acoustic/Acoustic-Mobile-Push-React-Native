@@ -199,25 +199,10 @@ function replaceMain(mainAppPath) {
 		fs.renameSync(mainPath, backupMainPath);
 
 		console.log("Replacing main.m with SDK provided code");
-		fs.copyFileSync( path.join("postinstall", "ios", "main.m"), mainPath);
+		fs.copyFileSync(path.join("postinstall", "ios", "main.m"), mainPath);
 	}
 }
 
-function addAndroidConfigFile(installDirectory) {
-	const configName = 'MceConfig.json';
-	const destinationDirectory = path.join(installDirectory, "android", "app", "src", "main", "assets");
-	const configPath = path.join(destinationDirectory, configName);
-
-	if(!fs.existsSync(destinationDirectory)) {
-		console.log('Creating asset path');
-		fs.mkdirSync(destinationDirectory, { recursive: true });
-	}
-
-	if(!fs.existsSync(configPath)) {
-		console.log('Copying MceConfig.json file into Android project');
-		ncp.ncp( path.join('postinstall', 'android', configName), configPath);
-	}
-}
 
 function stringExists(name, strings) {
 	for(var i=0; i<strings.resources.string.length; i++) {
@@ -259,17 +244,6 @@ function modifyStrings(installDirectory) {
 	});
 }
 
-function addiOSConfigFile(mainAppPath) {
-	const configName = 'MceConfig.json';
-	const configPath = path.join(mainAppPath, configName);
-	if(!fs.existsSync(configPath)) {
-		console.log("Copying MceConfig.json file into iOS project - " + configPath);
-		ncp.ncp( path.join('postinstall', 'ios', configName), configPath);
-	} else {
-		console.log("MceConfig.json already exists at " + configPath);
-	}
-}
-
 if(process.env.MCE_RN_NOCONFIG) {
     console.log(chalk.yellow.bold("Acoustic Mobile Push SDK installed, but will not be auto configured because MCE_RN_NOCONFIG environment flag detected."));
     return;
@@ -294,18 +268,19 @@ function addOrReplaceMobilePushConfigFile(installDirectory) {
 		console.log("CampaignConfig.json already exists at " + appConfigPath);
 	}
 
-	// Read and save cooresponding ios/android json sections to postinstall folders, in the plugin project
-	readAndSaveMceConfig(pluginPath, appConfigPath);
+	// Read and save cooresponding ios/android MceConfig.json sections from CampaignConfig.json
+	readAndSaveMceConfig(installDirectory, pluginPath, appConfigPath);
 }
 
 /**
  * Reads the provided mobile push configuration file, extracts platform-specific configurations,
  * and saves these configurations to respective directories. Optionally updates Android's build.gradle.
  * 
+ * @param {string} installDirectory - The path to the Sample app's directory.
  * @param {string} pluginPath - The path to the plugin directory.
  * @param {string} campaignConfigFilePath - The path to the CampaignConfig.json file.
  */
-function readAndSaveMceConfig(pluginPath, campaignConfigFilePath) {
+function readAndSaveMceConfig(installDirectory, pluginPath, campaignConfigFilePath) {
 	try {
 	  // Read the file synchronously
 	  const fileData = fs.readFileSync(campaignConfigFilePath, 'utf8');
@@ -323,6 +298,10 @@ function readAndSaveMceConfig(pluginPath, campaignConfigFilePath) {
 
 		  const gradlePropertiesPath = path.join(campaignConfigFilePath, '../android/gradle.properties');
 		  updateCampaignSDKVersionInProperties(gradlePropertiesPath, jsonData.androidVersion);
+
+		  const destinationDirectory = path.join(installDirectory, "android", "app", "src", "main", "assets");
+		  const androidAppPath = path.join(destinationDirectory, "MceConfig.json");
+		  saveConfig(androidConfig, androidAppPath);
 		}
   
 		if (jsonData.iOS) {
@@ -330,6 +309,9 @@ function readAndSaveMceConfig(pluginPath, campaignConfigFilePath) {
 		  const iosDestinationPath = path.join(pluginPath, 'postinstall/ios/MceConfig.json');
   
 		  saveConfig(iosConfig, iosDestinationPath);
+
+		  const iosAppPath = path.join(mainAppPath, "MceConfig.json");
+		  saveConfig(iosConfig, iosAppPath);
 		}
 	  } else {
 		console.error('No "android/ios" object found in the JSON file.');
@@ -502,8 +484,6 @@ const mainAppPath = findMainPath(installDirectory);
 addOrReplaceMobilePushConfigFile(installDirectory);
 replaceMain(mainAppPath);
 modifyInfoPlist(mainAppPath);
-addiOSConfigFile(mainAppPath);
-addAndroidConfigFile(installDirectory);
 modifyManifest(installDirectory);
 modifyStrings(installDirectory);
 

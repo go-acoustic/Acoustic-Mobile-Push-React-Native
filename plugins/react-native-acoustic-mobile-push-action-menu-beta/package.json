@@ -24,8 +24,8 @@
     "main": "index.js",
     "name": "react-native-acoustic-mobile-push-action-menu-beta",
     "peerDependencies": {
-        "react-native-acoustic-mobile-push-action-menu-beta": "3.9.28",
-        "react-native-acoustic-mobile-push-beta": "3.9.28"
+        "react-native-acoustic-mobile-push-action-menu-beta": "3.9.29",
+        "react-native-acoustic-mobile-push-beta": "3.9.29"
     },
     "repository": {
         "directory": "plugins/react-native-acoustic-mobile-push-action-menu",
@@ -36,5 +36,5 @@
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "summary": "react-native ios android mobile push Campaign",
-    "version": "3.9.28"
+    "version": "3.9.29"
 }

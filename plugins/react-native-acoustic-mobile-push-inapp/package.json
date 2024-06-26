@@ -24,7 +24,7 @@
     "main": "index.js",
     "name": "react-native-acoustic-mobile-push-inapp",
     "peerDependencies": {
-        "react-native-acoustic-mobile-push": "3.9.26"
+        "react-native-acoustic-mobile-push": "3.9.31"
     },
     "repository": {
         "directory": "plugins/react-native-acoustic-mobile-push-inapp",
@@ -36,5 +36,5 @@
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "summary": "react-native ios android mobile push Campaign",
-    "version": "3.9.26"
+    "version": "3.9.31"
 }

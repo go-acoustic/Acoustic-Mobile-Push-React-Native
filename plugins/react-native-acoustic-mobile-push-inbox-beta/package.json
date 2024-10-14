@@ -24,7 +24,28 @@
     "main": "index.js",
     "name": "react-native-acoustic-mobile-push-inbox-beta",
     "peerDependencies": {
-        "react-native-acoustic-mobile-push-beta": "3.9.31"
+        "react-native-acoustic-mobile-push-beta": {
+            "valueCount": 3,
+            "strings": [
+                "",
+                ".",
+                ".",
+                ""
+            ],
+            "bytes": [
+                51,
+                46,
+                57,
+                46,
+                51,
+                50
+            ],
+            "values": [
+                "3",
+                "9",
+                32
+            ]
+        }
     },
     "repository": {
         "directory": "plugins/react-native-acoustic-mobile-push-inbox",
@@ -36,5 +57,26 @@
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "summary": "react-native ios android mobile push Campaign",
-    "version": "3.9.31"
+    "version": {
+        "valueCount": 3,
+        "strings": [
+            "",
+            ".",
+            ".",
+            ""
+        ],
+        "bytes": [
+            51,
+            46,
+            57,
+            46,
+            51,
+            50
+        ],
+        "values": [
+            "3",
+            "9",
+            32
+        ]
+    }
 }

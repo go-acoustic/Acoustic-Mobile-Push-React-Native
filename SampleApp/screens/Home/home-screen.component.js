@@ -51,6 +51,13 @@ export class HomeScreen extends React.Component {
       RNAcousticMobilePushImageCarousel.registerPlugin("CarouselAction");
     }
 
+    // Test setIcon, only needed for Android
+    if (Platform.OS === 'android') {
+      RNAcousticMobilePush.setIcon('ic_stat_note')
+        .then(() => console.log('Notification icon set successfully'))
+        .catch((error) => console.error('Failed to set notification icon:', error));
+    }
+
     this.update();
 
     this.setState({

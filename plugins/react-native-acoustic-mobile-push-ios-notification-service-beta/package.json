@@ -35,5 +35,26 @@
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "summary": "react-native ios android mobile push Campaign",
-    "version": "3.9.31"
+    "version": {
+        "valueCount": 3,
+        "strings": [
+            "",
+            ".",
+            ".",
+            ""
+        ],
+        "bytes": [
+            51,
+            46,
+            57,
+            46,
+            51,
+            50
+        ],
+        "values": [
+            "3",
+            "9",
+            32
+        ]
+    }
 }

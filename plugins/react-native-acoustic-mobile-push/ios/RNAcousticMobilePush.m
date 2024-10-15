@@ -285,4 +285,12 @@ RCT_EXPORT_METHOD(safeAreaInsets:(RCTResponseSenderBlock)callback) {
     }
 }
 
+// Unimplemented API, only applicable to Android
+RCT_EXPORT_METHOD(setIcon:(NSString *)iconName resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+{
+   NSLog(@"setIcon unimplemented in iOS");
+   resolve(nil); 
+}
+
+
 @end

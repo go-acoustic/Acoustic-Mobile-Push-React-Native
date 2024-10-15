@@ -1,18 +1,5 @@
 {
-    "author": "Acoustic, L.P.",
-    "dependencies": {
-        "chalk": "^2.4.2",
-        "ncp": "^2.0.0",
-        "plist": "^3.0.1",
-        "xcode": "^2.0.0",
-        "xml2js": "^0.4.19"
-    },
-    "description": "BETA: Acoustic Mobile Push Snooze Action Plugin",
-    "devDependencies": {
-        "jetifier": "^1.6.3",
-        "react-native": "0.72.6"
-    },
-    "homepage": "https://github.com/aipoweredmarketer/ca-mce-react-native",
+    "summary": "react-native ios android mobile push Campaign",
     "keywords": [
         "react-native",
         "ios",
@@ -20,63 +7,34 @@
         "mobile push snooze action",
         "Campaign"
     ],
-    "license": "See license in ../../../license.txt",
-    "main": "index.js",
-    "name": "react-native-acoustic-mobile-push-snooze-beta",
+    "author": "Acoustic, L.P.",
     "peerDependencies": {
-        "react-native-acoustic-mobile-push-beta": {
-            "valueCount": 3,
-            "strings": [
-                "",
-                ".",
-                ".",
-                ""
-            ],
-            "bytes": [
-                51,
-                46,
-                57,
-                46,
-                51,
-                51
-            ],
-            "values": [
-                "3",
-                "9",
-                33
-            ]
-        }
+        "react-native-acoustic-mobile-push-beta": "3.9.33"
     },
+    "description": "BETA: Acoustic Mobile Push Snooze Action Plugin",
+    "main": "index.js",
     "repository": {
-        "directory": "plugins/react-native-acoustic-mobile-push-snooze",
         "type": "git",
+        "directory": "plugins/react-native-acoustic-mobile-push-snooze",
         "url": "https://github.com/aipoweredmarketer/ca-mce-react-native"
     },
+    "version": "3.9.33",
+    "dependencies": {
+        "plist": "^3.0.1",
+        "xml2js": "^0.4.19",
+        "chalk": "^2.4.2",
+        "ncp": "^2.0.0",
+        "xcode": "^2.0.0"
+    },
+    "license": "See license in ../../../license.txt",
+    "devDependencies": {
+        "react-native": "0.72.6",
+        "jetifier": "^1.6.3"
+    },
+    "name": "react-native-acoustic-mobile-push-snooze-beta",
     "scripts": {
         "postinstall": "node postinstall.js $INIT_CWD",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
-    "summary": "react-native ios android mobile push Campaign",
-    "version": {
-        "valueCount": 3,
-        "strings": [
-            "",
-            ".",
-            ".",
-            ""
-        ],
-        "bytes": [
-            51,
-            46,
-            57,
-            46,
-            51,
-            51
-        ],
-        "values": [
-            "3",
-            "9",
-            33
-        ]
-    }
+    "homepage": "https://github.com/aipoweredmarketer/ca-mce-react-native"
 }

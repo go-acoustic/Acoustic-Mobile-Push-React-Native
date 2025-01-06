@@ -22,11 +22,14 @@ dependencies {
     exclude group: 'com.android.support'
   }
   implementation fileTree(dir: 'libs', include: ['*.aar'])
-  implementation 'com.google.android.gms:play-services-base:16.0.1'
+  implementation 'com.google.android.gms:play-services-base:18.3.0'
   implementation 'com.google.firebase:firebase-messaging:22.0.0'
   implementation "androidx.core:core:1.8.0"
 
   api "io.github.go-acoustic:acoustic-mobile-push-android-sdk:$campaignSDKVersion"
   api "io.github.go-acoustic:acoustic-mobile-push-android-inapp:$campaignSDKVersion"
   api "io.github.go-acoustic:acoustic-mobile-push-android-inbox:$campaignSDKVersion"
+
+  implementation "androidx.security:security-crypto:1.1.0-alpha06"
+
 }

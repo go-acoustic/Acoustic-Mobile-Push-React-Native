@@ -1,18 +1,7 @@
-buildscript {
-  repositories {
-    google()
-    mavenCentral()
-  }
-
-  dependencies {
-    classpath 'com.android.tools.build:gradle:4.1.0'
-  }
-}
-
 apply plugin: 'com.android.library'
 
 android {
-  compileSdkVersion 34
+  compileSdk 34
 
   defaultConfig {
     minSdkVersion 21

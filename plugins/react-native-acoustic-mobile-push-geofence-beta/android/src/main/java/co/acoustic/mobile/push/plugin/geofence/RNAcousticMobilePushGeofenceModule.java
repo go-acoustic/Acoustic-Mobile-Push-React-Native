@@ -1,5 +1,5 @@
 /*
- * Copyright © 2019, 2023 Acoustic, L.P. All rights reserved.
+ * Copyright (C) 2025 Acoustic, L.P. All rights reserved.
  *
  * NOTICE: This file contains material that is confidential and proprietary to
  * Acoustic, L.P. and/or other developers. No license is granted under any intellectual or
@@ -66,7 +66,7 @@ public class RNAcousticMobilePushGeofenceModule extends ReactContextBaseJavaModu
 
 		LocationManager.LocationsSearchResult relevantGeofences = LocationManager.findLocations(location, radius, locationsDatabaseHelper);
 		LocationsDatabaseHelper.LocationCursor cursor = relevantGeofences.getSearchResults();
-		if (cursor.getCount() > 0) {
+		if (cursor != null && cursor.getCount() > 0) {
 			do {
 				MceLocation geofence = cursor.getLocation();
 				WritableNativeMap geofenceMap = new WritableNativeMap();

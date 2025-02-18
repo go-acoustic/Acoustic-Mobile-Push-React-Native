@@ -989,13 +989,13 @@ PODS:
     - React-Core
   - react-native-mail (6.1.1):
     - React-Core
-  - react-native-maps (0.31.1):
+  - react-native-maps (1.13.2):
     - React-Core
-  - react-native-pager-view (6.3.1):
+  - react-native-pager-view (6.6.1):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
-  - react-native-safe-area-context (4.10.1):
+  - react-native-safe-area-context (4.14.1):
     - React-Core
   - react-native-video (5.2.1):
     - React-Core
@@ -1514,9 +1514,9 @@ SPEC CHECKSUMS:
   react-native-acoustic-mobile-push-wallet-beta: 03ca5d7c238bc823dda10402c7234a650e825671
   react-native-geolocation: 69f4fd37650b8e7fee91816d395e62dd16f5ab8d
   react-native-mail: 8fdcd3aef007c33a6877a18eb4cf7447a1d4ce4a
-  react-native-maps: 8b8bfada2c86205a7f5a07dd1f92f29b33ea83aa
-  react-native-pager-view: f1e72cb827406f1b49f007ab07400197d421b6e7
-  react-native-safe-area-context: dcab599c527c2d7de2d76507a523d20a0b83823d
+  react-native-maps: 45da3373eed3138056982e17b04f5b122dae0965
+  react-native-pager-view: 79bfe3d2b659fc4d5a4267b6801348b114b47939
+  react-native-safe-area-context: 141eca0fd4e4191288dfc8b96a7c7e1c2983447a
   react-native-video: c26780b224543c62d5e1b2a7244a5cd1b50e8253
   react-native-webview: 05fa0e766f1c408e8c293cbcb84b2c199711cfd1
   React-nativeconfig: b4d4e9901d4cabb57be63053fd2aa6086eb3c85f

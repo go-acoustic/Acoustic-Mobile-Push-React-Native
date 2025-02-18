@@ -1,5 +1,5 @@
 /*
- * Copyright © 2019, 2024 Acoustic, L.P. All rights reserved.
+ * Copyright (C) 2025 Acoustic, L.P. All rights reserved.
  *
  * NOTICE: This file contains material that is confidential and proprietary to
  * Acoustic, L.P. and/or other developers. No license is granted under any intellectual or
@@ -180,12 +180,8 @@ public class RNAcousticMobilePushModule extends ReactContextBaseJavaModule imple
         List<Attribute> attributes = new LinkedList<Attribute>();
         attributes.add(new StringAttribute("sdk", "react-native"));
         attributes.add(new StringAttribute("react-native", MceSdk.getSdkVerNumber() ));
-        try {
-            Logger.d(TAG, "Sending react-native channel attribute");
-            MceSdkInternal.getQueuedAttributesClient().updateChannelAttributes(reactContext, attributes);
-        } catch (JSONException ex) {
-            Logger.d(TAG, "Couldn't create channel attribute", ex);
-        }
+        Logger.d(TAG, "Sending react-native channel attribute");
+        MceSdkInternal.getQueuedAttributesClient().updateChannelAttributes(reactContext, attributes);
     }
 
     private static void startMceSdk() {
@@ -472,7 +468,7 @@ public class RNAcousticMobilePushModule extends ReactContextBaseJavaModule imple
 
 		final Map<String, Object> constants = new HashMap<>();
 		constants.put("sdkVersion", MceSdk.getSdkVerNumber());
-        constants.put("pluginVersion", "3.9.7");
+        constants.put("pluginVersion", "3.9.45");
 		constants.put("appKey", appKey );
 		return constants;
 	}
@@ -848,12 +844,6 @@ public class RNAcousticMobilePushModule extends ReactContextBaseJavaModule imple
     @Override
     public void onHostDestroy() {
 
-    }
-
-    @ReactMethod
-    public void setIcon(Integer iconId) {
-      MceSdk.getNotificationsClient().getNotificationsPreference().setIcon(
-        reactContext, iconId);
     }
 
     /**

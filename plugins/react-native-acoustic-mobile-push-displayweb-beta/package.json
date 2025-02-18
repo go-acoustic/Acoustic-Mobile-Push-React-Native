@@ -9,7 +9,7 @@
     ],
     "author": "Acoustic, L.P.",
     "peerDependencies": {
-        "react-native-acoustic-mobile-push-beta": "3.9.34"
+        "react-native-acoustic-mobile-push-beta": "3.9.35"
     },
     "description": "BETA: Acoustic Mobile Push DisplayWeb Action Plugin",
     "main": "index.js",
@@ -18,7 +18,7 @@
         "directory": "plugins/react-native-acoustic-mobile-push-displayweb",
         "url": "https://github.com/aipoweredmarketer/ca-mce-react-native"
     },
-    "version": "3.9.34",
+    "version": "3.9.35",
     "dependencies": {
         "plist": "^3.0.1",
         "xml2js": "^0.4.19",

@@ -1,5 +1,5 @@
 /*
- * Copyright © 2019, 2024 Acoustic, L.P. All rights reserved.
+ * Copyright (C) 2025 Acoustic, L.P. All rights reserved.
  *
  * NOTICE: This file contains material that is confidential and proprietary to
  * Acoustic, L.P. and/or other developers. No license is granted under any intellectual or
@@ -300,6 +300,11 @@ function readAndSaveMceConfig(installDirectory, pluginPath, campaignConfigFilePa
 		  updateCampaignSDKVersionInProperties(gradlePropertiesPath, jsonData.androidVersion);
 
 		  const destinationDirectory = path.join(installDirectory, "android", "app", "src", "main", "assets");
+		  // Create assets directory if it doesn't exist
+		  if (!fs.existsSync(destinationDirectory)) {
+		    fs.mkdirSync(destinationDirectory, { recursive: true });
+		    console.log(`Created assets directory at: ${destinationDirectory}`);
+		  }
 		  const androidAppPath = path.join(destinationDirectory, "MceConfig.json");
 		  saveConfig(androidConfig, androidAppPath);
 		}
@@ -318,6 +323,7 @@ function readAndSaveMceConfig(installDirectory, pluginPath, campaignConfigFilePa
 	  }
 
 	  managePlugins(jsonData);
+
 	} catch (error) {
 	  if (error.code === 'ENOENT') { // Handle "file not found" error specifically
 		console.error(`File not found: ${campaignConfigFilePath}`);
@@ -477,8 +483,33 @@ function updateCampaignSDKVersionInProperties(propertiesFilePath, version) {
 	});
   }
 
-
+/**
+ * Start of the script
+ */
 console.log(chalk.green.bold("Setting up Acoustic Campaign SDK"));
+
+// Get plugin's recommended Node version
+let recommendedNodeVersion;
+try {
+    // First check our direct package.json
+    const packageJsonPath = path.join(__dirname, 'package.json');
+    // Then check React Native's package.json
+    const rnPackageJsonPath = path.join(__dirname, '..', 'react-native', 'package.json');
+    
+    if (fs.existsSync(rnPackageJsonPath)) {
+        const rnPackageJson = JSON.parse(fs.readFileSync(rnPackageJsonPath, 'utf8'));
+        if (rnPackageJson.engines && rnPackageJson.engines.node) {
+            recommendedNodeVersion = rnPackageJson.engines.node;
+        }
+    }
+    
+    console.log(chalk.blue(`This script recommends Node.js version ${recommendedNodeVersion || 'unknown'} (based on React Native requirements)`));
+    console.log(chalk.blue("Your current Node.js version is: " + process.version));
+} catch (error) {
+    console.log(chalk.yellow("Could not determine recommended Node.js version"));
+    console.log(chalk.blue("Your current Node.js version is: " + process.version));
+}
+
 const installDirectory = findInstallDirectory();
 const mainAppPath = findMainPath(installDirectory);
 addOrReplaceMobilePushConfigFile(installDirectory);

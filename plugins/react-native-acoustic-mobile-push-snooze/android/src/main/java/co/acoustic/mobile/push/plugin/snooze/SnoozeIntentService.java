@@ -1,5 +1,5 @@
 /*
- * Copyright © 2011, 2019 Acoustic, L.P. All rights reserved.
+ * Copyright (C) 2025 Acoustic, L.P. All rights reserved.
  *
  * NOTICE: This file contains material that is confidential and proprietary to
  * Acoustic, L.P. and/or other developers. No license is granted under any intellectual or
@@ -29,38 +29,38 @@ import java.util.Calendar;
  * This service restores the snoozed notification to the notification bar.
  */
 public class SnoozeIntentService extends IntentService {
-    private static final String TAG = "SnoozeIntentService";
+  private static final String TAG = "SnoozeIntentService";
 
-    public SnoozeIntentService() {
-        super("Snooze");
+  public SnoozeIntentService() {
+    super("Snooze");
+  }
+
+  @Override
+  protected void onHandleIntent(Intent intent) {
+    Logger.d(TAG, "Snooze done");
+    Bundle extras = new Bundle();
+    try {
+      extras.putString(Constants.Notifications.ALERT_KEY, intent.getStringExtra(Constants.Notifications.SOURCE_NOTIFICATION_KEY));
+      extras.putString(Constants.Notifications.MCE_PAYLOAD_KEY, intent.getStringExtra(Constants.Notifications.SOURCE_MCE_PAYLOAD_KEY));
+      AlertProcessor.processAlert(getApplicationContext(), extras);
+    } catch (Exception e) {
+      Logger.e(TAG, "Failed to process alert", e);
     }
-
-    @Override
-    protected void onHandleIntent(Intent intent) {
-        Logger.d(TAG, "Snooze done");
-        Bundle extras = new Bundle();
-        extras.putString(Constants.Notifications.ALERT_KEY, intent.getStringExtra(Constants.Notifications.SOURCE_NOTIFICATION_KEY));
-        extras.putString(Constants.Notifications.MCE_PAYLOAD_KEY, intent.getStringExtra(Constants.Notifications.SOURCE_MCE_PAYLOAD_KEY));
-        try {
-            AlertProcessor.processAlert(getApplicationContext(), extras);
-            
-        } catch (JSONException jsone) {
-            Logger.e(TAG, "Failed to parse notification", jsone);
-        }
-    }
+  }
 
 
-    /**
-     * This method schedule a notification reappearance
-     * @param mgr The alarm manager
-     * @param pi The pending intent for the action
-     * @param delayInMinutes The number of minutes after which the notification will reappear
-     */
-    public void scheduleSnooze(AlarmManager mgr, PendingIntent pi, int delayInMinutes) {
-        Calendar alertTime = Calendar.getInstance();
-        alertTime.setTimeInMillis(System.currentTimeMillis());
-        alertTime.add(Calendar.MINUTE, delayInMinutes);
-        mgr.set(AlarmManager.RTC, alertTime.getTimeInMillis(), pi);
-        Logger.d(TAG, "Snooze service was scheduled with the date " + alertTime.getTime());
-    }
+  /**
+   * This method schedule a notification reappearance
+   *
+   * @param mgr            The alarm manager
+   * @param pi             The pending intent for the action
+   * @param delayInMinutes The number of minutes after which the notification will reappear
+   */
+  public void scheduleSnooze(AlarmManager mgr, PendingIntent pi, int delayInMinutes) {
+    Calendar alertTime = Calendar.getInstance();
+    alertTime.setTimeInMillis(System.currentTimeMillis());
+    alertTime.add(Calendar.MINUTE, delayInMinutes);
+    mgr.set(AlarmManager.RTC, alertTime.getTimeInMillis(), pi);
+    Logger.d(TAG, "Snooze service was scheduled with the date " + alertTime.getTime());
+  }
 }

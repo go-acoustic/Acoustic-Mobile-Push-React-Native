@@ -18,7 +18,7 @@
         "directory": "plugins/react-native-acoustic-mobile-push-ios-notification-service",
         "url": "https://github.com/aipoweredmarketer/ca-mce-react-native"
     },
-    "version": "3.9.33",
+    "version": "3.9.35",
     "dependencies": {
         "plist": "^3.0.1",
         "xml2js": "^0.4.19",

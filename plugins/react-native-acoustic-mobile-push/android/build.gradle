@@ -1,19 +1,19 @@
 apply plugin: 'com.android.library'
-if (project.hasProperty('POM_ARTIFACT_ID')) {
-  apply from: 'gradle-maven-push.gradle'
-    maven { url "https://s01.oss.sonatype.org/content/groups/staging" }
-}
+//if (project.hasProperty('POM_ARTIFACT_ID')) {
+//  apply from: 'gradle-maven-push.gradle'
+//    maven { url "https://s01.oss.sonatype.org/content/groups/staging" }
+//}
 
 def safeExtGet(prop, fallback) {
   rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
 }
 
 android {
-  compileSdkVersion safeExtGet('compileSdkVersion', 31)
+  compileSdkVersion safeExtGet('compileSdkVersion', 34)
 
   defaultConfig {
     minSdkVersion safeExtGet('minSdkVersion', 21)
-    targetSdkVersion safeExtGet('targetSdkVersion', 31)
+    targetSdkVersion safeExtGet('targetSdkVersion', 34)
   }
 }
 
@@ -22,11 +22,14 @@ dependencies {
     exclude group: 'com.android.support'
   }
   implementation fileTree(dir: 'libs', include: ['*.aar'])
-  implementation 'com.google.android.gms:play-services-base:16.0.1'
+  implementation 'com.google.android.gms:play-services-base:18.3.0'
   implementation 'com.google.firebase:firebase-messaging:22.0.0'
   implementation "androidx.core:core:1.8.0"
 
   api "io.github.go-acoustic:acoustic-mobile-push-android-sdk:$campaignSDKVersion"
   api "io.github.go-acoustic:acoustic-mobile-push-android-inapp:$campaignSDKVersion"
   api "io.github.go-acoustic:acoustic-mobile-push-android-inbox:$campaignSDKVersion"
+
+  implementation "androidx.security:security-crypto:1.1.0-alpha06"
+
 }

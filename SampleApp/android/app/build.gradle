@@ -111,8 +111,8 @@ dependencies {
     implementation project(':react-native-video')
     implementation("com.facebook.react:react-android")
 
-    implementation "androidx.appcompat:appcompat:1.0.0"
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+    implementation "androidx.appcompat:appcompat:1.7.0"
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
     implementation "androidx.legacy:legacy-support-core-utils:1.0.0"
 
     debugImplementation("com.facebook.flipper:flipper:0.250.0")

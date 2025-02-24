@@ -9,7 +9,7 @@
     ],
     "author": "Acoustic, L.P.",
     "peerDependencies": {
-        "react-native-acoustic-mobile-push": "3.9.33"
+        "react-native-acoustic-mobile-push": "3.9.35"
     },
     "description": "BETA: Acoustic Mobile Push Location Plugin",
     "main": "index.js",
@@ -18,7 +18,7 @@
         "directory": "plugins/react-native-acoustic-mobile-push-location",
         "url": "https://github.com/aipoweredmarketer/ca-mce-react-native"
     },
-    "version": "3.9.33",
+    "version": "3.9.35",
     "dependencies": {
         "plist": "^3.0.1",
         "xml2js": "^0.4.19",

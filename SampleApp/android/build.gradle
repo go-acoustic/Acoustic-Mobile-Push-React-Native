@@ -1,32 +1,42 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext {
-        buildToolsVersion = "33.0.1"
-        minSdkVersion = 21
-        compileSdkVersion = 33
-        targetSdkVersion = 33
-        supportLibVersion = "29.0.0"
-	      googlePlayServicesVersion = "16.0.5" // or set latest version
-        androidMapsUtilsVersion = "0.5+"
-        kotlinVersion = "1.6.10"
+  // Dependent libraries will use these versions if defined
+  ext {
+    buildToolsVersion = "33.0.1"
+    minSdkVersion = 21
+    compileSdkVersion = 34
+    targetSdkVersion = 34
+    supportLibVersion = "33.0.0"
+    googlePlayServicesVersion = "21.0.1" // or set latest version
+    playServicesVersion = "18.0.0"
+    androidMapsUtilsVersion = "0.5+"
+    kotlinVersion = "1.8.22"
 
-        // We use NDK 23 which has both M1 support and is the side-by-side NDK version from AGP.
-        ndkVersion = "23.1.7779620"
-    }
+    // We use NDK 23 which has both M1 support and is the side-by-side NDK version from AGP.
+    ndkVersion = "23.1.7779620"
+
+//        playServicesVersion = "18.3.0"
+  }
+  repositories {
+    google()
+    mavenCentral()
+  }
+
+  allprojects {
     repositories {
-        google()
-        mavenCentral()
-        
-    
-    
-    maven { url "https://s01.oss.sonatype.org/content/groups/staging" }
-}
+      google()
+      mavenCentral()
+      maven { url "https://s01.oss.sonatype.org/content/groups/staging" }
 
-    dependencies {
-        classpath("com.android.tools.build:gradle")
-        classpath("com.facebook.react:react-native-gradle-plugin")
-        classpath("com.google.gms:google-services:4.4.1")
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     }
+  }
+
+
+  dependencies {
+    classpath("com.android.tools.build:gradle")
+    classpath("com.facebook.react:react-native-gradle-plugin")
+    classpath("com.google.gms:google-services:4.4.2")
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+  }
 }

@@ -104,8 +104,8 @@ export class HomeScreen extends React.Component {
             {RNAcousticMobilePush.sdkVersion}
           </Text>
           <Text style={{ marginBottom: 20 }}>
-            React Native Plugin v
-            {RNAcousticMobilePush.pluginVersion}
+            React Native Plugin v3.9.35
+            {/* Update version here instead of {RNAcousticMobilePush.pluginVersion} */}
           </Text>
         </View>
         <ListItem bottomDivider onPress={() => navigate('Registration')}>

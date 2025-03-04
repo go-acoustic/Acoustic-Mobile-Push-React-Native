@@ -12,11 +12,11 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		1B374CAA2BA760E50062F072 /* WebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B374CA92BA760E50062F072 /* WebViewController.xib */; };
-		1B6266122BAC01B600703D83 /* AcousticMobilePushNotification.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1B6266102BAC01B600703D83 /* AcousticMobilePushNotification.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1B8C974E2D7674EB000D70DB /* AcousticMobilePushNotification.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B8C974A2D7674BD000D70DB /* AcousticMobilePushNotification.xcframework */; };
+		1B8C974F2D769258000D70DB /* AcousticMobilePushNotification.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B8C974A2D7674BD000D70DB /* AcousticMobilePushNotification.xcframework */; };
 		343C0797287DBF2D00CE4B83 /* MceConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = 8AAD13222684EB8300F07686 /* MceConfig.json */; };
 		3446B52B2796037C0007922D /* SampleAppBridgingHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3446B52A2796037C0007922D /* SampleAppBridgingHeader.swift */; };
 		346453D0278F82790097090E /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 346453CF278F82790097090E /* NotificationService.swift */; };
-		346453D4278F82790097090E /* SampleAppNotificationService.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 346453CD278F82790097090E /* SampleAppNotificationService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		34EDB1A72796176500831387 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34EDB1A62796176500831387 /* libRNVectorIcons.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		8AAD13262684EB8300F07686 /* MceConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = 8AAD13222684EB8300F07686 /* MceConfig.json */; };
@@ -37,13 +37,6 @@
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
 			remoteInfo = SampleApp;
 		};
-		346453D2278F82790097090E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 346453CC278F82790097090E;
-			remoteInfo = SampleAppNotificationService;
-		};
 		C30E65982964B5AA00CBD140 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
@@ -54,6 +47,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		1B8C974D2D7674BD000D70DB /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		346453B7278F81A20097090E /* Embed App Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -61,7 +64,6 @@
 			dstSubfolderSpec = 13;
 			files = (
 				C30E659A2964B5AA00CBD140 /* Carousel.appex in Embed App Extensions */,
-				346453D4278F82790097090E /* SampleAppNotificationService.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -72,7 +74,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				1B6266122BAC01B600703D83 /* AcousticMobilePushNotification.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -94,6 +95,7 @@
 		19160F9C8582437E87BDE748 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		1B374CA92BA760E50062F072 /* WebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WebViewController.xib; path = "../../plugins/react-native-acoustic-mobile-push-displayweb/ios/WebViewController.xib"; sourceTree = "<group>"; };
 		1B6266102BAC01B600703D83 /* AcousticMobilePushNotification.xcframework */ = {isa = PBXFileReference; expectedSignature = "AppleDeveloperProgram:QXQ67VKX2B:Acoustic, L.P."; lastKnownFileType = wrapper.xcframework; name = AcousticMobilePushNotification.xcframework; path = Pods/AcousticMobilePushNotificationDebug/Debug/AcousticMobilePushNotification.xcframework; sourceTree = "<group>"; };
+		1B8C974A2D7674BD000D70DB /* AcousticMobilePushNotification.xcframework */ = {isa = PBXFileReference; expectedSignature = "AppleDeveloperProgram:QXQ67VKX2B:Acoustic, L.P."; lastKnownFileType = wrapper.xcframework; name = AcousticMobilePushNotification.xcframework; path = Pods/AcousticMobilePushNotification/AcousticMobilePushNotification.xcframework; sourceTree = "<group>"; };
 		3446B5292796037B0007922D /* SampleApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SampleApp-Bridging-Header.h"; sourceTree = "<group>"; };
 		3446B52A2796037C0007922D /* SampleAppBridgingHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleAppBridgingHeader.swift; sourceTree = "<group>"; };
 		346453CD278F82790097090E /* SampleAppNotificationService.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SampleAppNotificationService.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -177,6 +179,7 @@
 			files = (
 				34EDB1A72796176500831387 /* libRNVectorIcons.a in Frameworks */,
 				AD23F7573C5B7E1614FBE0F2 /* libPods-SampleApp.a in Frameworks */,
+				1B8C974F2D769258000D70DB /* AcousticMobilePushNotification.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -184,6 +187,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B8C974E2D7674EB000D70DB /* AcousticMobilePushNotification.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -236,6 +240,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1B8C974A2D7674BD000D70DB /* AcousticMobilePushNotification.xcframework */,
 				1B6266102BAC01B600703D83 /* AcousticMobilePushNotification.xcframework */,
 				34EDB1A62796176500831387 /* libRNVectorIcons.a */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
@@ -422,11 +427,11 @@
 				346453B7278F81A20097090E /* Embed App Extensions */,
 				6E9E637E19B38BB9D3DD80C1 /* [CP] Embed Pods Frameworks */,
 				40C46B867C17B89AAAE213E1 /* [CP] Copy Pods Resources */,
+				1B8C974D2D7674BD000D70DB /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				346453D3278F82790097090E /* PBXTargetDependency */,
 				C30E65992964B5AA00CBD140 /* PBXTargetDependency */,
 			);
 			name = SampleApp;
@@ -742,11 +747,6 @@
 			target = 13B07F861A680F5B00A75B9A /* SampleApp */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
-		346453D3278F82790097090E /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 346453CC278F82790097090E /* SampleAppNotificationService */;
-			targetProxy = 346453D2278F82790097090E /* PBXContainerItemProxy */;
-		};
 		C30E65992964B5AA00CBD140 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = C30E658A2964B5AA00CBD140 /* Carousel */;
@@ -953,7 +953,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DA944F94DF4028EF2F9EE571 /* Pods-SampleApp.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SampleApp/SampleApp.entitlements;
@@ -1065,7 +1064,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = AD0360F9B3644A0FECF31957 /* Pods-SampleApp.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SampleApp/SampleApp.entitlements;

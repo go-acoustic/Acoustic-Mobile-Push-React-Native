@@ -9,16 +9,16 @@
     ],
     "author": "Acoustic, L.P.",
     "peerDependencies": {
-        "react-native-acoustic-mobile-push-beta": "3.9.35"
+        "react-native-acoustic-mobile-push-beta": "3.9.36"
     },
     "description": "BETA: Acoustic Mobile Push Inbox Content Plugin",
     "main": "index.js",
     "repository": {
         "type": "git",
         "directory": "plugins/react-native-acoustic-mobile-push-inbox",
-        "url": "https://github.com/aipoweredmarketer/ca-mce-react-native"
+        "url": "https://github.com/go-acoustic/Acoustic-Mobile-Push-React-Native"
     },
-    "version": "3.9.35",
+    "version": "3.9.36",
     "dependencies": {
         "plist": "^3.0.1",
         "xml2js": "^0.4.19",
@@ -36,5 +36,5 @@
         "postinstall": "node postinstall.js $INIT_CWD",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
-    "homepage": "https://github.com/aipoweredmarketer/ca-mce-react-native"
+    "homepage": "https://www.acoustic.com/solutions/campaign"
 }

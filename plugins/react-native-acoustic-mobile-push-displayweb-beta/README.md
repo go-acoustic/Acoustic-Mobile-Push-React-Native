@@ -1,22 +1,5 @@
-# react-native-acoustic-mobile-push-displayweb-beta
-Optional Campaign plugin for displayweb feature.
+# Acoustic Campaign - React-Native Plugin
 
-### Plugin Dependencies
-react-native-acoustic-mobile-push-beta
-react-native-acoustic-mobile-push-inapp-beta
-react-native-acoustic-mobile-push-inbox-beta
-----
+Campaign plugin has been published to NPM for React-Native apps. Add the plugin with 'yarn' or 'npm' to start configuring basic or advanced mobile app messaging features using an unified configuration file called 'CampaignConfig.json' for both iOS and Android apps.
 
-[Overview](https://developer.goacoustic.com/acoustic-campaign/docs/add-the-react-native-plug-in-to-your-app#overview)
----
-
-## Install
-Add `react-native-acoustic-mobile-push-displayweb-beta` to the project.
-
-```shell yarn
-yarn add react-native-acoustic-mobile-push-displayweb-beta
-```
-
-```shell npm
-npm i react-native-acoustic-mobile-push-displayweb-beta
-```
+Please review base plugin at https://www.npmjs.com/package/react-native-acoustic-mobile-push-beta for instructions.

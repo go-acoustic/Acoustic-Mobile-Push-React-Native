@@ -115,6 +115,9 @@ public class RNAcousticMobilePushModule extends ReactContextBaseJavaModule imple
     static CharSequence channelName = "MCE SDK Notification Channel";
     static String channelIdentifier = "mce_sample_channel";
 
+    public static final String PLUGIN_VERSION = "3.9.37";
+
+
     // Send event to javascript
     static protected void sendEvent(String eventName, WritableMap params) {
         reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, params);
@@ -179,7 +182,7 @@ public class RNAcousticMobilePushModule extends ReactContextBaseJavaModule imple
     static void sendReactNativeChannelAttribute() {
         List<Attribute> attributes = new LinkedList<Attribute>();
         attributes.add(new StringAttribute("sdk", "react-native"));
-        attributes.add(new StringAttribute("react-native", MceSdk.getSdkVerNumber() ));
+        attributes.add(new StringAttribute("react-native", PLUGIN_VERSION));
         Logger.d(TAG, "Sending react-native channel attribute");
         MceSdkInternal.getQueuedAttributesClient().updateChannelAttributes(reactContext, attributes);
     }
@@ -468,7 +471,7 @@ public class RNAcousticMobilePushModule extends ReactContextBaseJavaModule imple
 
 		final Map<String, Object> constants = new HashMap<>();
 		constants.put("sdkVersion", MceSdk.getSdkVerNumber());
-        constants.put("pluginVersion", "3.9.45");
+        constants.put("pluginVersion", PLUGIN_VERSION);
 		constants.put("appKey", appKey );
 		return constants;
 	}

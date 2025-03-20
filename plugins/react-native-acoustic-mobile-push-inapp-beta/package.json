@@ -9,7 +9,7 @@
     ],
     "author": "Acoustic, L.P.",
     "peerDependencies": {
-        "react-native-acoustic-mobile-push-beta": "3.9.36"
+        "react-native-acoustic-mobile-push-beta": "3.9.37"
     },
     "description": "BETA: Acoustic Mobile Push InApp Content Plugin",
     "main": "index.js",
@@ -18,7 +18,7 @@
         "directory": "plugins/react-native-acoustic-mobile-push-inapp",
         "url": "https://github.com/go-acoustic/Acoustic-Mobile-Push-React-Native"
     },
-    "version": "3.9.36",
+    "version": "3.9.37",
     "dependencies": {
         "plist": "^3.0.1",
         "xml2js": "^0.4.19",

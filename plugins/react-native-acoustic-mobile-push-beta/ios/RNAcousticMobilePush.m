@@ -40,7 +40,7 @@ RCT_EXPORT_MODULE();
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-        NSDictionary * channelAttributes = @{@"sdk": @"react-native", @"react-native": @"3.9.37" };
+        NSDictionary * channelAttributes = @{@"sdk": @"react-native", @"react-native": @"3.9.39" };
         [MCEAttributesQueueManager.sharedInstance updateChannelAttributes: channelAttributes];
 #pragma GCC diagnostic pop
     }
@@ -114,7 +114,7 @@ RCT_EXPORT_MODULE();
 
 - (NSDictionary *)constantsToExport {
     MCEConfig * config = MCESdk.sharedInstance.config;
-    return @{@"pluginVersion": @"3.9.37", @"sdkVersion": MCESdk.sharedInstance.sdkVersion, @"appKey": config.appKey ? config.appKey : [NSNull null]};
+    return @{@"pluginVersion": @"3.9.39", @"sdkVersion": MCESdk.sharedInstance.sdkVersion, @"appKey": config.appKey ? config.appKey : [NSNull null]};
 }
 
 #pragma mark SDK - Events

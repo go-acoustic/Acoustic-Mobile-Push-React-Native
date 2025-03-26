@@ -113,7 +113,7 @@ public class RNAcousticMobilePushModule extends ReactContextBaseJavaModule imple
   static CharSequence channelName = "MCE SDK Notification Channel";
   static String channelIdentifier = "mce_sample_channel";
 
-  public static final String PLUGIN_VERSION = "3.9.37";
+  public static final String PLUGIN_VERSION = "3.9.39";
 
 
   // Send event to javascript

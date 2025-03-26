@@ -9,8 +9,8 @@
     ],
     "author": "Acoustic, L.P.",
     "peerDependencies": {
-        "react-native-acoustic-mobile-push-beta": "3.9.37",
-        "react-native-acoustic-mobile-push-location-beta": "3.9.37"
+        "react-native-acoustic-mobile-push-beta": "3.9.38",
+        "react-native-acoustic-mobile-push-location-beta": "3.9.38"
     },
     "description": "BETA: Acoustic Mobile Push Beacon Location Plugin",
     "main": "index.js",
@@ -19,7 +19,7 @@
         "directory": "plugins/react-native-acoustic-mobile-push-inbox",
         "url": "https://github.com/go-acoustic/Acoustic-Mobile-Push-React-Native"
     },
-    "version": "3.9.37",
+    "version": "3.9.38",
     "dependencies": {
         "plist": "^3.0.1",
         "xml2js": "^0.4.19",

@@ -1,0 +1,20 @@
+{
+  "notification-actions": [
+    {
+      "type": "openInboxMessage",
+      "class": "co.acoustic.mobile.push.plugin.inbox.RNPushNotificationInboxCustomAction",
+      "initOptions": {
+        "templates": {
+          "html": "co.acoustic.mobile.push.sdk.plugin.inbox.HtmlRichContent"
+        },
+        "inboxControl sets a custom inbox control implementation": "set this to the inbox control class name or leave empty for default implementation",
+        "inboxControl": ""
+      }
+    }
+  ],
+
+  "message-processors": [{
+      "name": "messages",
+      "class": "co.acoustic.mobile.push.sdk.plugin.inbox.InboxMessageProcessor"
+  }]
+}

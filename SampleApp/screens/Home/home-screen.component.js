@@ -9,7 +9,7 @@
  */
 
 import React from 'react';
-import { Text, View, Image, ScrollView, NativeModules, Platform, Alert } from 'react-native';
+import { Text, View, Image, ScrollView, NativeModules, Platform, Alert, PermissionsAndroid } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { styles } from '../../styles';
 import { RNAcousticMobilePushEmitter, RNAcousticMobilePushInboxEmitter, RNAcousticMobilePushImageCarouselEmitter, RNAcousticMobilePushBeaconEmitter } from '../../helpers/eventEmitters';
@@ -40,7 +40,7 @@ export class HomeScreen extends React.Component {
   }
 
   componentDidMount() {
-    RNAcousticMobilePush.requestPushPermission();
+    this.requestPushPermission();
 
     if (Platform.OS == 'ios') {
       RNAcousticMobilePushSnooze.registerPlugin("SnoozeAction");
@@ -87,6 +87,37 @@ export class HomeScreen extends React.Component {
     const { subscriptions } = this.state;
 
     subscriptions.forEach((subscription) => subscription.remove());
+  }
+
+  requestPushPermission = () => {
+    if(Platform.OS ==="android" && Platform.Version >= 33) {
+      try {
+        PermissionsAndroid.check('android.permission.POST_NOTIFICATIONS').then(
+          response => {
+            console.log("Notification Permission [response] =====>", response)
+            if(!response){
+              PermissionsAndroid.request('android.permission.POST_NOTIFICATIONS',{
+                  title: 'Notification',
+                  message:
+                    'Sample App needs access to your notification ' +
+                    'so you can get messages',
+                  buttonPositive: 'OK',
+              }).then( 
+                permissionStatus => {
+                  console.log("Notification Permission [permissionStatus] =====>", permissionStatus)
+              })
+              RNAcousticMobilePush.requestPushPermission();
+            }
+          }
+        ).catch(
+          err => {
+            console.log("Notification Permission [error] =====>",err);
+          }
+        )
+      } catch (err){
+        console.log("Notification [error] =====>",err);
+      }
+    }
   }
 
   render() {

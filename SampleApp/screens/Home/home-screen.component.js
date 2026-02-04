@@ -89,33 +89,28 @@ export class HomeScreen extends React.Component {
     subscriptions.forEach((subscription) => subscription.remove());
   }
 
-  requestPushPermission = () => {
-    if(Platform.OS ==="android" && Platform.Version >= 33) {
-      try {
-        PermissionsAndroid.check('android.permission.POST_NOTIFICATIONS').then(
-          response => {
-            console.log("Notification Permission [response] =====>", response)
-            if(!response){
-              PermissionsAndroid.request('android.permission.POST_NOTIFICATIONS',{
-                  title: 'Notification',
-                  message:
-                    'Sample App needs access to your notification ' +
-                    'so you can get messages',
-                  buttonPositive: 'OK',
-              }).then( 
-                permissionStatus => {
-                  console.log("Notification Permission [permissionStatus] =====>", permissionStatus)
-              })
-              RNAcousticMobilePush.requestPushPermission();
-            }
+  requestPushPermission = async() => {
+    if(Platform.OS ==="android") {
+      if(Platform.Version >= 33) {
+        try {
+          const hasPermission = await PermissionsAndroid.check('android.permission.POST_NOTIFICATIONS');
+          console.log("Notification Permission [response] =====>", hasPermission);
+
+          if(!hasPermission) {
+            const permissionStatus = await PermissionsAndroid.request('android.permission.POST_NOTIFICATIONS', {
+              title: 'Notification',
+              message: 'Sample App needs access to your notification so you can get messages',
+              buttonPositive: 'OK',
+            });
+            console.log("Notification Permission [permissionStatus] =====>", permissionStatus);
           }
-        ).catch(
-          err => {
-            console.log("Notification Permission [error] =====>",err);
-          }
-        )
-      } catch (err){
-        console.log("Notification [error] =====>",err);
+
+          RNAcousticMobilePush.requestPushPermission();
+        } catch (err) {
+          console.log("Notification [error] =====>", err);
+        }
+      } else {
+        RNAcousticMobilePush.requestPushPermission();
       }
     }
   }

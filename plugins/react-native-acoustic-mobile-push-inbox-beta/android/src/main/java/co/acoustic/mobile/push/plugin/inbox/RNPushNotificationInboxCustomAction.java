@@ -55,11 +55,38 @@ import co.acoustic.mobile.push.sdk.util.Logger;
  * A custom action handler for RNPushNotificationInbox, responsible for processing inbox messages and navigating to the inbox screen when a push notification is clicked.
  */
 public class RNPushNotificationInboxCustomAction implements MceNotificationAction {
-  final String TAG = "RNPushNotificationInboxCustomAction";
+  private static final String TAG = "RNPushNotificationInboxCustomAction";
 
   private static WeakReference<ReactApplicationContext> weakReactContext;
   private static String inboxActionModule;
   private RelativeLayout relativeLayout = null;
+  private static volatile PendingInboxMessage pendingMessage = null;
+  private static int processingRetryCount = 0;
+  private static final int MAX_RETRY_COUNT = 3;
+
+  /**
+   * Class to hold pending inbox message data
+   */
+  private static class PendingInboxMessage {
+    final Context context;
+    final String type;
+    final String name;
+    final String attribution;
+    final String mailingId;
+    final Map<String, String> payload;
+    final boolean fromNotification;
+
+    PendingInboxMessage(Context context, String type, String name, String attribution,
+                        String mailingId, Map<String, String> payload, boolean fromNotification) {
+      this.context = context;
+      this.type = type;
+      this.name = name;
+      this.attribution = attribution;
+      this.mailingId = mailingId;
+      this.payload = payload;
+      this.fromNotification = fromNotification;
+    }
+  }
 
   /**
    * Default constructor required by MceNotificationAction interface
@@ -78,6 +105,12 @@ public class RNPushNotificationInboxCustomAction implements MceNotificationActio
       weakReactContext = new WeakReference<>(reactContext);
     }
     RNPushNotificationInboxCustomAction.inboxActionModule = inboxActionModule;
+
+    if (inboxActionModule != null) {
+      processPendingInboxMessage();
+    } else {
+      Logger.d(TAG, "Inbox module is null, NOT processing pending message yet");
+    }
   }
 
   /**
@@ -97,6 +130,61 @@ public class RNPushNotificationInboxCustomAction implements MceNotificationActio
       weakReactContext = null;
     }
     inboxActionModule = null;
+    pendingMessage = null;
+    processingRetryCount = 0;
+  }
+
+  /**
+   * Process any pending inbox message that was stored while waiting for React context
+   * Called internally when the inbox component is registered
+   */
+  private void processPendingInboxMessage() {
+    ReactApplicationContext reactContext = getReactContext();
+    if (reactContext != null) {
+      Logger.d(TAG, "  currentActivity available: " + (reactContext.getCurrentActivity() != null));
+    }
+
+    if (pendingMessage == null) {
+      Logger.d(TAG, "No pending message to process");
+      return;
+    }
+
+    // Check if inbox module is registered, if not, keep the message pending
+    if (inboxActionModule == null) {
+      Logger.w(TAG, "Inbox module not yet registered, keeping message pending");
+      return;
+    }
+
+    // Check if React context is available
+    if (reactContext == null) {
+      Logger.w(TAG, "React context not yet available, keeping message pending");
+      return;
+    }
+
+    final PendingInboxMessage msg = pendingMessage;
+    pendingMessage = null;
+    processingRetryCount++;
+    Logger.d(TAG, "Starting to process pending message, retry count: " + processingRetryCount);
+
+    android.os.Handler handler = new android.os.Handler(android.os.Looper.getMainLooper());
+    handler.postDelayed(new Runnable() {
+      @Override
+      public void run() {
+        ReactApplicationContext ctx = getReactContext();
+        if (ctx != null && ctx.getCurrentActivity() != null) {
+          processingRetryCount = 0;
+          handleAction(msg.context, msg.type, msg.name, msg.attribution, msg.mailingId, msg.payload, msg.fromNotification);
+        } else if (processingRetryCount < MAX_RETRY_COUNT) {
+          Logger.d(TAG, "Context/activity not ready, scheduling retry " + processingRetryCount + "/" + MAX_RETRY_COUNT);
+          pendingMessage = msg;
+          handler.postDelayed(this, 1000);
+        } else {
+          Logger.w(TAG, "Max retry count reached (" + MAX_RETRY_COUNT + "), discarding pending inbox message");
+          processingRetryCount = 0;
+          pendingMessage = null;
+        }
+      }
+    }, 2000);
   }
 
   /**
@@ -111,11 +199,19 @@ public class RNPushNotificationInboxCustomAction implements MceNotificationActio
    */
   @Override
   public void handleAction(final Context context, final String type, final String name, final String attribution, final String mailingId, final Map<String, String> payload, final boolean fromNotification) {
-    Logger.i(TAG, "currentActivity is ");
+    Logger.i(TAG, "handleAction called");
 
-    Activity currentActivity = Objects.requireNonNull(getReactContext()).getCurrentActivity();
-    if (currentActivity == null) {
-      Logger.i(TAG, "Can't find activity, starting");
+    ReactApplicationContext reactContext = getReactContext();
+    Activity currentActivity = null;
+
+    if (reactContext != null) {
+      currentActivity = reactContext.getCurrentActivity();
+    }
+
+    if (reactContext == null || currentActivity == null) {
+      Logger.i(TAG, "React context or activity not available, launching app");
+
+      pendingMessage = new PendingInboxMessage(context, type, name, attribution, mailingId, payload, fromNotification);
 
       if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
         Intent it = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
@@ -131,11 +227,11 @@ public class RNPushNotificationInboxCustomAction implements MceNotificationActio
     final Activity activity = currentActivity;
     final InboxMessageReference messageReference = new InboxMessageReference(payload.get("value"), payload.get(InboxMessageReference.INBOX_MESSAGE_ID_KEY));
     if (messageReference.hasReference()) {
-      final RichContent inboxMessage = messageReference.getMessageFromDb(getReactContext());
+      final RichContent inboxMessage = messageReference.getMessageFromDb(reactContext);
       if (inboxMessage == null) {
         Logger.d(TAG, "Inbox message not found");
         InboxMessageProcessor.addMessageToLoad(messageReference);
-        MessageSync.syncMessages(getReactContext(), new OperationCallback<MessageSync.SyncReport>() {
+        MessageSync.syncMessages(reactContext, new OperationCallback<MessageSync.SyncReport>() {
           @Override
           public void onSuccess(MessageSync.SyncReport syncReport, OperationResult result) {
             Logger.i(TAG, "Downloaded messages");
@@ -145,23 +241,25 @@ public class RNPushNotificationInboxCustomAction implements MceNotificationActio
                 report = (InboxMessageProcessor.Report) processReport;
               }
             }
-            for (int i = 0; i < report.getNewMessages().size(); i++) {
-              RichContent message = report.getNewMessages().get(i);
-              if (message.getMessageId().equals(messageReference.getInboxMessageId())) {
-                Logger.i(TAG, "Downloaded message");
-                final RichContent msg = message;
-                activity.runOnUiThread(new Runnable() {
-                  @Override
-                  public void run() {
-                    internalHideInbox();
+            if (report != null) {
+              for (int i = 0; i < report.getNewMessages().size(); i++) {
+                RichContent message = report.getNewMessages().get(i);
+                if (message.getMessageId().equals(messageReference.getInboxMessageId())) {
+                  Logger.i(TAG, "Downloaded message");
+                  final RichContent msg = message;
+                  activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                      internalHideInbox();
 
-                    showInboxMessage(msg, activity);
+                      showInboxMessage(msg, activity);
+                    }
+                  });
+                  if (fromNotification) {
+                    InboxEvents.sendInboxNotificationOpenedEvent(context, new ActionImpl(type, name, payload), attribution, mailingId);
                   }
-                });
-                if (fromNotification) {
-                  InboxEvents.sendInboxNotificationOpenedEvent(context, new ActionImpl(type, name, payload), attribution, mailingId);
+                  return;
                 }
-                return;
               }
             }
             Logger.e(TAG, "Could not find downloaded message");
@@ -184,6 +282,8 @@ public class RNPushNotificationInboxCustomAction implements MceNotificationActio
           InboxEvents.sendInboxNotificationOpenedEvent(context, new ActionImpl(type, name, payload), attribution, mailingId);
         }
       }
+    } else {
+      Logger.e(TAG, "Message reference has NO reference - cannot process");
     }
   }
 
@@ -209,7 +309,13 @@ public class RNPushNotificationInboxCustomAction implements MceNotificationActio
 
   @ReactMethod
   public void hideInbox() {
-    final Activity activity = Objects.requireNonNull(getReactContext()).getCurrentActivity();
+    ReactApplicationContext reactContext = getReactContext();
+    if (reactContext == null) {
+      Logger.e(TAG, "Can't find React context");
+      return;
+    }
+
+    final Activity activity = reactContext.getCurrentActivity();
     if (activity == null) {
       Logger.e(TAG, "Can't find activity");
       return;
@@ -240,22 +346,28 @@ public class RNPushNotificationInboxCustomAction implements MceNotificationActio
 
   // Needs to be run on the main thread.
   private void showInboxMessage(RichContent inboxMessage, Activity activity) {
+    ReactApplicationContext reactContext = getReactContext();
+    if (reactContext == null) {
+      Logger.e(TAG, "React context is null, cannot show inbox message");
+      return;
+    }
+
     if (inboxActionModule == null) {
       Logger.e(TAG, "inbox action module is not registered");
       return;
     }
 
-    this.relativeLayout = new RelativeLayout(getReactContext());
-    relativeLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.FILL_PARENT));
-    RelativeLayout.LayoutParams viewLayout = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.FILL_PARENT);
+    try {
+      this.relativeLayout = new RelativeLayout(reactContext);
+      relativeLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.FILL_PARENT));
+      RelativeLayout.LayoutParams viewLayout = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.FILL_PARENT);
+      viewLayout.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 
-    viewLayout.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+      ReactApplication application = (ReactApplication) activity.getApplication();
+      ReactNativeHost reactNativeHost = application.getReactNativeHost();
+      ReactInstanceManager reactInstanceManager = reactNativeHost.getReactInstanceManager();
 
-    ReactApplication application = (ReactApplication) activity.getApplication();
-    ReactNativeHost reactNativeHost = application.getReactNativeHost();
-    ReactInstanceManager reactInstanceManager = reactNativeHost.getReactInstanceManager();
-
-    Bundle messageBundle = new Bundle();
+      Bundle messageBundle = new Bundle();
     messageBundle.putLong("sendDate", inboxMessage.getSendDate().getTime());
     messageBundle.putLong("expirationDate", inboxMessage.getExpirationDate().getTime());
     messageBundle.putBoolean("isDeleted", inboxMessage.getIsDeleted());
@@ -267,28 +379,32 @@ public class RNPushNotificationInboxCustomAction implements MceNotificationActio
     messageBundle.putString("inboxMessageId", inboxMessage.getMessageId());
     messageBundle.putString("richContentId", inboxMessage.getContentId());
 
-    try {
-      JSONObject content = inboxMessage.getContent();
-      if (content != null) {
-        messageBundle.putBundle("content", convertJsonObjectToBundle(content));
+      try {
+        JSONObject content = inboxMessage.getContent();
+        if (content != null) {
+          messageBundle.putBundle("content", convertJsonObjectToBundle(content));
+        }
+      } catch (Exception ex) {
+        Logger.d(TAG, "Couldn't convert inbox json content", ex);
       }
-    } catch (Exception ex) {
-      Logger.d(TAG, "Couldn't convert inbox json content", ex);
+
+      Bundle initialProperties = new Bundle();
+      initialProperties.putBundle("message", messageBundle);
+
+      ReactRootView reactRootView = new ReactRootView(reactContext);
+      reactRootView.setLayoutParams(viewLayout);
+      reactRootView.startReactApplication(reactInstanceManager, inboxActionModule, initialProperties);
+      relativeLayout.addView(reactRootView);
+
+      Window window = activity.getWindow();
+      FrameLayout.LayoutParams relativeLayoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.FILL_PARENT, FrameLayout.LayoutParams.FILL_PARENT);
+      window.addContentView(relativeLayout, relativeLayoutParams);
+
+      RNAcousticMobilePushInboxModule.relativeLayout = relativeLayout;
+    } catch (Exception e) {
+      Logger.e(TAG, "  Exception message: " + e.getMessage());
+      e.printStackTrace();
     }
-
-    Bundle initialProperties = new Bundle();
-    initialProperties.putBundle("message", messageBundle);
-
-    ReactRootView reactRootView = new ReactRootView(getReactContext());
-    reactRootView.setLayoutParams(viewLayout);
-    reactRootView.startReactApplication(reactInstanceManager, inboxActionModule, initialProperties);
-    relativeLayout.addView(reactRootView);
-
-    Window window = activity.getWindow();
-    FrameLayout.LayoutParams relativeLayoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.FILL_PARENT, FrameLayout.LayoutParams.FILL_PARENT);
-    window.addContentView(relativeLayout, relativeLayoutParams);
-
-    RNAcousticMobilePushInboxModule.relativeLayout = relativeLayout;
   }
 
   public Bundle convertJsonObjectToBundle(JSONObject jsonObject) throws JSONException {

@@ -27,7 +27,7 @@ Pod::Spec.new do |s|
   s.summary        = package["summary"]
   s.license        = package["license"]
   s.authors        = package["author"]
-  s.platforms      = { :ios => "12.4" }
+  s.platforms      = { :ios => "15.1" }
   
   s.source         = { :git => repository, :tag => s.version }
   s.preserve_paths = 'README.md', 'package.json', '*.js'

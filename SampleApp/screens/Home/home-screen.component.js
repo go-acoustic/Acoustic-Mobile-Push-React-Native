@@ -9,7 +9,7 @@
  */
 
 import React from 'react';
-import { Text, View, Image, ScrollView, NativeModules, Platform, Alert } from 'react-native';
+import { Text, View, Image, ScrollView, NativeModules, Platform, Alert, PermissionsAndroid } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { styles } from '../../styles';
 import { RNAcousticMobilePushEmitter, RNAcousticMobilePushInboxEmitter, RNAcousticMobilePushImageCarouselEmitter, RNAcousticMobilePushBeaconEmitter } from '../../helpers/eventEmitters';
@@ -40,7 +40,7 @@ export class HomeScreen extends React.Component {
   }
 
   componentDidMount() {
-    RNAcousticMobilePush.requestPushPermission();
+    this.requestPushPermission();
 
     if (Platform.OS == 'ios') {
       RNAcousticMobilePushSnooze.registerPlugin("SnoozeAction");
@@ -87,6 +87,32 @@ export class HomeScreen extends React.Component {
     const { subscriptions } = this.state;
 
     subscriptions.forEach((subscription) => subscription.remove());
+  }
+
+  requestPushPermission = async() => {
+    if(Platform.OS ==="android") {
+      if(Platform.Version >= 33) {
+        try {
+          const hasPermission = await PermissionsAndroid.check('android.permission.POST_NOTIFICATIONS');
+          console.log("Notification Permission [response] =====>", hasPermission);
+
+          if(!hasPermission) {
+            const permissionStatus = await PermissionsAndroid.request('android.permission.POST_NOTIFICATIONS', {
+              title: 'Notification',
+              message: 'Sample App needs access to your notification so you can get messages',
+              buttonPositive: 'OK',
+            });
+            console.log("Notification Permission [permissionStatus] =====>", permissionStatus);
+          }
+
+          RNAcousticMobilePush.requestPushPermission();
+        } catch (err) {
+          console.log("Notification [error] =====>", err);
+        }
+      } else {
+        RNAcousticMobilePush.requestPushPermission();
+      }
+    }
   }
 
   render() {

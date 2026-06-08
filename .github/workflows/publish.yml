@@ -1,0 +1,530 @@
+# Copyright (C) 2026 Acoustic, L.P. All rights reserved.
+
+# Secure NPM Publish Workflow using npm Trusted Publishers
+#
+# Purpose: Automatically publishes React Native Acoustic Mobile Push packages to npm when Jenkins pushes a version tag
+#
+# Workflow Flow:
+#   1. Jenkins builds and tags a release (e.g., 3.9.42)
+#   2. Jenkins pushes the tag to GitHub, triggering this workflow
+#   3. Jenkins uploads all package tarballs to the GitHub Release
+#   4. This workflow downloads all tarballs from the GitHub Release
+#   5. Workflow publishes all packages to npm using OIDC Trusted Publishers (no tokens needed)
+#   6. Jenkins polls this workflow for completion status
+#
+# Multi-Package Support:
+#   This repo contains 14 different npm packages (all plugins). This workflow:
+#   - Detects all tarball files in the GitHub Release
+#   - Publishes each package independently
+#   - Reports success/failure for each package
+#
+# Prerequisites:
+#   - All 14 npm packages must be configured with GitHub as a Trusted Publisher
+#   - Repository must match: go-acoustic/Acoustic-Mobile-Push-React-Native
+#   - GitHub releases must contain all tarballs as assets
+#   - npm CLI version 11.5.1 or later (upgraded automatically in this workflow)
+#
+# Security: Uses OpenID Connect (OIDC) for authentication - no npm tokens stored in GitHub
+#
+# Troubleshooting:
+#   - "Tarball not found": Check that Jenkins successfully uploaded all tarballs to GitHub Release
+#   - "Timeout after 15 minutes": Check Jenkins upload timing and increase timeout if needed
+#   - "npm publish failed": Verify Trusted Publishers configuration on npmjs.com for all packages
+#   - "Wrong npm tag": Verify package names in package.json files (beta vs. release)
+#
+name: Secure NPM Publish (Trusted Publishers)
+
+on:
+  push:
+    tags:
+      - '*'        # Trigger on any tag pushed by Jenkins
+      - '!*-beta'  # Exclude beta tags
+  workflow_dispatch:  # Allow manual testing from GitHub UI
+
+permissions:
+  id-token: write  # Required for npm OIDC/Trusted Publishers
+  contents: read   # Required for actions/checkout
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    # Only publish from the main repository, not forks
+    if: github.repository == 'go-acoustic/Acoustic-Mobile-Push-React-Native'
+    # Timeout for the entire job (increased to 25 minutes to accommodate multiple package uploads)
+    timeout-minutes: 25
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.ref }}  # Check out the tagged commit
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Upgrade npm for Trusted Publishers
+        timeout-minutes: 3  # Prevent hanging on network issues
+        run: |
+          echo "Note: Trusted publishing requires npm CLI version 11.5.1 or later."
+          echo "Current npm version: $(npm --version)"
+          npm install -g npm@latest
+          echo "Upgraded npm version: $(npm --version)"
+
+      - name: Verify repository metadata
+        run: |
+          echo "::group::Repository Info"
+          echo "Repository: ${{ github.repository }}"
+          echo "Tag: ${{ github.ref_name }}"
+          echo "Commit: ${{ github.sha }}"
+          echo "::endgroup::"
+
+      - name: Wait for all tarballs to be uploaded
+        id: wait-for-tarballs
+        timeout-minutes: 10
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -e
+
+          VERSION="${{ github.ref_name }}"
+          echo "Release version: $VERSION"
+
+          API_URL="https://api.github.com/repos/${{ github.repository }}/releases/tags/${VERSION}"
+
+          # First, wait for the release to exist (Jenkins creates it after pushing the tag)
+          echo "Waiting for release to be created by Jenkins..."
+          MAX_WAIT_FOR_RELEASE=30  # Wait up to 5 minutes for release creation
+          WAIT_DELAY=10
+          wait_attempt=1
+
+          while [ $wait_attempt -le $MAX_WAIT_FOR_RELEASE ]; do
+            echo "Checking if release exists (attempt ${wait_attempt}/${MAX_WAIT_FOR_RELEASE})..."
+
+            HTTP_CODE=$(curl -s -o /dev/null -w '%{http_code}' \
+              -H "Authorization: token ${{ github.token }}" \
+              -H "Accept: application/vnd.github.v3+json" \
+              "$API_URL")
+
+            if [ "$HTTP_CODE" = "200" ]; then
+              echo "✅ Release found!"
+              break
+            fi
+
+            if [ $wait_attempt -eq $MAX_WAIT_FOR_RELEASE ]; then
+              echo "::error::Release not found after ${MAX_WAIT_FOR_RELEASE} attempts"
+              exit 1
+            fi
+
+            echo "Release not found yet (HTTP $HTTP_CODE), waiting..."
+            sleep $WAIT_DELAY
+            wait_attempt=$((wait_attempt + 1))
+          done
+
+          # Now get release information and extract expected package count
+          echo "Fetching release information to determine expected package count..."
+          RELEASE_INFO=$(curl -s \
+            -H "Authorization: token ${{ github.token }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            "$API_URL")
+
+          # Debug: Show release body to verify metadata
+          echo "::group::Debug: Release body"
+          echo "$RELEASE_INFO" | jq -r '.body' || echo "Failed to extract body"
+          echo "::endgroup::"
+
+          # Extract expected package count from release body metadata
+          # Format: <!-- EXPECTED_PACKAGES: N -->
+          EXPECTED_PACKAGES=$(echo "$RELEASE_INFO" | jq -r '.body' | grep -oE 'EXPECTED_PACKAGES: ?[0-9]+' | grep -oE '[0-9]+' || echo "1")
+          echo "Expected number of packages: $EXPECTED_PACKAGES"
+
+          # Warn if using default value
+          if [ "$EXPECTED_PACKAGES" = "1" ]; then
+            echo "::warning::No EXPECTED_PACKAGES metadata found in release body. Defaulting to 1 package."
+            echo "::warning::If this release should have multiple packages, the Jenkinsfile may need to be updated."
+            echo "::warning::Check that Jenkins is using the updated uploadToGitHubRelease() function with expectedPackageCount parameter."
+          fi
+
+          # Wait for all packages to be uploaded
+          MAX_RETRIES=36
+          RETRY_DELAY=10
+          attempt=1
+
+          while [ $attempt -le $MAX_RETRIES ]; do
+            echo "::group::Validation attempt ${attempt}/${MAX_RETRIES}"
+
+            # Get current asset count
+            RELEASE_INFO=$(curl -s \
+              -H "Authorization: token ${{ github.token }}" \
+              -H "Accept: application/vnd.github.v3+json" \
+              "$API_URL")
+
+            # Count .tgz assets (excludes GitHub auto-generated source archives: .zip and .tar.gz)
+            # Handle null assets array gracefully
+            CURRENT_ASSET_COUNT=$(echo "$RELEASE_INFO" | jq '(.assets // []) | [.[] | select(.name | endswith(".tgz"))] | length')
+            echo "Current .tgz asset count: ${CURRENT_ASSET_COUNT}/${EXPECTED_PACKAGES}"
+
+            # Debug: Show found .tgz files
+            if [ "$CURRENT_ASSET_COUNT" -gt 0 ]; then
+              echo "Found .tgz assets:"
+              echo "$RELEASE_INFO" | jq -r '.assets[] | select(.name | endswith(".tgz")) | .name'
+            fi
+
+            if [ "$CURRENT_ASSET_COUNT" -ge "$EXPECTED_PACKAGES" ]; then
+              echo "✅ All $EXPECTED_PACKAGES packages are now available in the release"
+              echo "::endgroup::"
+              break
+            fi
+
+            echo "::endgroup::"
+
+            if [ $attempt -eq $MAX_RETRIES ]; then
+              echo "::error::Timeout: Only ${CURRENT_ASSET_COUNT}/${EXPECTED_PACKAGES} packages uploaded after ${MAX_RETRIES} attempts"
+              echo "::error::Expected packages: $EXPECTED_PACKAGES"
+              echo "::error::Found packages:"
+              echo "$RELEASE_INFO" | jq -r '(.assets // []) | .[] | select(.name | endswith(".tgz")) | .name'
+              exit 1
+            fi
+
+            echo "Waiting for remaining packages (${CURRENT_ASSET_COUNT}/${EXPECTED_PACKAGES})..."
+            sleep $RETRY_DELAY
+            attempt=$((attempt + 1))
+          done
+
+      - name: Detect package type and download tarballs from release
+        id: packages
+        timeout-minutes: 5  # Max wait time: 12 retries × 10s delay (2 min) + 3 min buffer for API calls
+        env:
+          # Using github.token (automatic GitHub Actions token) for GitHub API access
+          # This token has read access to releases and assets in the current repository
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -e
+
+          # Get version from tag name
+          VERSION="${{ github.ref_name }}"
+          echo "Release version: $VERSION"
+
+          # Detect if this is a beta or release based on tag
+          if [[ "$VERSION" == *"-beta" ]]; then
+            IS_BETA="true"
+            NPM_TAG="latest"
+            PACKAGE_TYPE="beta"
+            echo "::notice::Detected beta packages"
+          else
+            IS_BETA="false"
+            NPM_TAG="latest"
+            PACKAGE_TYPE="release"
+            echo "::notice::Detected release packages"
+          fi
+
+          # Download tarballs from GitHub release with retry logic (using authentication)
+          API_URL="https://api.github.com/repos/${{ github.repository }}/releases/tags/${VERSION}"
+          echo "::notice::Will check release via API: $API_URL"
+
+          # Retry configuration for tarball download
+          # Reduced retries since we've already validated the tarballs exist in previous step
+          # MAX_RETRIES=6 and RETRY_DELAY=10 means up to 1 minute of retries for transient network issues
+          MAX_RETRIES=6
+          RETRY_DELAY=10
+          attempt=1
+
+          while [ $attempt -le $MAX_RETRIES ]; do
+            echo "::group::Download attempt ${attempt}/${MAX_RETRIES}"
+
+            # First, check if the release exists via API
+            echo "Checking if release ${VERSION} exists..."
+            RELEASE_INFO=$(curl -s \
+              -H "Authorization: token ${{ github.token }}" \
+              -H "Accept: application/vnd.github.v3+json" \
+              "$API_URL")
+
+            echo "Release API response (first 20 lines):"
+            echo "$RELEASE_INFO" | head -20
+
+            # Check if release has assets
+            ASSET_COUNT=$(echo "$RELEASE_INFO" | jq '(.assets // []) | length')
+            echo "Asset count in release: $ASSET_COUNT"
+
+            if [ "$ASSET_COUNT" -eq 0 ]; then
+              echo "⚠️  Release exists but has no assets yet, waiting..."
+              echo "::endgroup::"
+
+              if [ $attempt -eq $MAX_RETRIES ]; then
+                echo "::error::Release exists but tarballs were never uploaded after ${MAX_RETRIES} attempts"
+                echo "::error::Last API response:"
+                echo "$RELEASE_INFO"
+                exit 1
+              fi
+
+              sleep $RETRY_DELAY
+              attempt=$((attempt + 1))
+              continue
+            fi
+
+            # Get all tarball assets
+            echo "Finding all .tgz assets..."
+            # Use jq to parse JSON - it's pre-installed on ubuntu-latest runners
+            TARBALL_ASSETS=$(echo "$RELEASE_INFO" | jq -r '.assets[] | select(.name | endswith(".tgz")) | .name')
+
+            if [ -z "$TARBALL_ASSETS" ]; then
+              echo "⚠️  No tarball assets found in release, available assets:"
+              echo "$RELEASE_INFO" | jq -r '.assets[].name'
+              echo "::endgroup::"
+
+              if [ $attempt -eq $MAX_RETRIES ]; then
+                echo "::error::No .tgz files found in release after ${MAX_RETRIES} attempts"
+                exit 1
+              fi
+
+              sleep $RETRY_DELAY
+              attempt=$((attempt + 1))
+              continue
+            fi
+
+            echo "Found tarball assets:"
+            echo "$TARBALL_ASSETS"
+
+            # Download each tarball
+            DOWNLOAD_SUCCESS=true
+            mkdir -p tarballs
+
+            while IFS= read -r TARBALL; do
+              echo "Processing tarball: $TARBALL"
+
+              # Get the asset API URL
+              ASSET_API_URL=$(echo "$RELEASE_INFO" | jq -r ".assets[] | select(.name==\"$TARBALL\") | .url")
+
+              if [ -z "$ASSET_API_URL" ]; then
+                echo "::error::Could not find API URL for $TARBALL"
+                DOWNLOAD_SUCCESS=false
+                break
+              fi
+
+              echo "Downloading $TARBALL from: $ASSET_API_URL"
+
+              # Download using the API URL (required for private repos)
+              HTTP_CODE=$(curl -L -w "%{http_code}" -o "tarballs/$TARBALL" \
+                -H "Authorization: token ${{ github.token }}" \
+                -H "Accept: application/octet-stream" \
+                "$ASSET_API_URL" 2>&1)
+
+              echo "HTTP response code: $HTTP_CODE"
+
+              if [ -f "tarballs/$TARBALL" ] && [ -s "tarballs/$TARBALL" ]; then
+                # Get file size
+                FILE_SIZE=$(stat -c%s "tarballs/$TARBALL" 2>/dev/null || stat -f%z "tarballs/$TARBALL" 2>/dev/null)
+                echo "File downloaded: $TARBALL (${FILE_SIZE} bytes)"
+
+                # File size check: Minimum 1000 bytes
+                if [ "$FILE_SIZE" -gt 1000 ]; then
+                  echo "✅ Successfully downloaded $TARBALL (${FILE_SIZE} bytes)"
+                else
+                  echo "⚠️  File too small (${FILE_SIZE} bytes), likely an error page"
+                  cat "tarballs/$TARBALL"
+                  rm -f "tarballs/$TARBALL"
+                  DOWNLOAD_SUCCESS=false
+                  break
+                fi
+              else
+                echo "::error::Failed to download $TARBALL"
+                DOWNLOAD_SUCCESS=false
+                break
+              fi
+            done <<< "$TARBALL_ASSETS"
+
+            if [ "$DOWNLOAD_SUCCESS" = true ]; then
+              echo "::notice::✅ Successfully downloaded all tarballs on attempt ${attempt}"
+              echo "::endgroup::"
+              break
+            fi
+
+            echo "::endgroup::"
+
+            if [ $attempt -eq $MAX_RETRIES ]; then
+              echo "::error::Failed to download all tarballs after ${MAX_RETRIES} attempts"
+              echo "::error::Full release info:"
+              echo "$RELEASE_INFO"
+              exit 1
+            fi
+
+            echo "::warning::Download failed, waiting ${RETRY_DELAY} seconds before retry..."
+            sleep $RETRY_DELAY
+            attempt=$((attempt + 1))
+          done
+
+          # List downloaded tarballs
+          echo "::group::Downloaded Tarballs"
+          ls -lh tarballs/
+          TARBALL_COUNT=$(ls -1 tarballs/*.tgz 2>/dev/null | wc -l)
+          echo "Total tarballs downloaded: $TARBALL_COUNT"
+          echo "::endgroup::"
+
+          if [ "$TARBALL_COUNT" -eq 0 ]; then
+            echo "::error::No tarballs downloaded"
+            exit 1
+          fi
+
+          # Set outputs
+          {
+            echo "is_beta=$IS_BETA"
+            echo "npm_tag=$NPM_TAG"
+            echo "package_type=$PACKAGE_TYPE"
+            echo "version=$VERSION"
+            echo "tarball_count=$TARBALL_COUNT"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Verify tarball integrity
+        run: |
+          echo "::group::Tarball Contents Summary"
+          for tarball in tarballs/*.tgz; do
+            echo "=== $tarball ==="
+            tar -tzf "$tarball"
+            echo ""
+          done
+          echo "::endgroup::"
+
+      - name: Publish all packages to npm
+        id: publish
+        timeout-minutes: 10  # Allow more time for multiple packages
+        run: |
+          echo "::notice::Publishing ${{ steps.packages.outputs.package_type }} packages with '${{ steps.packages.outputs.npm_tag }}' tag"
+
+          echo "::group::npm Configuration"
+          npm config list
+          echo "::endgroup::"
+
+          echo "::group::npm Whoami Check"
+          npm whoami || echo "Not authenticated with npm token (expected for Trusted Publishers)"
+          echo "::endgroup::"
+
+          # Track success/failure for each package
+          PUBLISHED_PACKAGES=""
+          FAILED_PACKAGES=""
+          SUCCESS_COUNT=0
+          FAILURE_COUNT=0
+
+          # Change to tarballs directory to avoid npm path confusion
+          cd tarballs
+
+          for tarball in *.tgz; do
+            echo "::group::Publishing $tarball"
+
+            # Publish the tarball directly from the tarballs directory
+            if npm publish "$tarball" \
+              --access public \
+              --tag "${{ steps.packages.outputs.npm_tag }}" \
+              --verbose \
+              --loglevel verbose 2>&1; then
+              echo "::notice::✅ Successfully published $tarball"
+              PUBLISHED_PACKAGES="${PUBLISHED_PACKAGES}✅ ${tarball}\n"
+              SUCCESS_COUNT=$((SUCCESS_COUNT + 1))
+            else
+              echo "::error::❌ Failed to publish $tarball"
+              FAILED_PACKAGES="${FAILED_PACKAGES}❌ ${tarball}\n"
+              FAILURE_COUNT=$((FAILURE_COUNT + 1))
+            fi
+
+            echo "::endgroup::"
+          done
+
+          echo "::group::Publishing Summary"
+          echo "Successfully published: $SUCCESS_COUNT packages"
+          echo "Failed: $FAILURE_COUNT packages"
+
+          if [ -n "$PUBLISHED_PACKAGES" ]; then
+            echo -e "Published packages:\n$PUBLISHED_PACKAGES"
+          fi
+
+          if [ -n "$FAILED_PACKAGES" ]; then
+            echo -e "Failed packages:\n$FAILED_PACKAGES"
+          fi
+          echo "::endgroup::"
+
+          # Save results to output for summary step
+          {
+            echo "success_count=$SUCCESS_COUNT"
+            echo "failure_count=$FAILURE_COUNT"
+            echo "published_list<<EOF"
+            echo -e "$PUBLISHED_PACKAGES"
+            echo "EOF"
+            echo "failed_list<<EOF"
+            echo -e "$FAILED_PACKAGES"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+          # Fail the workflow if any package failed
+          if [ $FAILURE_COUNT -gt 0 ]; then
+            echo "::error::Some packages failed to publish"
+            exit 1
+          fi
+        env:
+          # npm provenance attestation configuration
+          # When enabled with npm CLI ≥ 11.5.1, npm automatically generates provenance
+          # statements that cryptographically link packages to source code and build process.
+          #
+          NPM_CONFIG_PROVENANCE: true
+          NPM_CONFIG_LOGLEVEL: verbose
+
+      - name: Publish summary
+        if: always()
+        run: |
+          cat >> "$GITHUB_STEP_SUMMARY" <<EOF
+          ## 📦 NPM Publish Summary
+
+          - **Package Type**: ${{ steps.packages.outputs.package_type }}
+          - **Total Packages**: ${{ steps.packages.outputs.tarball_count }}
+          - **NPM Tag**: \`${{ steps.packages.outputs.npm_tag }}\`
+          - **Tag Version**: \`${{ github.ref_name }}\`
+          - **Commit**: \`${{ github.sha }}\`
+          - **Repository**: \`${{ github.repository }}\`
+
+          ### 📊 Publishing Results
+
+          EOF
+
+          # Show success count only if there are successful packages
+          if [ "${{ steps.publish.outputs.success_count }}" -gt 0 ]; then
+            cat >> "$GITHUB_STEP_SUMMARY" <<EOF
+          - **✅ Successfully Published**: ${{ steps.publish.outputs.success_count }} packages
+          EOF
+          fi
+
+          # Show failure count only if there are failures
+          if [ "${{ steps.publish.outputs.failure_count }}" -gt 0 ]; then
+            cat >> "$GITHUB_STEP_SUMMARY" <<EOF
+          - **❌ Failed**: ${{ steps.publish.outputs.failure_count }} packages
+          EOF
+          fi
+
+          cat >> "$GITHUB_STEP_SUMMARY" <<EOF
+
+          EOF
+
+          # Add successful packages if any
+          if [ -n "${{ steps.publish.outputs.published_list }}" ]; then
+            cat >> "$GITHUB_STEP_SUMMARY" <<EOF
+          ### ✅ Successfully Published Packages
+          \`\`\`
+          ${{ steps.publish.outputs.published_list }}
+          \`\`\`
+
+          EOF
+          fi
+
+          # Add failed packages if any
+          if [ -n "${{ steps.publish.outputs.failed_list }}" ]; then
+            cat >> "$GITHUB_STEP_SUMMARY" <<EOF
+          ### ❌ Failed Packages
+          \`\`\`
+          ${{ steps.publish.outputs.failed_list }}
+          \`\`\`
+
+          EOF
+          fi
+
+          cat >> "$GITHUB_STEP_SUMMARY" <<EOF
+          ✅ Published using [npm Trusted Publishers](https://docs.npmjs.com/trusted-publishers)
+          EOF

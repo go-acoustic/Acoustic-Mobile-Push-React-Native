@@ -110,7 +110,7 @@ export default class InAppBanner extends InAppTemplate {
     const imageStyle = Object.assign({ tintColor: this.foreground() }, styles.imageStyle);
 
     return (
-      <Touchable onPressIn={() => { this.hide(); }}>
+      <Touchable testID="campaign_inapp_banner_close" onPressIn={() => { this.hide(); }}>
         <View style={rightImageContainerStyle}>
           <Image style={imageStyle} source={require('./images/cancel.png')} />
         </View>
@@ -127,7 +127,7 @@ export default class InAppBanner extends InAppTemplate {
     const messageStyle = { height: containerHeight };
 
     return (
-      <Animated.View style={containerStyle}>
+      <Animated.View testID="campaign_inapp_banner" style={containerStyle}>
         <View style={messageStyle}>
           {this.background()}
           {this.icon()}

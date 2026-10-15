@@ -13,6 +13,7 @@ package co.acoustic.mobile.push.plugin.imagecarousel;
 import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
+import com.facebook.react.bridge.ReactMethod;
 
 import android.app.Activity;
 import android.util.Log;
@@ -35,6 +36,15 @@ public class RNAcousticMobilePushImageCarouselModule extends ReactContextBaseJav
 	@Override
 	public String getName() {
 		return "RNAcousticMobilePushImageCarousel";
+	}
+
+	// Required by NativeEventEmitter on the New Architecture (no-ops, events are pushed with RCTDeviceEventEmitter).
+	@ReactMethod
+	public void addListener(String eventName) {
+	}
+
+	@ReactMethod
+	public void removeListeners(Integer count) {
 	}
 
 	@Override

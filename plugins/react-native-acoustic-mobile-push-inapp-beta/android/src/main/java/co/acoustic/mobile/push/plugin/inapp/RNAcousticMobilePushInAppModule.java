@@ -11,9 +11,9 @@
 package co.acoustic.mobile.push.plugin.inapp;
 
 import com.facebook.react.ReactApplication;
-import com.facebook.react.ReactInstanceManager;
-import com.facebook.react.ReactNativeHost;
-import com.facebook.react.ReactRootView;
+import com.facebook.react.ReactHost;
+import com.facebook.react.interfaces.fabric.ReactSurface;
+import android.view.View;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -93,8 +93,35 @@ public class RNAcousticMobilePushInAppModule extends ReactContextBaseJavaModule 
 		return "RNAcousticMobilePushInApp";
 	}
 
+	private ReactSurface reactSurface = null;
+
+	/**
+	 * Creates the native view hosting the registered JS in-app component.
+	 * React Native >= 0.76 (New Architecture / bridgeless) exposes a ReactHost and surfaces are created with
+	 * ReactHost.createSurface(). React Native 0.76 or newer is required.
+	 */
+	private View createReactView(ReactApplication application, Activity activity, String moduleName, Bundle initialProperties) {
+		ReactHost reactHost = application.getReactHost();
+		if (reactHost == null) {
+			Logger.e(TAG, "ReactHost is not available. React Native 0.76 or newer with the New Architecture is required.");
+			return null;
+		}
+		ReactSurface surface = reactHost.createSurface(activity, moduleName, initialProperties);
+		surface.start();
+		this.reactSurface = surface;
+		return surface.getView();
+	}
+
 	// Needs to be run on the main thread.
 	private void internalHideInApp() {
+		if (this.reactSurface != null) {
+			try {
+				this.reactSurface.stop();
+			} catch (Throwable t) {
+				Logger.d(TAG, "Could not stop in-app React surface", t);
+			}
+			this.reactSurface = null;
+		}
 		if(this.relativeLayout != null) {
 			ViewParent parent = this.relativeLayout.getParent();
 			if(parent instanceof ViewGroup) {
@@ -188,18 +215,20 @@ public class RNAcousticMobilePushInAppModule extends ReactContextBaseJavaModule 
     }
 
     ReactApplication application = (ReactApplication) activity.getApplication();
-    ReactNativeHost reactNativeHost = application.getReactNativeHost();
-    ReactInstanceManager reactInstanceManager = reactNativeHost.getReactInstanceManager();
 
     Bundle initialProperties = new Bundle();
     initialProperties.putBundle("message", messageBundle);
     initialProperties.putFloat("containerHeight", moduleHeight.height);
     initialProperties.putFloat("contentHeight", moduleHeight.height);
 
-    ReactRootView reactRootView = new ReactRootView(reactContext);
-    reactRootView.setLayoutParams(viewLayout);
-    reactRootView.startReactApplication(reactInstanceManager, moduleHeight.module, initialProperties);
-    relativeLayout.addView(reactRootView);
+    View reactView = createReactView(application, activity, moduleHeight.module, initialProperties);
+    if (reactView == null) {
+      Logger.e(TAG, "Could not create a React view for in-app module " + moduleHeight.module);
+      this.relativeLayout = null;
+      return;
+    }
+    reactView.setLayoutParams(viewLayout);
+    relativeLayout.addView(reactView);
 
     Window window = activity.getWindow();
     FrameLayout.LayoutParams relativeLayoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);

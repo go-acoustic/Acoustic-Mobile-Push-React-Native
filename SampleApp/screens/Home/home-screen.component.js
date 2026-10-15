@@ -27,9 +27,6 @@ const {
 } = NativeModules;
 
 export class HomeScreen extends React.Component {
-  static navigationOptions = {
-    title: 'Sample App',
-  };
 
   state = { messages: '', unread: '', subscriptions: [] };
 
@@ -112,6 +109,9 @@ export class HomeScreen extends React.Component {
       } else {
         RNAcousticMobilePush.requestPushPermission();
       }
+    } else {
+      // The native iOS SDK does not prompt on its own; without this the app never gets notification authorization
+      RNAcousticMobilePush.requestPushPermission();
     }
   }
 
@@ -134,49 +134,50 @@ export class HomeScreen extends React.Component {
             {RNAcousticMobilePush.pluginVersion}
           </Text>
         </View>
-        <ListItem bottomDivider onPress={() => navigate('Registration')}>
+        <ListItem bottomDivider testID="campaign_nav_registration" onPress={() => navigate('Registration')}>
           <ListItem.Content>
             <ListItem.Title>Registration Details</ListItem.Title>
           </ListItem.Content>
           <ListItem.Chevron />
         </ListItem>
-        <ListItem bottomDivider onPress={() => navigate('Inbox')}>
+        <ListItem bottomDivider testID="campaign_nav_inbox" onPress={() => navigate('Inbox')}>
           <ListItem.Content>
             <ListItem.Title>Inbox</ListItem.Title>
           </ListItem.Content>
           <ListItem.Chevron />
         </ListItem>
-        <ListItem bottomDivider onPress={() => navigate('InApp')}>
+        <ListItem bottomDivider testID="campaign_nav_inapp" onPress={() => navigate('InApp')}>
           <ListItem.Content>
             <ListItem.Title>InApp</ListItem.Title>
           </ListItem.Content>
           <ListItem.Chevron />
         </ListItem>
-        <ListItem bottomDivider onPress={() => navigate('CustomActions')}>
+        <ListItem bottomDivider testID="campaign_nav_custom_actions" onPress={() => navigate('CustomActions')}>
           <ListItem.Content>
             <ListItem.Title>Custom Actions</ListItem.Title>
           </ListItem.Content>
           <ListItem.Chevron />
         </ListItem>
-        <ListItem bottomDivider onPress={() => navigate('SendTestEvents')}>
+        <ListItem bottomDivider testID="campaign_nav_events" onPress={() => navigate('SendTestEvents')}>
           <ListItem.Content>
             <ListItem.Title>Send Test Events</ListItem.Title>
           </ListItem.Content>
           <ListItem.Chevron />
         </ListItem>
-        <ListItem bottomDivider onPress={() => navigate('SendUserAttributes')}>
+        <ListItem bottomDivider testID="campaign_nav_attributes" onPress={() => navigate('SendUserAttributes')}>
           <ListItem.Content>
             <ListItem.Title>Send User Attributes</ListItem.Title>
           </ListItem.Content>
           <ListItem.Chevron />
         </ListItem>
-        <ListItem bottomDivider onPress={() => navigate('Geofences')}>
+        <ListItem bottomDivider testID="campaign_nav_geofences" onPress={() => navigate('Geofences')}>
           <ListItem.Content>
             <ListItem.Title>Geofences</ListItem.Title>
           </ListItem.Content>
           <ListItem.Chevron />
         </ListItem>
         <ListItem bottomDivider
+          testID="campaign_nav_ibeacons"
           onPress={() => navigate('iBeacons')}>
           <ListItem.Content>
             <ListItem.Title>iBeacons</ListItem.Title>

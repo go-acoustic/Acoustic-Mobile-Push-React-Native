@@ -25,9 +25,6 @@ import styles from './custom-action-screen.component.style.js';
 const { RNAcousticMobilePushActionHandler } = NativeModules;
 
 export class CustomActionScreen extends React.Component {
-  static navigationOptions = {
-    title: 'Custom Action',
-  };
 
   state = {
     type: '',
@@ -82,7 +79,7 @@ export class CustomActionScreen extends React.Component {
       });
 
       deletedAction[0].listenerSubscription.remove();
-      RNAcousticMobilePushActionHandler.unregisterAction(deletedAction.type);
+      RNAcousticMobilePushActionHandler.unregisterAction(deletedAction[0].type);
     } else {
       this.setState({
         statusText: `Custom action type ${type} is not registered`,
@@ -122,6 +119,7 @@ export class CustomActionScreen extends React.Component {
       <ScrollView style={{ minHeight: '100%', paddingLeft: 16, paddingRight: 16 }}>
         <Text style={styles.title}>Custom Action Type</Text>
         <TextInput
+          testID="campaign_custom_action_type"
           placeholder="optional"
           style={styles.textInput}
           value={type}
@@ -136,6 +134,7 @@ export class CustomActionScreen extends React.Component {
         <Text style={styles.title}>Register Custom Action</Text>
         <Touchable
           accessibilityRole="button"
+          testID="campaign_custom_action_register"
           onPress={this.registerCustomAction}>
           <Text style={{ color: colors.blue }}>Register Custom Action with Type</Text>
         </Touchable>
@@ -143,12 +142,13 @@ export class CustomActionScreen extends React.Component {
 
         <Touchable
           accessibilityRole="button"
+          testID="campaign_custom_action_unregister"
           onPress={this.unregisterCustomAction}>
           <Text style={{ color: colors.blue }}>Unregister Custom Action with Type</Text>
         </Touchable>
 
         <Text style={styles.title}>Status</Text>
-        <Text style={{ color: statusColor }}>{statusText}</Text>
+        <Text testID="campaign_custom_action_status" style={{ color: statusColor }}>{statusText}</Text>
 
       </ScrollView>
     );

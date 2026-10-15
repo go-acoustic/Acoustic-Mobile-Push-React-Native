@@ -72,11 +72,11 @@ export class InAppMedia extends InAppTemplate {
     }
 
     return (
-      <Animated.View style={{ height: '100%', width: '100%', opacity: animation, backgroundColor: 'rgba(0,0,0,0.7)' }}>
+      <Animated.View testID="campaign_inapp_media" style={{ height: '100%', width: '100%', opacity: animation, backgroundColor: 'rgba(0,0,0,0.7)' }}>
         <SafeAreaView style={{ height: '100%', width: '100%' }}>
           <View style={{ width: '100%', height: '100%' }}>
             <View style={{ position: 'absolute', right: 10, top: 10, width: 24, height: 24 }}>
-              <Touchable onPressIn={() => { this.hide(); }}>
+              <Touchable testID="campaign_inapp_media_close" onPressIn={() => { this.hide(); }}>
                 <Image style={{ width: '100%', height: '100%' }} source={require('./images/cancel.png')} />
               </Touchable>
             </View>

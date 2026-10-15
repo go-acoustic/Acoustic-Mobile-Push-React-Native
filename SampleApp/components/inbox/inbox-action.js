@@ -58,7 +58,7 @@ export class InboxAction extends React.Component {
           <View style={{ width: '100%', height: '100%' }}>
             <View style={{ backgroundColor: '#dddddd' }}>
               <Touchable onPress={() => { this.hide(); }}>
-                <Icon name="ios-close-circle" color="#000" size={24} style={{ alignSelf: 'flex-end', padding: 10 }} />
+                <Icon name="close-circle" color="#000" size={24} style={{ alignSelf: 'flex-end', padding: 10 }} />
               </Touchable>
             </View>
             <InboxMessageView inboxMessage={inboxMessage} />

@@ -65,6 +65,7 @@ public class RNAcousticMobilePushInboxModule extends ReactContextBaseJavaModule 
   private MceNotificationAction inboxCustomAction;
 
   public static RelativeLayout relativeLayout = null;
+  public static com.facebook.react.interfaces.fabric.ReactSurface reactSurface = null;
 
   // Send event to javascript
   protected void sendEvent(String eventName, WritableMap params) {
@@ -296,6 +297,14 @@ public class RNAcousticMobilePushInboxModule extends ReactContextBaseJavaModule 
 
   // Needs to be run on the main thread.
   private void internalHideInbox() {
+    if (reactSurface != null) {
+      try {
+        reactSurface.stop();
+      } catch (Throwable t) {
+        Logger.d(TAG, "Could not stop inbox React surface", t);
+      }
+      reactSurface = null;
+    }
     if (this.relativeLayout != null) {
       ViewParent parent = this.relativeLayout.getParent();
       if (parent instanceof ViewGroup) {

@@ -2,8 +2,13 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<!-- Shared with the other target (app <-> SampleAppNotificationService): the SDK keeps its database and
+	     certified-push "received" state in the first app group. CAMPAIGN_APP_GROUP is a project-level build
+	     setting (default group.co.acousticSampleV1); override with xcodebuild CAMPAIGN_APP_GROUP=<group id>. -->
 	<key>com.apple.security.application-groups</key>
-	<array/>
+	<array>
+		<string>$(CAMPAIGN_APP_GROUP)</string>
+	</array>
 	<key>keychain-access-groups</key>
 	<array>
 		<string>$(AppIdentifierPrefix)com.reactNative.acousticSamplePushApp</string>

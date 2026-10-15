@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 //if (project.hasProperty('POM_ARTIFACT_ID')) {
 //  apply from: 'gradle-maven-push.gradle'
-//    maven { url "https://s01.oss.sonatype.org/content/groups/staging" }
+//    maven { url "https://raw.githubusercontent.com/go-acoustic/Android_Maven/master" }
 //}
 
 def safeExtGet(prop, fallback) {
@@ -9,11 +9,11 @@ def safeExtGet(prop, fallback) {
 }
 
 android {
-  compileSdkVersion safeExtGet('compileSdkVersion', 34)
+  namespace "co.acoustic.mobile.push"
+  compileSdk safeExtGet("compileSdkVersion", 37)
 
   defaultConfig {
-    minSdkVersion safeExtGet('minSdkVersion', 21)
-    targetSdkVersion safeExtGet('targetSdkVersion', 34)
+    minSdk safeExtGet("minSdkVersion", 24)
   }
 }
 

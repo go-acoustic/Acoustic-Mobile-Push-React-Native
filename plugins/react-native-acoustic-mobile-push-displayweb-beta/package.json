@@ -9,7 +9,8 @@
     ],
     "author": "Acoustic, L.P.",
     "peerDependencies": {
-        "react-native-acoustic-mobile-push-beta": "3.9.58"
+        "react-native": ">=0.76.0",
+        "react-native-acoustic-mobile-push-beta": "3.10.1"
     },
     "description": "BETA: Acoustic Mobile Push DisplayWeb Action Plugin",
     "main": "index.js",
@@ -18,7 +19,7 @@
         "directory": "plugins/react-native-acoustic-mobile-push-displayweb",
         "url": "https://github.com/go-acoustic/Acoustic-Mobile-Push-React-Native"
     },
-    "version": "3.9.58",
+    "version": "3.10.1",
     "dependencies": {
         "plist": "^3.0.1",
         "xml2js": "^0.4.19",
@@ -28,8 +29,11 @@
     },
     "license": "See license in ../../../license.txt",
     "devDependencies": {
-        "react-native": "0.72.6",
+        "react-native": "0.87.1",
         "jetifier": "^1.6.3"
+    },
+    "engines": {
+        "node": ">= 22.13.0"
     },
     "name": "react-native-acoustic-mobile-push-displayweb-beta",
     "scripts": {

@@ -21,16 +21,6 @@ const { RNAcousticMobilePushInbox } = NativeModules;
 
 export class InboxScreen extends React.Component {
 
-  static navigationOptions = {
-    title: 'Inbox Messages',
-    headerRight: () => (
-      <Touchable onPress={() => {
-        RNAcousticMobilePushInbox.syncInboxMessages();
-      }}>
-        <Icon name="sync" color="#000" size={24} style={{ paddingRight: 20 }} />
-      </Touchable>
-    ),
-  };
 
   constructor(props) {
     super(props);
@@ -46,12 +36,8 @@ export class InboxScreen extends React.Component {
         RNAcousticMobilePushInboxEmitter.addListener(SYNC_INBOX, () => {
           this.update();
         }),
-        this.props.navigation.addListener(
-          'willFocus',
-          () => {
-            this.update();
-          }
-        ),
+        // react-navigation 7 returns an unsubscribe function and names the event 'focus'
+        { remove: this.props.navigation.addListener('focus', () => { this.update(); }) },
       ]
     })
   }
@@ -87,6 +73,7 @@ export class InboxScreen extends React.Component {
     return (
       <TouchableOpacity
         accessibilityRole="button"
+        testID="campaign_inbox_item"
         onPress={() => { this.openMessage(item, index); }}>
         <InboxListItem inboxMessage={item} />
       </TouchableOpacity>
@@ -99,6 +86,7 @@ export class InboxScreen extends React.Component {
     if (inboxMessages.length) {
       return (
         <FlatList
+          testID="campaign_inbox_list"
           ItemSeparatorComponent={this.renderSeparator}
           data={inboxMessages}
           keyExtractor={(inboxMessage) => inboxMessage.inboxMessageId}
@@ -108,7 +96,7 @@ export class InboxScreen extends React.Component {
       );
     }
     return (
-      <Text style={{ textAlign: 'center', padding: 40, fontStyle: 'italic' }}>The inbox has no messages</Text>
+      <Text testID="campaign_inbox_empty" style={{ textAlign: 'center', padding: 40, fontStyle: 'italic' }}>The inbox has no messages</Text>
     );
   }
 }

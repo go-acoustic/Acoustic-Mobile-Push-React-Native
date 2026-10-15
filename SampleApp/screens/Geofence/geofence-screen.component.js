@@ -32,14 +32,6 @@ const OPTIONS = {
 };
 
 export class GeofenceScreen extends React.Component {
-  static navigationOptions = {
-    title: 'Geofences',
-    headerRight: () => (
-      <Touchable onPress={() => RNAcousticMobilePushLocation.syncLocations()}>
-        <Icon name="ios-sync" color="#000" size={24} style={{ paddingRight: 20 }} />
-      </Touchable>
-    ),
-  };
 
   state = {
     status: UNKNOWN,

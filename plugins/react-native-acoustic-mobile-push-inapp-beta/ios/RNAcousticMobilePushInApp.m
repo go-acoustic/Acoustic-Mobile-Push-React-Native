@@ -14,7 +14,42 @@
 #import <React/RCTUtils.h>
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
-#import <React/RCTRootView.h>
+
+// React Native >= 0.76 (New Architecture / bridgeless): root views must be created through the host application's
+// RCTRootViewFactory. The factory is reached through the application delegate (MCEAppDelegate proxies to the real
+// delegate via `appDelegate`, which exposes `reactNativeFactory`).
+@protocol RNAcousticMobilePushRootViewHost <NSObject>
+@optional
+- (id)appDelegate;
+- (id)reactNativeFactory;
+- (id)rootViewFactory;
+- (UIView *)viewWithModuleName:(NSString *)moduleName initialProperties:(NSDictionary *)initialProperties;
+@end
+
+static UIView * RNAcousticMobilePushCreateRootView(NSString * moduleName, NSDictionary * properties) {
+    id<RNAcousticMobilePushRootViewHost> delegate = (id<RNAcousticMobilePushRootViewHost>)UIApplication.sharedApplication.delegate;
+    if ([delegate respondsToSelector:@selector(appDelegate)]) {
+        id inner = [delegate appDelegate];
+        if (inner) {
+            delegate = inner;
+        }
+    }
+    id<RNAcousticMobilePushRootViewHost> factory = nil;
+    if ([delegate respondsToSelector:@selector(reactNativeFactory)]) {
+        factory = [delegate reactNativeFactory];
+    }
+    id<RNAcousticMobilePushRootViewHost> rootViewFactory = nil;
+    if ([factory respondsToSelector:@selector(rootViewFactory)]) {
+        rootViewFactory = [factory rootViewFactory];
+    } else if ([delegate respondsToSelector:@selector(rootViewFactory)]) {
+        rootViewFactory = [delegate rootViewFactory];
+    }
+    if ([rootViewFactory respondsToSelector:@selector(viewWithModuleName:initialProperties:)]) {
+        return [rootViewFactory viewWithModuleName:moduleName initialProperties:properties];
+    }
+    RCTLogError(@"RNAcousticMobilePush: no RCTRootViewFactory found on the application delegate. The AppDelegate must expose `reactNativeFactory` (RCTReactNativeFactory); RCTAppDelegate subclasses do this automatically. React Native 0.76 or newer is required.");
+    return nil;
+}
 
 extern NSString * const InAppSource;
 
@@ -86,7 +121,7 @@ extern NSString * const InAppSource;
 @interface RNAcousticMobilePushInApp ()
 @property UIViewController * inAppViewController;
 @property UIWindow * inAppWindow;
-@property RCTRootView * inAppView;
+@property UIView * inAppView;
 @property NSMutableDictionary * inAppTemplateModules;
 @end
 
@@ -301,7 +336,13 @@ RCT_EXPORT_METHOD(registerInApp: (NSString*) template module: (NSString*) module
 
     rect.origin = CGPointZero;
 
-    self.inAppView = [[RCTRootView alloc] initWithBridge:self.bridge moduleName:module[@"module"] initialProperties: properties];
+    self.inAppView = RNAcousticMobilePushCreateRootView(module[@"module"], properties);
+    if (!self.inAppView) {
+        self.inAppWindow.hidden = true;
+        self.inAppWindow = nil;
+        self.inAppViewController = nil;
+        return FALSE;
+    }
 
     self.inAppViewController.view = self.inAppView;
 

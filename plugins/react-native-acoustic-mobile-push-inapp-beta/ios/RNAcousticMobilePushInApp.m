@@ -125,6 +125,39 @@ extern NSString * const InAppSource;
 @property NSMutableDictionary * inAppTemplateModules;
 @end
 
+// Overlay windows must be attached to the app's foreground window scene. A window created with -initWithFrame: belongs
+// to no scene, so in UIScene-based apps (required when building with the iOS 27 SDK) it is never shown.
+static UIWindowScene * RNAcousticMobilePushForegroundWindowScene(void) {
+    UIWindowScene * inactiveScene = nil;
+    for (UIScene * scene in UIApplication.sharedApplication.connectedScenes) {
+        if (![scene isKindOfClass:UIWindowScene.class]) {
+            continue;
+        }
+        if (scene.activationState == UISceneActivationStateForegroundActive) {
+            return (UIWindowScene *)scene;
+        }
+        if (!inactiveScene && scene.activationState == UISceneActivationStateForegroundInactive) {
+            inactiveScene = (UIWindowScene *)scene;
+        }
+    }
+    return inactiveScene;
+}
+
+static UIWindow * RNAcousticMobilePushHostWindow(UIWindowScene * scene) {
+    for (UIWindow * window in scene.windows) {
+        if (window.isKeyWindow) {
+            return window;
+        }
+    }
+    return scene.windows.firstObject;
+}
+
+static UIWindow * RNAcousticMobilePushCreateOverlayWindow(UIWindowScene * scene, CGRect frame) {
+    UIWindow * window = [[UIWindow alloc] initWithWindowScene:scene];
+    window.frame = frame;
+    return window;
+}
+
 @implementation RNAcousticMobilePushInApp
 
 +(void)initialize {
@@ -159,6 +192,7 @@ RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(hideInApp) {
     if(self.inAppWindow) {
+        self.inAppWindow.hidden = true;
         [self.inAppWindow removeFromSuperview];
         self.inAppWindow = nil;
     }
@@ -257,28 +291,16 @@ RCT_EXPORT_METHOD(registerInApp: (NSString*) template module: (NSString*) module
         return false;
     }
 
+    UIWindowScene *windowScene = RNAcousticMobilePushForegroundWindowScene();
+    UIWindow *currentWindow = RNAcousticMobilePushHostWindow(windowScene);
+    if (!windowScene || !currentWindow) {
+        NSLog(@"No foreground window scene, can not show in-app message %@", inAppMessage.inAppMessageId);
+        return false;
+    }
+
     [self hideInApp]; 
 
-    // Get current window reliably for iOS 13+
-    UIWindow *currentWindow = nil;
-    if (@available(iOS 13, *)) {
-        for (UIWindowScene* windowScene in [UIApplication sharedApplication].connectedScenes) {
-            if (windowScene.activationState == UISceneActivationStateForegroundActive) {
-                currentWindow = windowScene.windows.firstObject;
-                break;
-            }
-        }
-    } else {
-        currentWindow = [UIApplication sharedApplication].keyWindow;
-    }
-
-    // Calculate status bar height
-    CGFloat statusBarHeight = 0.0;
-    if (@available(iOS 13, *)) {
-        statusBarHeight = currentWindow.windowScene.statusBarManager.statusBarFrame.size.height;
-    } else {
-        statusBarHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
-    }
+    CGFloat statusBarHeight = windowScene.statusBarManager.statusBarFrame.size.height;
 
     CGRect rect = currentWindow.frame;
     NSArray *rules = inAppMessage.rules;
@@ -302,7 +324,7 @@ RCT_EXPORT_METHOD(registerInApp: (NSString*) template module: (NSString*) module
     }
 
     self.inAppViewController = [[UIViewController alloc] init];
-    self.inAppWindow = [[UIWindow alloc] initWithFrame:rect];
+    self.inAppWindow = RNAcousticMobilePushCreateOverlayWindow(windowScene, rect);
     self.inAppWindow.rootViewController = self.inAppViewController;
 
     NSMutableDictionary * message = [@{

@@ -115,6 +115,39 @@ typedef void (^MCEMessageCallback)(MCEInboxMessage *message, NSError* error);
 @property UIViewController * inboxViewController;
 @end
 
+// Overlay windows must be attached to the app's foreground window scene. A window created with -initWithFrame: belongs
+// to no scene, so in UIScene-based apps (required when building with the iOS 27 SDK) it is never shown.
+static UIWindowScene * RNAcousticMobilePushForegroundWindowScene(void) {
+    UIWindowScene * inactiveScene = nil;
+    for (UIScene * scene in UIApplication.sharedApplication.connectedScenes) {
+        if (![scene isKindOfClass:UIWindowScene.class]) {
+            continue;
+        }
+        if (scene.activationState == UISceneActivationStateForegroundActive) {
+            return (UIWindowScene *)scene;
+        }
+        if (!inactiveScene && scene.activationState == UISceneActivationStateForegroundInactive) {
+            inactiveScene = (UIWindowScene *)scene;
+        }
+    }
+    return inactiveScene;
+}
+
+static UIWindow * RNAcousticMobilePushHostWindow(UIWindowScene * scene) {
+    for (UIWindow * window in scene.windows) {
+        if (window.isKeyWindow) {
+            return window;
+        }
+    }
+    return scene.windows.firstObject;
+}
+
+static UIWindow * RNAcousticMobilePushCreateOverlayWindow(UIWindowScene * scene, CGRect frame) {
+    UIWindow * window = [[UIWindow alloc] initWithWindowScene:scene];
+    window.frame = frame;
+    return window;
+}
+
 @implementation RNAcousticMobilePushInbox
 
 -(void)openInboxMessageAction: (NSDictionary*)action payload: (NSDictionary*)payload {
@@ -146,6 +179,7 @@ RCT_EXPORT_METHOD(hideInbox) {
     }
 
     if(self.inboxWindow) {
+        self.inboxWindow.hidden = true;
         [self.inboxWindow removeFromSuperview];
         self.inboxWindow = nil;
     }
@@ -161,16 +195,24 @@ RCT_EXPORT_METHOD(hideInbox) {
         [self performSelectorOnMainThread:@selector(showInboxMessage:) withObject:inboxMessage waitUntilDone:true];
         return;
     }
+    UIWindowScene * windowScene = RNAcousticMobilePushForegroundWindowScene();
+    UIWindow * currentWindow = RNAcousticMobilePushHostWindow(windowScene);
+    if (!windowScene || !currentWindow) {
+        NSLog(@"No foreground window scene, can not show inbox message %@", inboxMessage.inboxMessageId);
+        return;
+    }
     [self hideInbox];
-    UIWindow * currentWindow = UIApplication.sharedApplication.keyWindow;
     CGRect rect = currentWindow.frame;
     
-    CGFloat statusHeight = UIApplication.sharedApplication.statusBarFrame.size.height;
+    // Only the status bar is excluded here. The bottom safe-area inset is applied by the
+    // SafeAreaView that wraps InboxAction (javascript/inbox-action.js); subtracting it here too
+    // would leave a double gap above the home indicator.
+    CGFloat statusHeight = windowScene.statusBarManager.statusBarFrame.size.height;
     rect.origin = CGPointMake(0, statusHeight);
     rect.size.height -= statusHeight;
 
     self.inboxViewController = [[UIViewController alloc] init];
-    self.inboxWindow = [[UIWindow alloc] initWithFrame:rect];
+    self.inboxWindow = RNAcousticMobilePushCreateOverlayWindow(windowScene, rect);
     self.inboxWindow.rootViewController = self.inboxViewController;
 
     NSDictionary * inboxMessageJson = [self inboxMessageToJson: inboxMessage];

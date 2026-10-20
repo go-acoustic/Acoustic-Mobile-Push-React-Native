@@ -10,8 +10,8 @@
     "author": "Acoustic, L.P.",
     "peerDependencies": {
         "react-native": ">=0.76.0",
-        "react-native-acoustic-mobile-push-beta": "3.10.2",
-        "react-native-acoustic-mobile-push-action-menu-beta": "3.10.2"
+        "react-native-acoustic-mobile-push-beta": "3.10.3",
+        "react-native-acoustic-mobile-push-action-menu-beta": "3.10.3"
     },
     "description": "BETA: Acoustic Mobile Push Action Menu Plugin",
     "main": "index.js",
@@ -20,7 +20,7 @@
         "directory": "plugins/react-native-acoustic-mobile-push-action-menu",
         "url": "https://github.com/go-acoustic/Acoustic-Mobile-Push-React-Native"
     },
-    "version": "3.10.2",
+    "version": "3.10.3",
     "dependencies": {
         "plist": "^3.0.1",
         "xml2js": "^0.4.19",

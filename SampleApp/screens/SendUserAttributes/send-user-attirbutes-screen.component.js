@@ -37,9 +37,6 @@ import { attributeOperations, typeOptions } from './send-user-attributes-screen.
 const { RNAcousticMobilePush } = NativeModules;
 
 export class SendUserAttributeScreen extends React.Component {
-  static navigationOptions = {
-    title: 'Send User Attributes',
-  };
 
   constructor() {
     super();
@@ -142,6 +139,7 @@ export class SendUserAttributeScreen extends React.Component {
       <View style={{ flexGrow: 1, paddingBottom: 10 }}>
         <SegmentedControlTab
           values={typeOptionsText}
+          testIDs={typeOptionsText.map((text) => `campaign_attr_type_${text}`)}
           selectedIndex={typeSelectedIndex}
           onTabPress={(index) => {
             this.setState({ typeSelectedIndex: index });
@@ -163,6 +161,7 @@ export class SendUserAttributeScreen extends React.Component {
       <View style={{ flexGrow: 1 }}>
         <SegmentedControlTab
           values={operationsText}
+          testIDs={operationsText.map((text) => `campaign_attr_operation_${text.toLowerCase()}`)}
           selectedIndex={operationSelectedIndex}
           onTabPress={(index) => {
             this.setState({ operationSelectedIndex: index });
@@ -181,6 +180,7 @@ export class SendUserAttributeScreen extends React.Component {
         <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
           <Text style={{ paddingRight: 8 }}>False</Text>
           <Switch
+            testID="campaign_attr_value_boolean"
             value={booleanValue}
             onValueChange={(val) => this.setState({ booleanValue: val })}
           />
@@ -194,6 +194,7 @@ export class SendUserAttributeScreen extends React.Component {
         <View>
           <Touchable
             accessibilityRole="button"
+            testID="campaign_attr_value_date"
             onPress={() => {
               this.setState({ datePicker: true });
             }}>
@@ -220,6 +221,7 @@ export class SendUserAttributeScreen extends React.Component {
 
     return (
       <TextInput
+        testID="campaign_attr_value"
         style={styles.textInput}
         value={value}
         onChangeText={(text) => this.setState({ value: text })}
@@ -237,6 +239,7 @@ export class SendUserAttributeScreen extends React.Component {
 
     return (
       <TextInput
+        testID="campaign_attr_name"
         placeholder="optional"
         style={styles.textInput}
         value={name}
@@ -281,13 +284,13 @@ export class SendUserAttributeScreen extends React.Component {
     var raw = (!isNaN(Date.parse(date))) ? new Date(date) : new Date();
     console.log("RAW", raw, raw.getFullYear(), raw.getMonth(), raw.getDate());
     return (raw.getFullYear()
-      + "-" + ((raw.getMonth() + 1) < 10 ? ("0" + (raw.getMonth() + 1)) : raw.getMonth())
+      + "-" + ((raw.getMonth() + 1) < 10 ? ("0" + (raw.getMonth() + 1)) : (raw.getMonth() + 1))
       + "-" + ((raw.getDate() < 10) ? ("0" + raw.getDate()) : raw.getDate()));
   }
 
   sendAttribute() {
     return (
-      <Touchable accessibilityRole="button" onPress={() => this.queueAttribute()}>
+      <Touchable accessibilityRole="button" testID="campaign_attr_submit" onPress={() => this.queueAttribute()}>
         <Text style={{ color: colors.blue, paddingTop: 16 }}>Send Attribute</Text>
       </Touchable>
     );
@@ -297,7 +300,7 @@ export class SendUserAttributeScreen extends React.Component {
     const { statusColor, statusText } = this.state;
 
     return (
-      <Text style={{ color: statusColor }}>{statusText}</Text>
+      <Text testID="campaign_attr_status" style={{ color: statusColor }}>{statusText}</Text>
     );
   }
 

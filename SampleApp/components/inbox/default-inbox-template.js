@@ -26,7 +26,11 @@ InboxTemplateRegistry.registerMessageViewRenderer('default', (inboxMessage) => {
   return (
     <View style={{ flex: 1, alignItems: 'stretch' }}>
       <View style={{ padding: 8, borderBottomColor: '#dbdbdb', borderBottomWidth: 1 }}>
-        <Text style={{ color: inboxMessage.isExpired ? '#aaaaaa' : '#000000' }} numberOfLines={1}>{inboxMessage.content.messagePreview.subject}</Text>
+        <Text testID="campaign_inbox_message_subject"
+          style={{ color: inboxMessage.isExpired ? '#aaaaaa' : '#000000' }}
+          numberOfLines={1}>
+          {inboxMessage.content.messagePreview.subject}
+        </Text>
         {inboxMessage.isExpired
           ? (
             <Text numberOfLines={1} style={{ color: 'red' }}>
@@ -49,6 +53,7 @@ InboxTemplateRegistry.registerMessageViewRenderer('default', (inboxMessage) => {
         style={{ padding: 0, width: '100%', height: '100%' }}
         originWhitelist={['*']}
         source={{ html }}
+        testID="campaign_inbox_message_webview"
       />
 
     </View>

@@ -1,5 +1,5 @@
 /*
- * Copyright © 2019, 2023 Acoustic, L.P. All rights reserved.
+ * Copyright © 2019, 2026 Acoustic, L.P. All rights reserved.
  *
  * NOTICE: This file contains material that is confidential and proprietary to
  * Acoustic, L.P. and/or other developers. No license is granted under any intellectual or
@@ -18,7 +18,10 @@ import co.acoustic.mobile.push.sdk.api.notification.MceNotificationActionRegistr
 
 public class RNAcousticMobilePushDisplayWebModule extends ReactContextBaseJavaModule implements LifecycleEventListener {
 	private static String TAG = "RNAcousticMobilePushDisplayWebModule";
-	private static final String TYPE = "displayWeb";
+	/** Action type Campaign sends for a display web action on Android, as the plugin documents. */
+	private static final String TYPE = "displayweb";
+	/** Type earlier versions registered; kept so payloads that use it still open the web view. */
+	private static final String LEGACY_TYPE = "displayWeb";
 
 	private final ReactApplicationContext reactContext;
 	
@@ -35,7 +38,9 @@ public class RNAcousticMobilePushDisplayWebModule extends ReactContextBaseJavaMo
 
 	@Override
 	public void onHostResume() {
-    MceNotificationActionRegistry.registerNotificationAction(reactContext, TYPE, new DisplayWebViewAction());
+		DisplayWebViewAction action = new DisplayWebViewAction();
+		MceNotificationActionRegistry.registerNotificationAction(reactContext, TYPE, action);
+		MceNotificationActionRegistry.registerNotificationAction(reactContext, LEGACY_TYPE, action);
 	}
 
 	@Override

@@ -4,7 +4,7 @@
   "iOS Version": "<x.xx.xxx>, native iOS SDK version, empty for latest",
   "iOSVersion": "",
   "Android Version": "<x.xx.xxx>, native Android SDK version, empty for latest",
-  "androidVersion": "3.10.14",
+  "androidVersion": "3.11.1",
 
   "plugins": {
     "Required Mobile-Push plugins": "<true/false>, enable or disable plugin",

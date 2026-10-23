@@ -23,16 +23,6 @@ import { IOS } from '../../enums/os';
 const { RNAcousticMobilePushBeacon, RNAcousticMobilePushLocation } = NativeModules;
 
 export class iBeaconScreen extends React.Component {
-  static navigationOptions = {
-    title: 'Beacons',
-    headerRight: () => (
-      <Touchable onPress={() => {
-        RNAcousticMobilePushLocation.syncLocations();
-      }}>
-        <Icon name="ios-sync" color="#000" size={24} style={{ paddingRight: 20 }} />
-      </Touchable>
-    ),
-  };
 
   constructor(props) {
     super(props);

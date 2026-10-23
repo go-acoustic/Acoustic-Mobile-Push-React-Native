@@ -412,12 +412,60 @@ jobs:
           for tarball in *.tgz; do
             echo "::group::Publishing $tarball"
 
-            # Publish the tarball directly from the tarballs directory
-            if npm publish "$tarball" \
+            # Extract package name and version from tarball to pre-check registry
+            PKG_JSON=$(tar -xOf "$tarball" package/package.json 2>/dev/null)
+            PACKAGE_NAME=$(echo "$PKG_JSON" | jq -r .name)
+            PACKAGE_VERSION=$(echo "$PKG_JSON" | jq -r .version)
+
+            if [ -z "$PACKAGE_NAME" ] || [ "$PACKAGE_NAME" = "null" ] || \
+               [ -z "$PACKAGE_VERSION" ] || [ "$PACKAGE_VERSION" = "null" ]; then
+              echo "::error::Failed to extract package name/version from $tarball"
+              FAILED_PACKAGES="${FAILED_PACKAGES}❌ ${tarball}\n"
+              FAILURE_COUNT=$((FAILURE_COUNT + 1))
+              echo "::endgroup::"
+              continue
+            fi
+
+            HTTP_STATUS="000"
+            for ATTEMPT in 1 2 3; do
+              # verify package existence in public npm registry
+              HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+                --max-time 30 --connect-timeout 10 \
+                "https://registry.npmjs.org/${PACKAGE_NAME}/${PACKAGE_VERSION}")
+              if [ "$HTTP_STATUS" = "200" ] || [ "$HTTP_STATUS" = "404" ]; then
+                break
+              fi
+              if [ $ATTEMPT -lt 3 ]; then
+                SLEEP=$((ATTEMPT * 2))
+                echo "Registry check attempt $ATTEMPT returned HTTP $HTTP_STATUS, retrying in ${SLEEP}s..."
+                sleep $SLEEP
+              fi
+            done
+
+            if [ "$HTTP_STATUS" = "200" ]; then
+              echo "::notice::⏭️  ${PACKAGE_NAME}@${PACKAGE_VERSION} already published, skipping"
+              PUBLISHED_PACKAGES="${PUBLISHED_PACKAGES}⏭️ ${tarball} (already published)\n"
+              SUCCESS_COUNT=$((SUCCESS_COUNT + 1))
+              echo "::endgroup::"
+              continue
+            elif [ "$HTTP_STATUS" = "404" ]; then
+              echo "${PACKAGE_NAME}@${PACKAGE_VERSION} not found in registry, safe to publish"
+            else
+              echo "::error::Registry check failed for ${PACKAGE_NAME}@${PACKAGE_VERSION} (HTTP $HTTP_STATUS after 3 attempts)"
+              FAILED_PACKAGES="${FAILED_PACKAGES}❌ ${tarball}\n"
+              FAILURE_COUNT=$((FAILURE_COUNT + 1))
+              echo "::endgroup::"
+              continue
+            fi
+
+            npm publish "$tarball" \
               --access public \
               --tag "${{ steps.packages.outputs.npm_tag }}" \
               --verbose \
-              --loglevel verbose 2>&1; then
+              --loglevel verbose 2>&1
+            PUBLISH_EXIT=$?
+
+            if [ $PUBLISH_EXIT -eq 0 ]; then
               echo "::notice::✅ Successfully published $tarball"
               PUBLISHED_PACKAGES="${PUBLISHED_PACKAGES}✅ ${tarball}\n"
               SUCCESS_COUNT=$((SUCCESS_COUNT + 1))

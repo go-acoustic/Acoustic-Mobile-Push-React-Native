@@ -21,9 +21,6 @@ const { RNAcousticMobilePush } = NativeModules;
 console.log("NativeModules", RNAcousticMobilePush.appKey)
 
 export class RegistrationScreen extends React.Component {
-  static navigationOptions = {
-    title: 'Registration',
-  };
 
   constructor(props) {
     super(props);
@@ -85,19 +82,19 @@ export class RegistrationScreen extends React.Component {
         <ListItem bottomDivider style={styles.firstRow} >
           <ListItem.Content>
             <ListItem.Title>User Id</ListItem.Title>
-            <ListItem.Subtitle>{userId}</ListItem.Subtitle>
+            <ListItem.Subtitle testID="campaign_registration_user_id">{userId}</ListItem.Subtitle>
           </ListItem.Content>
         </ListItem>
         <ListItem bottomDivider style={styles.row}>
           <ListItem.Content>
             <ListItem.Title>Channel Id</ListItem.Title>
-            <ListItem.Subtitle>{channelId}</ListItem.Subtitle>
+            <ListItem.Subtitle testID="campaign_registration_channel_id">{channelId}</ListItem.Subtitle>
           </ListItem.Content>
         </ListItem>
         <ListItem style={styles.row}>
           <ListItem.Content>
             <ListItem.Title>App Key</ListItem.Title>
-            <ListItem.Subtitle>{appKey}</ListItem.Subtitle>
+            <ListItem.Subtitle testID="campaign_registration_app_key">{appKey}</ListItem.Subtitle>
           </ListItem.Content>
         </ListItem>
         <Text style={styles.tableFooter}>

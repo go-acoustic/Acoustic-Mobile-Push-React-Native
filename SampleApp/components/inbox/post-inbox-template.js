@@ -42,9 +42,10 @@ function render(inboxMessage, full) {
     const parsedAction = typeof (action) === 'string' ? JSON.parse(action) : action;
 
     return (
-      <Button onPress={() => {
-        RNAcousticMobilePushInbox.clickInboxAction(parsedAction, inboxMessage.inboxMessageId);
-      }}
+      <Button testID={`campaign_inbox_message_action_${index}`}
+        onPress={() => {
+          RNAcousticMobilePushInbox.clickInboxAction(parsedAction, inboxMessage.inboxMessageId);
+        }}
         key={`${action.name} - ${index}`}
         title={action.name}
       />

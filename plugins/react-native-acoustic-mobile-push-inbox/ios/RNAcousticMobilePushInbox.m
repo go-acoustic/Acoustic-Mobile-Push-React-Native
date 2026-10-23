@@ -14,7 +14,42 @@
 #import <React/RCTUtils.h>
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
-#import <React/RCTRootView.h>
+
+// React Native >= 0.76 (New Architecture / bridgeless): root views must be created through the host application's
+// RCTRootViewFactory. The factory is reached through the application delegate (MCEAppDelegate proxies to the real
+// delegate via `appDelegate`, which exposes `reactNativeFactory`).
+@protocol RNAcousticMobilePushRootViewHost <NSObject>
+@optional
+- (id)appDelegate;
+- (id)reactNativeFactory;
+- (id)rootViewFactory;
+- (UIView *)viewWithModuleName:(NSString *)moduleName initialProperties:(NSDictionary *)initialProperties;
+@end
+
+static UIView * RNAcousticMobilePushCreateRootView(NSString * moduleName, NSDictionary * properties) {
+    id<RNAcousticMobilePushRootViewHost> delegate = (id<RNAcousticMobilePushRootViewHost>)UIApplication.sharedApplication.delegate;
+    if ([delegate respondsToSelector:@selector(appDelegate)]) {
+        id inner = [delegate appDelegate];
+        if (inner) {
+            delegate = inner;
+        }
+    }
+    id<RNAcousticMobilePushRootViewHost> factory = nil;
+    if ([delegate respondsToSelector:@selector(reactNativeFactory)]) {
+        factory = [delegate reactNativeFactory];
+    }
+    id<RNAcousticMobilePushRootViewHost> rootViewFactory = nil;
+    if ([factory respondsToSelector:@selector(rootViewFactory)]) {
+        rootViewFactory = [factory rootViewFactory];
+    } else if ([delegate respondsToSelector:@selector(rootViewFactory)]) {
+        rootViewFactory = [delegate rootViewFactory];
+    }
+    if ([rootViewFactory respondsToSelector:@selector(viewWithModuleName:initialProperties:)]) {
+        return [rootViewFactory viewWithModuleName:moduleName initialProperties:properties];
+    }
+    RCTLogError(@"RNAcousticMobilePush: no RCTRootViewFactory found on the application delegate. The AppDelegate must expose `reactNativeFactory` (RCTReactNativeFactory); RCTAppDelegate subclasses do this automatically. React Native 0.76 or newer is required.");
+    return nil;
+}
 
 typedef NSNotificationName MCENotificationName NS_STRING_ENUM;
 extern MCENotificationName const InboxCountUpdate;
@@ -76,9 +111,42 @@ typedef void (^MCEMessageCallback)(MCEInboxMessage *message, NSError* error);
 @property BOOL listenersSetup;
 @property NSString * inboxActionModule;
 @property UIWindow * inboxWindow;
-@property RCTRootView * inboxView;
+@property UIView * inboxView;
 @property UIViewController * inboxViewController;
 @end
+
+// Overlay windows must be attached to the app's foreground window scene. A window created with -initWithFrame: belongs
+// to no scene, so in UIScene-based apps (required when building with the iOS 27 SDK) it is never shown.
+static UIWindowScene * RNAcousticMobilePushForegroundWindowScene(void) {
+    UIWindowScene * inactiveScene = nil;
+    for (UIScene * scene in UIApplication.sharedApplication.connectedScenes) {
+        if (![scene isKindOfClass:UIWindowScene.class]) {
+            continue;
+        }
+        if (scene.activationState == UISceneActivationStateForegroundActive) {
+            return (UIWindowScene *)scene;
+        }
+        if (!inactiveScene && scene.activationState == UISceneActivationStateForegroundInactive) {
+            inactiveScene = (UIWindowScene *)scene;
+        }
+    }
+    return inactiveScene;
+}
+
+static UIWindow * RNAcousticMobilePushHostWindow(UIWindowScene * scene) {
+    for (UIWindow * window in scene.windows) {
+        if (window.isKeyWindow) {
+            return window;
+        }
+    }
+    return scene.windows.firstObject;
+}
+
+static UIWindow * RNAcousticMobilePushCreateOverlayWindow(UIWindowScene * scene, CGRect frame) {
+    UIWindow * window = [[UIWindow alloc] initWithWindowScene:scene];
+    window.frame = frame;
+    return window;
+}
 
 @implementation RNAcousticMobilePushInbox
 
@@ -111,6 +179,7 @@ RCT_EXPORT_METHOD(hideInbox) {
     }
 
     if(self.inboxWindow) {
+        self.inboxWindow.hidden = true;
         [self.inboxWindow removeFromSuperview];
         self.inboxWindow = nil;
     }
@@ -126,23 +195,37 @@ RCT_EXPORT_METHOD(hideInbox) {
         [self performSelectorOnMainThread:@selector(showInboxMessage:) withObject:inboxMessage waitUntilDone:true];
         return;
     }
+    UIWindowScene * windowScene = RNAcousticMobilePushForegroundWindowScene();
+    UIWindow * currentWindow = RNAcousticMobilePushHostWindow(windowScene);
+    if (!windowScene || !currentWindow) {
+        NSLog(@"No foreground window scene, can not show inbox message %@", inboxMessage.inboxMessageId);
+        return;
+    }
     [self hideInbox];
-    UIWindow * currentWindow = UIApplication.sharedApplication.keyWindow;
     CGRect rect = currentWindow.frame;
     
-    CGFloat statusHeight = UIApplication.sharedApplication.statusBarFrame.size.height;
+    // Only the status bar is excluded here. The bottom safe-area inset is applied by the
+    // SafeAreaView that wraps InboxAction (javascript/inbox-action.js); subtracting it here too
+    // would leave a double gap above the home indicator.
+    CGFloat statusHeight = windowScene.statusBarManager.statusBarFrame.size.height;
     rect.origin = CGPointMake(0, statusHeight);
     rect.size.height -= statusHeight;
 
     self.inboxViewController = [[UIViewController alloc] init];
-    self.inboxWindow = [[UIWindow alloc] initWithFrame:rect];
+    self.inboxWindow = RNAcousticMobilePushCreateOverlayWindow(windowScene, rect);
     self.inboxWindow.rootViewController = self.inboxViewController;
 
     NSDictionary * inboxMessageJson = [self inboxMessageToJson: inboxMessage];
     NSDictionary * properties = @{ @"message": inboxMessageJson };
     
     rect.origin = CGPointZero;
-    self.inboxView = [[RCTRootView alloc] initWithBridge:self.bridge moduleName:self.inboxActionModule initialProperties: properties];
+    self.inboxView = RNAcousticMobilePushCreateRootView(self.inboxActionModule, properties);
+    if (!self.inboxView) {
+        self.inboxWindow.hidden = true;
+        self.inboxWindow = nil;
+        self.inboxViewController = nil;
+        return;
+    }
     self.inboxViewController.view = self.inboxView;
     
     self.inboxView.frame = rect;

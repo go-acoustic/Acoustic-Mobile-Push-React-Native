@@ -14,7 +14,42 @@
 #import <React/RCTUtils.h>
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
-#import <React/RCTRootView.h>
+
+// React Native >= 0.76 (New Architecture / bridgeless): root views must be created through the host application's
+// RCTRootViewFactory. The factory is reached through the application delegate (MCEAppDelegate proxies to the real
+// delegate via `appDelegate`, which exposes `reactNativeFactory`).
+@protocol RNAcousticMobilePushRootViewHost <NSObject>
+@optional
+- (id)appDelegate;
+- (id)reactNativeFactory;
+- (id)rootViewFactory;
+- (UIView *)viewWithModuleName:(NSString *)moduleName initialProperties:(NSDictionary *)initialProperties;
+@end
+
+static UIView * RNAcousticMobilePushCreateRootView(NSString * moduleName, NSDictionary * properties) {
+    id<RNAcousticMobilePushRootViewHost> delegate = (id<RNAcousticMobilePushRootViewHost>)UIApplication.sharedApplication.delegate;
+    if ([delegate respondsToSelector:@selector(appDelegate)]) {
+        id inner = [delegate appDelegate];
+        if (inner) {
+            delegate = inner;
+        }
+    }
+    id<RNAcousticMobilePushRootViewHost> factory = nil;
+    if ([delegate respondsToSelector:@selector(reactNativeFactory)]) {
+        factory = [delegate reactNativeFactory];
+    }
+    id<RNAcousticMobilePushRootViewHost> rootViewFactory = nil;
+    if ([factory respondsToSelector:@selector(rootViewFactory)]) {
+        rootViewFactory = [factory rootViewFactory];
+    } else if ([delegate respondsToSelector:@selector(rootViewFactory)]) {
+        rootViewFactory = [delegate rootViewFactory];
+    }
+    if ([rootViewFactory respondsToSelector:@selector(viewWithModuleName:initialProperties:)]) {
+        return [rootViewFactory viewWithModuleName:moduleName initialProperties:properties];
+    }
+    RCTLogError(@"RNAcousticMobilePush: no RCTRootViewFactory found on the application delegate. The AppDelegate must expose `reactNativeFactory` (RCTReactNativeFactory); RCTAppDelegate subclasses do this automatically. React Native 0.76 or newer is required.");
+    return nil;
+}
 
 extern NSString * const InAppSource;
 
@@ -86,9 +121,42 @@ extern NSString * const InAppSource;
 @interface RNAcousticMobilePushInApp ()
 @property UIViewController * inAppViewController;
 @property UIWindow * inAppWindow;
-@property RCTRootView * inAppView;
+@property UIView * inAppView;
 @property NSMutableDictionary * inAppTemplateModules;
 @end
+
+// Overlay windows must be attached to the app's foreground window scene. A window created with -initWithFrame: belongs
+// to no scene, so in UIScene-based apps (required when building with the iOS 27 SDK) it is never shown.
+static UIWindowScene * RNAcousticMobilePushForegroundWindowScene(void) {
+    UIWindowScene * inactiveScene = nil;
+    for (UIScene * scene in UIApplication.sharedApplication.connectedScenes) {
+        if (![scene isKindOfClass:UIWindowScene.class]) {
+            continue;
+        }
+        if (scene.activationState == UISceneActivationStateForegroundActive) {
+            return (UIWindowScene *)scene;
+        }
+        if (!inactiveScene && scene.activationState == UISceneActivationStateForegroundInactive) {
+            inactiveScene = (UIWindowScene *)scene;
+        }
+    }
+    return inactiveScene;
+}
+
+static UIWindow * RNAcousticMobilePushHostWindow(UIWindowScene * scene) {
+    for (UIWindow * window in scene.windows) {
+        if (window.isKeyWindow) {
+            return window;
+        }
+    }
+    return scene.windows.firstObject;
+}
+
+static UIWindow * RNAcousticMobilePushCreateOverlayWindow(UIWindowScene * scene, CGRect frame) {
+    UIWindow * window = [[UIWindow alloc] initWithWindowScene:scene];
+    window.frame = frame;
+    return window;
+}
 
 @implementation RNAcousticMobilePushInApp
 
@@ -124,6 +192,7 @@ RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(hideInApp) {
     if(self.inAppWindow) {
+        self.inAppWindow.hidden = true;
         [self.inAppWindow removeFromSuperview];
         self.inAppWindow = nil;
     }
@@ -222,28 +291,16 @@ RCT_EXPORT_METHOD(registerInApp: (NSString*) template module: (NSString*) module
         return false;
     }
 
+    UIWindowScene *windowScene = RNAcousticMobilePushForegroundWindowScene();
+    UIWindow *currentWindow = RNAcousticMobilePushHostWindow(windowScene);
+    if (!windowScene || !currentWindow) {
+        NSLog(@"No foreground window scene, can not show in-app message %@", inAppMessage.inAppMessageId);
+        return false;
+    }
+
     [self hideInApp]; 
 
-    // Get current window reliably for iOS 13+
-    UIWindow *currentWindow = nil;
-    if (@available(iOS 13, *)) {
-        for (UIWindowScene* windowScene in [UIApplication sharedApplication].connectedScenes) {
-            if (windowScene.activationState == UISceneActivationStateForegroundActive) {
-                currentWindow = windowScene.windows.firstObject;
-                break;
-            }
-        }
-    } else {
-        currentWindow = [UIApplication sharedApplication].keyWindow;
-    }
-
-    // Calculate status bar height
-    CGFloat statusBarHeight = 0.0;
-    if (@available(iOS 13, *)) {
-        statusBarHeight = currentWindow.windowScene.statusBarManager.statusBarFrame.size.height;
-    } else {
-        statusBarHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
-    }
+    CGFloat statusBarHeight = windowScene.statusBarManager.statusBarFrame.size.height;
 
     CGRect rect = currentWindow.frame;
     NSArray *rules = inAppMessage.rules;
@@ -267,7 +324,7 @@ RCT_EXPORT_METHOD(registerInApp: (NSString*) template module: (NSString*) module
     }
 
     self.inAppViewController = [[UIViewController alloc] init];
-    self.inAppWindow = [[UIWindow alloc] initWithFrame:rect];
+    self.inAppWindow = RNAcousticMobilePushCreateOverlayWindow(windowScene, rect);
     self.inAppWindow.rootViewController = self.inAppViewController;
 
     NSMutableDictionary * message = [@{
@@ -301,7 +358,13 @@ RCT_EXPORT_METHOD(registerInApp: (NSString*) template module: (NSString*) module
 
     rect.origin = CGPointZero;
 
-    self.inAppView = [[RCTRootView alloc] initWithBridge:self.bridge moduleName:module[@"module"] initialProperties: properties];
+    self.inAppView = RNAcousticMobilePushCreateRootView(module[@"module"], properties);
+    if (!self.inAppView) {
+        self.inAppWindow.hidden = true;
+        self.inAppWindow = nil;
+        self.inAppViewController = nil;
+        return FALSE;
+    }
 
     self.inAppViewController.view = self.inAppView;
 

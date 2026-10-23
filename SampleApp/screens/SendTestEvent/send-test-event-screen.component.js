@@ -29,9 +29,6 @@ import { customEventOptions, simulateEventOptions, attributeTypeOptions } from '
 const { RNAcousticMobilePush } = NativeModules;
 
 export class SendTestEventScreen extends React.Component {
-  static navigationOptions = {
-    title: 'Send Events',
-  };
 
   constructor() {
     super();
@@ -110,6 +107,7 @@ export class SendTestEventScreen extends React.Component {
     if (customEventSelectedIndex === customEventOptions.custom.index) {
       return (
         <TextInput placeholder="required"
+          testID="campaign_event_name"
           style={styles.textInput}
           value={eventNameText}
           onChangeText={(text) => this.setState({ eventNameText: text })}
@@ -177,6 +175,7 @@ export class SendTestEventScreen extends React.Component {
     return (
       <View style={{ flexGrow: 1 }}>
         <SegmentedControlTab values={attributeTypeOptionsText}
+          testIDs={attributeTypeOptionsText.map((text) => `campaign_event_attr_type_${text}`)}
           selectedIndex={eventAttributeTypeSelectedIndex}
           onTabPress={(index) => {
             this.setState({ eventAttributeTypeSelectedIndex: index });
@@ -232,6 +231,7 @@ export class SendTestEventScreen extends React.Component {
 
     return (
       <TextInput style={styles.textInput}
+        testID="campaign_event_attr_value"
         value={value}
         onChangeText={(text) => this.setState({ attributeValue: text })}
         keyboardType={keyboardType}
@@ -248,6 +248,7 @@ export class SendTestEventScreen extends React.Component {
 
     return (
       <TextInput placeholder="optional"
+        testID="campaign_event_attr_name"
         style={styles.textInput}
         value={attributeName}
         onChangeText={(text) => this.setState({ attributeName: text })}
@@ -361,7 +362,7 @@ export class SendTestEventScreen extends React.Component {
 
   sendEvent() {
     return (
-      <Touchable accessibilityRole="button" onPress={() => this.queueEvent()}>
+      <Touchable accessibilityRole="button" testID="campaign_event_send" onPress={() => this.queueEvent()}>
         <Text style={{ color: colors.blue, paddingTop: 16 }}>Send Event</Text>
       </Touchable>
     );
@@ -395,6 +396,7 @@ export class SendTestEventScreen extends React.Component {
 
     return (
       <SegmentedControlTab values={customEventOptionsText}
+        testIDs={['campaign_event_mode_custom', 'campaign_event_mode_simulate']}
         selectedIndex={customEventSelectedIndex}
         onTabPress={(index) => {
           this.setState({ customEventSelectedIndex: index });
@@ -407,7 +409,7 @@ export class SendTestEventScreen extends React.Component {
     const { statusColor, statusText } = this.state;
 
     return (
-      <Text style={{ color: statusColor }}>{statusText}</Text>
+      <Text testID="campaign_event_status" style={{ color: statusColor }}>{statusText}</Text>
     );
   }
 

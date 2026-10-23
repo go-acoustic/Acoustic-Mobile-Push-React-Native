@@ -21,9 +21,9 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import com.facebook.react.ReactApplication;
-import com.facebook.react.ReactInstanceManager;
-import com.facebook.react.ReactNativeHost;
-import com.facebook.react.ReactRootView;
+import com.facebook.react.ReactHost;
+import com.facebook.react.interfaces.fabric.ReactSurface;
+import android.view.View;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactMethod;
 
@@ -330,8 +330,36 @@ public class RNPushNotificationInboxCustomAction implements MceNotificationActio
   }
 
 
+  private ReactSurface reactSurface = null;
+
+  /**
+   * Creates the native view hosting the registered JS inbox action component.
+   * React Native >= 0.76 (New Architecture / bridgeless) exposes a ReactHost and surfaces are created with
+   * ReactHost.createSurface(). React Native 0.76 or newer is required.
+   */
+  private View createReactView(ReactApplication application, Activity activity, String moduleName, Bundle initialProperties) {
+    ReactHost reactHost = application.getReactHost();
+    if (reactHost == null) {
+      Logger.e(TAG, "ReactHost is not available. React Native 0.76 or newer with the New Architecture is required.");
+      return null;
+    }
+    ReactSurface surface = reactHost.createSurface(activity, moduleName, initialProperties);
+    surface.start();
+    this.reactSurface = surface;
+    return surface.getView();
+  }
+
   // Needs to be run on the main thread.
   private void internalHideInbox() {
+    if (this.reactSurface != null) {
+      try {
+        this.reactSurface.stop();
+      } catch (Throwable t) {
+        Logger.d(TAG, "Could not stop inbox React surface", t);
+      }
+      this.reactSurface = null;
+      RNAcousticMobilePushInboxModule.reactSurface = null;
+    }
     if (this.relativeLayout != null) {
       ViewParent parent = this.relativeLayout.getParent();
       if (parent instanceof ViewGroup) {
@@ -364,8 +392,6 @@ public class RNPushNotificationInboxCustomAction implements MceNotificationActio
       viewLayout.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 
       ReactApplication application = (ReactApplication) activity.getApplication();
-      ReactNativeHost reactNativeHost = application.getReactNativeHost();
-      ReactInstanceManager reactInstanceManager = reactNativeHost.getReactInstanceManager();
 
       Bundle messageBundle = new Bundle();
     messageBundle.putLong("sendDate", inboxMessage.getSendDate().getTime());
@@ -391,16 +417,21 @@ public class RNPushNotificationInboxCustomAction implements MceNotificationActio
       Bundle initialProperties = new Bundle();
       initialProperties.putBundle("message", messageBundle);
 
-      ReactRootView reactRootView = new ReactRootView(reactContext);
-      reactRootView.setLayoutParams(viewLayout);
-      reactRootView.startReactApplication(reactInstanceManager, inboxActionModule, initialProperties);
-      relativeLayout.addView(reactRootView);
+      View reactView = createReactView(application, activity, inboxActionModule, initialProperties);
+      if (reactView == null) {
+        Logger.e(TAG, "Could not create a React view for inbox action module " + inboxActionModule);
+        this.relativeLayout = null;
+        return;
+      }
+      reactView.setLayoutParams(viewLayout);
+      relativeLayout.addView(reactView);
 
       Window window = activity.getWindow();
       FrameLayout.LayoutParams relativeLayoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.FILL_PARENT, FrameLayout.LayoutParams.FILL_PARENT);
       window.addContentView(relativeLayout, relativeLayoutParams);
 
       RNAcousticMobilePushInboxModule.relativeLayout = relativeLayout;
+      RNAcousticMobilePushInboxModule.reactSurface = this.reactSurface;
     } catch (Exception e) {
       Logger.e(TAG, "  Exception message: " + e.getMessage());
       e.printStackTrace();

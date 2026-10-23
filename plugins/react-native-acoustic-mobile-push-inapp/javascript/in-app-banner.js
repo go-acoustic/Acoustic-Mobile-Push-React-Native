@@ -16,6 +16,16 @@ import {InAppTemplate} from './in-app-template';
 
 const Touchable = Platform.OS === 'android' ? TouchableNativeFeedback : TouchableOpacity;
 
+// TouchableNativeFeedback ignores its style and lays out its child, while TouchableOpacity is a view
+// of its own. An unstyled TouchableOpacity around absolutely positioned content gets a zero-size frame,
+// which hides that content from VoiceOver and UI tests, so on iOS the position moves to the touchable.
+function touchableLayout(style) {
+	if(Platform.OS === 'android') {
+		return {touchableStyle: undefined, contentStyle: style};
+	}
+	return {touchableStyle: style, contentStyle: {flex: 1, flexDirection: 'row', alignItems: 'center'}};
+}
+
 const imageSize = 24;
 const padding = 8;
 
@@ -127,11 +137,12 @@ export default class InAppBanner extends InAppTemplate {
 			textContainerStyle.top = 0;
 		}
 
+		let layout = touchableLayout(textContainerStyle);
 		return (
-			<Touchable onPressIn={() => { 
+			<Touchable style={ layout.touchableStyle } onPressIn={() => { 
 				this.activate(); 
 			}}>
-				<View style={ textContainerStyle }>
+				<View style={ layout.contentStyle }>
 					<Text style={ textStyle }>{ this.content().text }</Text>
 				</View>
 			</Touchable>
@@ -142,11 +153,12 @@ export default class InAppBanner extends InAppTemplate {
 		let imageStyle = Object.assign({tintColor: this.foreground()}, styles.imageStyle);
 		var icon = validImages[this.content().icon] ? (<Image style={imageStyle} source={ validImages[this.content().icon] } />) : (<View style={{width: imageSize, height: imageSize}} />);
 		let leftImageContainerStyle = Object.assign({left:0}, this.imageContainerStyle());
+		let layout = touchableLayout(leftImageContainerStyle);
 		return (
-			<Touchable onPressIn={() => {
+			<Touchable style={ layout.touchableStyle } onPressIn={() => {
 				this.activate();
 				}}>
-				<View style={ leftImageContainerStyle }>
+				<View style={ layout.contentStyle }>
 					{ icon }
 				</View>
 			</Touchable>
@@ -170,11 +182,12 @@ export default class InAppBanner extends InAppTemplate {
 		let rightImageContainerStyle = Object.assign({right:0}, this.imageContainerStyle() );
 		let imageStyle = Object.assign({tintColor: this.foreground()}, styles.imageStyle);
 
+		let layout = touchableLayout(rightImageContainerStyle);
 		return (
-			<Touchable onPressIn={() => {
+			<Touchable style={ layout.touchableStyle } onPressIn={() => {
 				this.hide();
 				}}>
-				<View style={ rightImageContainerStyle }>
+				<View style={ layout.contentStyle }>
 					<Image style={ imageStyle } source={require('./images/cancel.png')} />
 				</View>
 			</Touchable>

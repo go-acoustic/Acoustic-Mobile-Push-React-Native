@@ -1,5 +1,5 @@
 /*
- * Copyright © 2019, 2023 Acoustic, L.P. All rights reserved.
+ * Copyright © 2019, 2026 Acoustic, L.P. All rights reserved.
  *
  * NOTICE: This file contains material that is confidential and proprietary to
  * Acoustic, L.P. and/or other developers. No license is granted under any intellectual or
@@ -9,12 +9,14 @@
  */
 
 import React from 'react';
-import renderer from 'react-test-renderer';
+import renderer, { act } from 'react-test-renderer';
 
 import App from '../App';
 
 describe('App', () => {
-  it('renders correctly', () => {
-    renderer.create(<App />);
+  it('renders correctly', async () => {
+    await act(async () => {
+      renderer.create(<App />);
+    });
   });
 });

@@ -159,6 +159,15 @@ function modifyInfoPlist(mainAppPath) {
     infoPlist.UIBackgroundModes = Array.from(backgroundSet);
 
     fs.writeFileSync(infoPath, plist.build(infoPlist), "utf8");
+
+    if(typeof infoPlist.UIApplicationSceneManifest == "undefined") {
+        console.log(chalk.yellow.bold("\nInfo.plist has no UIApplicationSceneManifest."));
+        console.log(chalk.yellow("Apps built with the iOS 27 SDK (Xcode 27) must adopt the UIScene life cycle, otherwise iOS refuses to launch them."));
+        console.log("Keep MCEAppDelegate as the UIApplicationMain delegate, add a UIWindowSceneDelegate that creates the window and");
+        console.log("calls `startReactNativeWithModuleName:inWindow:` on your app delegate's `reactNativeFactory`, and declare it in");
+        console.log("Info.plist under UIApplicationSceneManifest > UISceneConfigurations > UIWindowSceneSessionRoleApplication.");
+        console.log("The SampleApp's SceneDelegate shows the pattern.");
+    }
 }
 
 function findMainPath(installDirectory) {
@@ -168,7 +177,12 @@ function findMainPath(installDirectory) {
 	}
 
 	const iosDirectory = path.join(installDirectory, 'ios');
+	if(!fs.existsSync(iosDirectory)) {
+		console.error(chalk.red("Couldn't locate the ios directory."));
+		return;
+	}
 	var directory;
+	var swiftAppDelegateDirectory;
 	fs.readdirSync(iosDirectory).forEach((basename) => {
 		const mainPath = path.join(iosDirectory, basename);
 		if(fs.lstatSync(mainPath).isDirectory()) {
@@ -176,9 +190,34 @@ function findMainPath(installDirectory) {
 			if(fs.existsSync(filename)) {
 				directory = mainPath;
 			}
+			if(fs.existsSync(path.join(mainPath, "AppDelegate.swift"))) {
+				swiftAppDelegateDirectory = mainPath;
+			}
 		}
 	});
+	if(!directory && swiftAppDelegateDirectory) {
+		printSwiftIntegrationSteps(swiftAppDelegateDirectory);
+		return swiftAppDelegateDirectory;
+	}
 	return directory;
+}
+
+/**
+ * React Native >= 0.77 templates ship a Swift `@main` AppDelegate and no main.m, so the SDK entry point
+ * (MCEAppDelegate) cannot be installed automatically. Print the manual steps instead.
+ */
+function printSwiftIntegrationSteps(appDirectory) {
+	const productName = path.basename(appDirectory);
+	console.log(chalk.yellow.bold("\nSwift AppDelegate detected (" + path.join(appDirectory, "AppDelegate.swift") + "), main.m was not replaced."));
+	console.log(chalk.yellow("The Acoustic Campaign SDK must own the UIApplicationMain entry point. Complete these steps manually:"));
+	console.log("1. Remove the `@main` attribute from `AppDelegate.swift`.");
+	console.log("2. Add `main.swift` to the application target with:");
+	console.log("     import UIKit");
+	console.log("     import AcousticMobilePush");
+	console.log("     UIApplicationMain(CommandLine.argc, CommandLine.unsafeArgv, nil, NSStringFromClass(MCEAppDelegate.self))");
+	console.log("3. Set `appDelegateClass` in `MceConfig.json` to `" + productName + ".AppDelegate`.");
+	console.log("4. Expose the React Native factory to the SDK plugins: `@objc var reactNativeFactory: RCTReactNativeFactory?`");
+	console.log("   (the in-app and inbox plugins render their templates through `reactNativeFactory.rootViewFactory`).");
 }
 
 function replaceMain(mainAppPath) {
@@ -189,6 +228,10 @@ function replaceMain(mainAppPath) {
 
 	const mainPath = path.join(mainAppPath, "main.m");
 	if(!fs.existsSync(mainPath) || !fs.lstatSync(mainPath).isFile()) {
+		if(fs.existsSync(path.join(mainAppPath, "AppDelegate.swift"))) {
+			// Swift template: steps were printed by findMainPath().
+			return;
+		}
 		console.error(chalk.red("Couldn't locate main.m."));
 		return;
 	}
@@ -408,33 +451,38 @@ function managePlugins(config) {
 }
 
 /**
- * Updates build.gradle file for Android project to remove Maven URL if useRelease is true and it exists.
- * Adds Maven URL if useRelease is true and it doesn't already exist.
- * Logs a message indicating whether changes were made or not.
+ * Points android/build.gradle at the repository that serves beta builds of the native SDK.
+ * Beta builds are published to GitHub Maven; the Sonatype staging repository no longer serves them,
+ * so its entry is removed in both modes. Release builds come from Maven Central and need no entry.
  *
- * 
  * @param {Object} useRelease - True/False for release version of SDK.
  */
 function updateAndroidBuildGradle(useRelease) {
 	const buildGradlePath = path.join(process.cwd(), "android", "build.gradle");
+	const betaMavenUrl = 'https://raw.githubusercontent.com/go-acoustic/Android_Maven/master';
+	const betaMavenRegex = /[ \t]*maven\s*{\s*url\s*"https:\/\/raw\.githubusercontent\.com\/go-acoustic\/Android_Maven\/master"\s*}\n?/;
+	const sonatypeRegex = /[ \t]*maven\s*{\s*url\s*"https:\/\/s01\.oss\.sonatype\.org\/content\/groups\/staging"\s*}\n?/g;
 
 	try {
-		let buildGradleContent = fs.readFileSync(buildGradlePath, 'utf8');
-		const mavenUrlRegex = /maven\s*{\s*url\s*"https:\/\/s01\.oss\.sonatype\.org\/content\/groups\/staging"\s*}/;
+		const originalContent = fs.readFileSync(buildGradlePath, 'utf8');
+		let buildGradleContent = originalContent.replace(sonatypeRegex, '');
 
-		if (useRelease && mavenUrlRegex.test(buildGradleContent)) {
-			// Remove Maven URL if useRelease is true and it exists
-			buildGradleContent = buildGradleContent.replace(mavenUrlRegex, '');
-			fs.writeFileSync(buildGradlePath, buildGradleContent, 'utf8');
-			console.log('Maven URL removed from build.gradle');
-		} else if (!useRelease && !mavenUrlRegex.test(buildGradleContent)) {
-			// Add Maven URL if useRelease is true and it doesn't already exist
+		if (useRelease) {
+			buildGradleContent = buildGradleContent.replace(betaMavenRegex, '');
+		} else if (!betaMavenRegex.test(buildGradleContent)) {
 			const repositoriesIndex = buildGradleContent.lastIndexOf('repositories {');
 			const closingBracketIndex = buildGradleContent.indexOf('}', repositoriesIndex);
-			const mavenUrlString = '    maven { url "https://s01.oss.sonatype.org/content/groups/staging" }\n';
-			buildGradleContent = buildGradleContent.slice(0, closingBracketIndex) + mavenUrlString + buildGradleContent.slice(closingBracketIndex);
+			// Insert on its own line above the closing bracket, one level deeper than it
+			const lineStart = buildGradleContent.lastIndexOf('\n', closingBracketIndex) + 1;
+			const indent = buildGradleContent.slice(lineStart, closingBracketIndex).replace(/\S.*$/, '');
+			const insertAt = /^\s*$/.test(buildGradleContent.slice(lineStart, closingBracketIndex)) ? lineStart : closingBracketIndex;
+			const mavenUrlString = `${insertAt === lineStart ? indent + '    ' : '\n    '}maven { url "${betaMavenUrl}" }\n`;
+			buildGradleContent = buildGradleContent.slice(0, insertAt) + mavenUrlString + buildGradleContent.slice(insertAt);
+		}
+
+		if (buildGradleContent !== originalContent) {
 			fs.writeFileSync(buildGradlePath, buildGradleContent, 'utf8');
-			console.log('Maven URL added to build.gradle');
+			console.log(useRelease ? 'Beta Maven repository removed from build.gradle' : 'Beta Maven repository set in build.gradle');
 		} else {
 			console.log('No changes needed in build.gradle');
 		}
@@ -503,7 +551,7 @@ try {
         }
     }
     
-    console.log(chalk.blue(`This script recommends Node.js version ${recommendedNodeVersion || 'unknown'} (based on React Native requirements)`));
+    console.log(chalk.blue(`This script recommends Node.js version ${recommendedNodeVersion || '>= 22.13.0'} (based on React Native requirements)`));
     console.log(chalk.blue("Your current Node.js version is: " + process.version));
 } catch (error) {
     console.log(chalk.yellow("Could not determine recommended Node.js version"));

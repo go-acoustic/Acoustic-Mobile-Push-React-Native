@@ -11,7 +11,7 @@
 import { AppRegistry, Animated, Image, View, NativeModules, Text } from 'react-native';
 import React from 'react';
 import { InAppTemplate } from './in-app-template';
-import { Touchable } from '../../helpers/Touchable';
+import { Touchable, touchableLayout } from '../../helpers/Touchable';
 import { styles, padding, imageSize } from './in-app-banner.style.js';
 
 const { RNAcousticMobilePushInApp } = NativeModules;
@@ -67,9 +67,10 @@ export default class InAppBanner extends InAppTemplate {
       textContainerStyle.top = 0;
     }
 
+    const { touchableStyle, contentStyle } = touchableLayout(textContainerStyle);
     return (
-      <Touchable onPressIn={() => { this.activate(); }}>
-        <View style={textContainerStyle}>
+      <Touchable style={touchableStyle} onPressIn={() => { this.activate(); }}>
+        <View style={contentStyle}>
           <Text style={textStyle}>{this.content().text}</Text>
         </View>
       </Touchable>
@@ -82,9 +83,10 @@ export default class InAppBanner extends InAppTemplate {
       ? (<Image style={imageStyle} source={validImages[this.content().icon]} />)
       : (<View style={{ width: imageSize, height: imageSize }} />);
     const leftImageContainerStyle = Object.assign({ left: 0 }, this.imageContainerStyle());
+    const { touchableStyle, contentStyle } = touchableLayout(leftImageContainerStyle);
     return (
-      <Touchable onPressIn={() => { this.activate(); }}>
-        <View style={leftImageContainerStyle}>
+      <Touchable style={touchableStyle} onPressIn={() => { this.activate(); }}>
+        <View style={contentStyle}>
           {icon}
         </View>
       </Touchable>
@@ -109,9 +111,10 @@ export default class InAppBanner extends InAppTemplate {
     const rightImageContainerStyle = Object.assign({ right: 0 }, this.imageContainerStyle());
     const imageStyle = Object.assign({ tintColor: this.foreground() }, styles.imageStyle);
 
+    const { touchableStyle, contentStyle } = touchableLayout(rightImageContainerStyle);
     return (
-      <Touchable onPressIn={() => { this.hide(); }}>
-        <View style={rightImageContainerStyle}>
+      <Touchable testID="campaign_inapp_banner_close" style={touchableStyle} onPressIn={() => { this.hide(); }}>
+        <View style={contentStyle}>
           <Image style={imageStyle} source={require('./images/cancel.png')} />
         </View>
       </Touchable>
@@ -127,7 +130,7 @@ export default class InAppBanner extends InAppTemplate {
     const messageStyle = { height: containerHeight };
 
     return (
-      <Animated.View style={containerStyle}>
+      <Animated.View testID="campaign_inapp_banner" style={containerStyle}>
         <View style={messageStyle}>
           {this.background()}
           {this.icon()}

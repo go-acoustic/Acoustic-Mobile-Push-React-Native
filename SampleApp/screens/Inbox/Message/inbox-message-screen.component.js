@@ -18,41 +18,14 @@ import { Touchable } from '../../../helpers/Touchable';
 const { RNAcousticMobilePushInbox } = NativeModules;
 
 export class InboxMessageScreen extends React.Component {
-  static navigationOptions = ({ navigation }) => {
-    const previous = navigation.getParam('previous');
-    const next = navigation.getParam('next');
-    const trash = navigation.getParam('trash');
-    const index = navigation.getParam('index');
-    const { length } = navigation.getParam('inboxMessages');
-
-    return {
-      headerRight: () => (
-        <View style={{ flex: 1, flexDirection: 'row', paddingTop: 14 }}>
-          <Touchable onPress={previous}>
-            <Icon name="ios-arrow-up" color={index === 0 ? '#ccc' : '#000'} size={24} style={{ paddingRight: 20 }} />
-          </Touchable>
-          <Touchable onPress={next}>
-            <Icon name="ios-arrow-down"
-              color={length - 1 === index ? '#ccc' : '#000'}
-              size={24}
-              style={{ paddingRight: 20 }}
-            />
-          </Touchable>
-          <Touchable onPress={trash}>
-            <Icon name="ios-trash" color="#000" size={24} style={{ paddingRight: 20 }} />
-          </Touchable>
-        </View>
-      ),
-    };
-  };
-
   constructor(props) {
     super(props);
 
-    const inboxMessage = props.navigation.getParam('inboxMessage', {});
+    const params = props.route.params || {};
+    const inboxMessage = params.inboxMessage || {};
     this.state = {
-      index: props.navigation.getParam('index', 0),
-      inboxMessages: props.navigation.getParam('inboxMessages', []),
+      index: params.index || 0,
+      inboxMessages: params.inboxMessages || [],
       inboxMessage,
     };
 
@@ -63,12 +36,26 @@ export class InboxMessageScreen extends React.Component {
     const { navigation } = this.props;
     const { index, inboxMessages } = this.state;
 
-    navigation.setParams({
-      index,
-      inboxMessages,
-      previous: this.previous,
-      next: this.next,
-      trash: this.trash,
+    const { length } = inboxMessages;
+
+    navigation.setOptions({
+      headerRight: () => (
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Touchable onPress={this.previous}>
+            <Icon name="arrow-up" color={index === 0 ? '#ccc' : '#000'} size={24} style={{ paddingRight: 20 }} />
+          </Touchable>
+          <Touchable onPress={this.next}>
+            <Icon name="arrow-down"
+              color={length - 1 === index ? '#ccc' : '#000'}
+              size={24}
+              style={{ paddingRight: 20 }}
+            />
+          </Touchable>
+          <Touchable onPress={this.trash} testID="campaign_inbox_message_delete">
+            <Icon name="trash" color="#000" size={24} />
+          </Touchable>
+        </View>
+      ),
     });
   }
 
@@ -83,7 +70,7 @@ export class InboxMessageScreen extends React.Component {
     navigation.goBack();
     const newIndex = currentIndex - 1;
     const inboxMessage = inboxMessages[currentIndex];
-    navigation.push('InboxMessage', { inboxMessage, newIndex, inboxMessages });
+    navigation.push('InboxMessage', { inboxMessage, index: newIndex, inboxMessages });
   }
 
   next = () => {

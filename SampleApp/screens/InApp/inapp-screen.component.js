@@ -19,16 +19,6 @@ import { Touchable } from '../../helpers/Touchable';
 const { RNAcousticMobilePushInApp } = NativeModules;
 
 export class InAppScreen extends React.Component {
-  static navigationOptions = {
-    title: 'InApp Messages',
-    headerRight: () => (
-      <Touchable onPress={() => {
-        RNAcousticMobilePushInApp.syncInAppMessages();
-      }}>
-        <Icon name="ios-sync" color="#000" size={24} style={{ paddingRight: 20 }} />
-      </Touchable>
-    ),
-  };
 
   constructor(props) {
     super(props);
@@ -108,48 +98,51 @@ export class InAppScreen extends React.Component {
     return (
       <ScrollView style={styles.scrollView}>
         <Text style={styles.tableHeader}>Execute InApp</Text>
-        <ListItem style={styles.firstRow} onPress={() => RNAcousticMobilePushInApp.executeInApp(['bottomBanner'])}>
+        <ListItem
+          style={styles.firstRow}
+          testID="campaign_inapp_execute_bottom_banner"
+          onPress={() => RNAcousticMobilePushInApp.executeInApp(['bottomBanner'])}>
           <ListItem.Content>
             <ListItem.Title>Bottom Banner Template</ListItem.Title>
           </ListItem.Content>
         </ListItem>
-        <ListItem style={styles.row} onPress={() => RNAcousticMobilePushInApp.executeInApp(['topBanner'])}>
+        <ListItem style={styles.row} testID="campaign_inapp_execute_top_banner" onPress={() => RNAcousticMobilePushInApp.executeInApp(['topBanner'])}>
           <ListItem.Content>
             <ListItem.Title>Top Banner Template</ListItem.Title>
           </ListItem.Content>
         </ListItem>
-        <ListItem style={styles.row} onPress={() => RNAcousticMobilePushInApp.executeInApp(['image'])}>
+        <ListItem style={styles.row} testID="campaign_inapp_execute_image" onPress={() => RNAcousticMobilePushInApp.executeInApp(['image'])}>
           <ListItem.Content>
             <ListItem.Title>Image Template</ListItem.Title>
           </ListItem.Content>
         </ListItem>
-        <ListItem style={styles.row} onPress={() => RNAcousticMobilePushInApp.executeInApp(['video'])}>
+        <ListItem style={styles.row} testID="campaign_inapp_execute_video" onPress={() => RNAcousticMobilePushInApp.executeInApp(['video'])}>
           <ListItem.Content>
             <ListItem.Title>Video Template</ListItem.Title>
           </ListItem.Content>
         </ListItem>
-        <ListItem style={styles.row} onPress={() => RNAcousticMobilePushInApp.executeInApp(['all'])}>
+        <ListItem style={styles.row} testID="campaign_inapp_execute_next" onPress={() => RNAcousticMobilePushInApp.executeInApp(['all'])}>
           <ListItem.Content>
             <ListItem.Title>Next Template</ListItem.Title>
           </ListItem.Content>
         </ListItem>
         <Text style={styles.tableHeader}>Add Canned InApp</Text>
-        <ListItem style={styles.firstRow} onPress={this.createBottomBanner}>
+        <ListItem style={styles.firstRow} testID="campaign_inapp_add_bottom_banner" onPress={this.createBottomBanner}>
           <ListItem.Content>
             <ListItem.Title>Bottom Banner Template</ListItem.Title>
           </ListItem.Content>
         </ListItem>
-        <ListItem style={styles.row} onPress={this.createTopBanner}>
+        <ListItem style={styles.row} testID="campaign_inapp_add_top_banner" onPress={this.createTopBanner}>
           <ListItem.Content>
             <ListItem.Title>Top Banner Template</ListItem.Title>
           </ListItem.Content>
         </ListItem>
-        <ListItem style={styles.row} onPress={this.createImageTemplate}>
+        <ListItem style={styles.row} testID="campaign_inapp_add_image" onPress={this.createImageTemplate}>
           <ListItem.Content>
             <ListItem.Title>Image Template</ListItem.Title>
           </ListItem.Content>
         </ListItem>
-        <ListItem style={styles.row} onPress={this.createVideoTemplate}>
+        <ListItem style={styles.row} testID="campaign_inapp_add_video" onPress={this.createVideoTemplate}>
           <ListItem.Content>
             <ListItem.Title>Video Template</ListItem.Title>
           </ListItem.Content>

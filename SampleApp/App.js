@@ -8,8 +8,12 @@
  * prohibited.
  */
 
-import { createAppContainer } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
+import React from 'react';
+import { NativeModules } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { HomeScreen } from './screens/Home/home-screen.component';
 import { RegistrationScreen } from './screens/Registration/registration-screen.component';
@@ -21,6 +25,20 @@ import { CustomActionScreen } from './screens/CustomAction/custom-action-screen.
 import { GeofenceScreen } from './screens/Geofence/geofence-screen.component';
 import { iBeaconScreen } from './screens/iBeacon/ibeacon-screen.component';
 import { InboxMessageScreen } from './screens/Inbox/Message/inbox-message-screen.component';
+import { Touchable } from './helpers/Touchable';
+
+const { RNAcousticMobilePushInbox, RNAcousticMobilePushInApp, RNAcousticMobilePushLocation } = NativeModules;
+
+// Header "sync" button shared by the Inbox, In-App, Geofence and Beacon screens.
+const syncButton = (onPress, testID) => () => (
+  <Touchable onPress={onPress} testID={testID}>
+    <Icon name="sync" color="#000" size={24} />
+  </Touchable>
+);
+const inboxSyncButton = syncButton(() => RNAcousticMobilePushInbox.syncInboxMessages(), 'campaign_inbox_sync');
+const inAppSyncButton = syncButton(() => RNAcousticMobilePushInApp.syncInAppMessages(), 'campaign_inapp_sync');
+const geofencesSyncButton = syncButton(() => RNAcousticMobilePushLocation.syncLocations(), 'campaign_geofences_sync');
+const ibeaconsSyncButton = syncButton(() => RNAcousticMobilePushLocation.syncLocations(), 'campaign_ibeacons_sync');
 
 // InApp Actions/Templates modules must be imported in order to register with the system
 import './components/in-app/in-app-banner';
@@ -30,19 +48,26 @@ import './components/inbox/default-inbox-template';
 import './components/inbox/post-inbox-template';
 import './components/inbox/inbox-action';
 
-const MainNavigator = createStackNavigator({
-  Home: HomeScreen,
-  Registration: RegistrationScreen,
-  Inbox: InboxScreen,
-  InApp: InAppScreen,
-  CustomActions: CustomActionScreen,
-  SendTestEvents: SendTestEventScreen,
-  SendUserAttributes: SendUserAttributeScreen,
-  Geofences: GeofenceScreen,
-  iBeacons: iBeaconScreen,
-  InboxMessage: InboxMessageScreen,
-});
+const Stack = createNativeStackNavigator();
 
-const App = createAppContainer(MainNavigator);
+// gesture-handler 2.x components (TextInput on the event screens) need this root view
+const App = () => (
+  <GestureHandlerRootView style={{ flex: 1 }}>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Sample App' }} />
+        <Stack.Screen name="Registration" component={RegistrationScreen} options={{ title: 'Registration' }} />
+        <Stack.Screen name="Inbox" component={InboxScreen} options={{ title: 'Inbox Messages', headerRight: inboxSyncButton }} />
+        <Stack.Screen name="InApp" component={InAppScreen} options={{ title: 'InApp Messages', headerRight: inAppSyncButton }} />
+        <Stack.Screen name="CustomActions" component={CustomActionScreen} options={{ title: 'Custom Action' }} />
+        <Stack.Screen name="SendTestEvents" component={SendTestEventScreen} options={{ title: 'Send Events' }} />
+        <Stack.Screen name="SendUserAttributes" component={SendUserAttributeScreen} options={{ title: 'Send User Attributes' }} />
+        <Stack.Screen name="Geofences" component={GeofenceScreen} options={{ title: 'Geofences', headerRight: geofencesSyncButton }} />
+        <Stack.Screen name="iBeacons" component={iBeaconScreen} options={{ title: 'Beacons', headerRight: ibeaconsSyncButton }} />
+        <Stack.Screen name="InboxMessage" component={InboxMessageScreen} options={{ title: '' }} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  </GestureHandlerRootView>
+);
 
 export default App;

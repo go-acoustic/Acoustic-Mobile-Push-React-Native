@@ -150,7 +150,22 @@ if (process.env.MCE_RN_NOCONFIG) {
 
 console.log(chalk.green.bold("Setting up Acoustic Mobile Push Geofence Plugin"));
 const projectPath = process.cwd();
+// Holds the install lock of react-native-acoustic-mobile-push-beta/install-lock.js (a peer dependency of this plugin),
+// so the plugins' postinstall scripts configure the app one at a time. Without it (an older push plugin, or a package
+// manager that skips peer dependencies) this script configures the app without waiting for the others.
+function holdInstallLock(installDirectory) {
+    try {
+        require('react-native-acoustic-mobile-push-beta/install-lock').holdInstallLock(installDirectory);
+    } catch (error) {
+        if (error.code !== 'MODULE_NOT_FOUND') {
+            throw error;
+        }
+        console.log(chalk.yellow("react-native-acoustic-mobile-push-beta/install-lock not found; configuring without the install lock."));
+    }
+}
+
 const installDirectory = findInstallDirectory();
+holdInstallLock(installDirectory);
 const mainAppPath = findMainPath(installDirectory);
 updateiOSConfigFile(projectPath, mainAppPath);
 modifyManifest(installDirectory);

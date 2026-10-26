@@ -558,7 +558,10 @@ try {
     console.log(chalk.blue("Your current Node.js version is: " + process.version));
 }
 
+const { holdInstallLock } = require('./install-lock');
+
 const installDirectory = findInstallDirectory();
+holdInstallLock(installDirectory);
 const mainAppPath = findMainPath(installDirectory);
 addOrReplaceMobilePushConfigFile(installDirectory);
 replaceMain(mainAppPath);
